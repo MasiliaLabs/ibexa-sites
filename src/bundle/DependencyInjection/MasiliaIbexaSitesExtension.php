@@ -32,6 +32,10 @@ final class MasiliaIbexaSitesExtension extends Extension implements PrependExten
                 ],
             ],
         ]);
+        // The matcher of the registry, next to the ones the project writes: Ibexa builds it by class name for each use.
+        $container->prependExtensionConfig('ibexa', [
+            'siteaccess' => ['match' => ['\\Masilia\\IbexaSites\\Runtime\\RegistryMatcher' => null]],
+        ]);
         $container->prependExtensionConfig('doctrine_migrations', [
             'migrations_paths' => [
                 'Masilia\\Bundle\\IbexaSites\\Migrations' => __DIR__ . '/../Migrations',

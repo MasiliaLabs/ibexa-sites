@@ -30,6 +30,26 @@ final readonly class Site
     ) {
     }
 
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return [
+            'identifier' => $this->identifier, 'name' => $this->name, 'status' => $this->status->value, 'hosts' => $this->hosts, 'languages' => $this->languages,
+            'languageMode' => $this->languageMode->value, 'rootLocationId' => $this->rootLocationId, 'design' => $this->design, 'base' => $this->base,
+            'adminSiteaccess' => $this->adminSiteaccess,
+        ];
+    }
+
+    /** @param array<string, mixed> $data */
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            (string) $data['identifier'], (string) $data['name'], SiteStatus::from((string) $data['status']), array_map('strval', (array) $data['hosts']),
+            array_map('strval', (array) $data['languages']), LanguageMode::from((string) $data['languageMode']), (int) $data['rootLocationId'],
+            (string) $data['design'], (string) $data['base'], isset($data['adminSiteaccess']) ? (string) $data['adminSiteaccess'] : null,
+        );
+    }
+
     public function withStatus(SiteStatus $status): self
     {
         return new self($this->identifier, $this->name, $status, $this->hosts, $this->languages, $this->languageMode, $this->rootLocationId, $this->design, $this->base, $this->adminSiteaccess);

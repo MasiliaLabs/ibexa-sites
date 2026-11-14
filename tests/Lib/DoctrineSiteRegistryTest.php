@@ -14,6 +14,7 @@ use Masilia\Contracts\IbexaSites\SiteNotFound;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\DoctrineSiteRegistry;
 use Masilia\IbexaSites\Persistence\Entity\SiteRecord;
+use Masilia\IbexaSites\Persistence\SiteReader;
 use Masilia\IbexaSites\Validation\SiteValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -39,7 +40,7 @@ final class DoctrineSiteRegistryTest extends TestCase
 
             return $event;
         });
-        $this->registry = new DoctrineSiteRegistry($entities, new SiteValidator(new FakeFacts()), $dispatcher);
+        $this->registry = new DoctrineSiteRegistry($entities, new SiteReader($entities), new SiteValidator(new FakeFacts()), $dispatcher);
     }
 
     public function testASiteIsReadBackAsItWasWritten(): void

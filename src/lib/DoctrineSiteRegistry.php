@@ -12,6 +12,7 @@ use Masilia\Contracts\IbexaSites\SiteNotFound;
 use Masilia\Contracts\IbexaSites\SiteRegistry;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\Persistence\Entity\SiteRecord;
+use Masilia\IbexaSites\Persistence\SiteReader;
 use Masilia\IbexaSites\Validation\SiteValidator;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
@@ -20,6 +21,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
 {
     public function __construct(
         private EntityManagerInterface $entities,
+        private SiteReader $reader,
         private SiteValidator $validator,
         private EventDispatcherInterface $events,
     ) {
@@ -27,10 +29,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
 
     public function list(): array
     {
-        return array_map(
-            static fn (SiteRecord $record): Site => $record->toSite(),
-            $this->entities->getRepository(SiteRecord::class)->findBy([], ['identifier' => 'ASC']),
-        );
+        return $this->reader->all();
     }
 
     public function find(string $identifier): ?Site

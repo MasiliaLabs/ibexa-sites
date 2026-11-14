@@ -16,3 +16,28 @@ services:
     Masilia\Contracts\IbexaSites\SiteRegistry:
         alias: Masilia\IbexaSites\DoctrineSiteRegistry
         public: true
+
+    Masilia\IbexaSites\Persistence\SiteReader: ~
+
+    Masilia\IbexaSites\Runtime\SiteSnapshot:
+        arguments:
+            $cache: '@cache.app'
+        public: true
+
+    # Ibexa's chain of siteaccess providers: next to the static one of the project.
+    Masilia\IbexaSites\Runtime\DynamicSiteAccessProvider:
+        tags:
+            - { name: ibexa.site_access.provider, priority: 5 }
+
+    # Above the resolver of the project's siteaccesses (100): it answers for the siteaccesses of the registry only.
+    Masilia\IbexaSites\Runtime\RegistryConfigResolver:
+        calls:
+            - [setSiteAccess, ['@Ibexa\Core\MVC\Symfony\SiteAccess']]
+        tags:
+            - { name: ibexa.site.config.resolver, priority: 120 }
+
+    Masilia\IbexaSites\Access\AnonymousLoginAccess:
+        arguments:
+            $repository: '@ibexa.api.repository'
+
+    Masilia\Bundle\IbexaSites\EventListener\SiteChangedListener: ~
