@@ -7,13 +7,10 @@ namespace Masilia\IbexaSites\Runtime;
 use Ibexa\Core\MVC\Symfony\Routing\SimplifiedRequest;
 use Ibexa\Core\MVC\Symfony\SiteAccess\URILexer;
 use Ibexa\Core\MVC\Symfony\SiteAccess\VersatileMatcher;
-use Masilia\Contracts\IbexaSites\LanguageMode;
-use Masilia\Contracts\IbexaSites\Site;
 
 /**
- * Tells which siteaccess a request is for from the hosts (and language prefixes) of the active sites, and the other way round for
- * the links between siteaccesses. The first language is at the root of the host, each other one under its prefix (/fr), or has
- * its own host, as the site says.
+ * Tells which siteaccess a request is for from the hosts (and path prefixes) of the active sites, and the other way round for
+ * the links between siteaccesses. The siteaccess without a prefix is at the root of its host, the others under their prefix (/fr).
  *
  * A match is kept in the instance the request goes on with (Ibexa builds one per use), a reverse match in a clone.
  */
@@ -60,27 +57,23 @@ final class RegistryMatcher implements VersatileMatcher, URILexer
     {
         $host = strtolower((string) $this->request->getHost());
         $first = explode('/', ltrim((string) $this->request->getPathInfo(), '/'))[0];
+        $bare = null;
         foreach ($this->sites()->active() as $site) {
-            $index = array_search($host, $site->hosts, true);
-            if ($index === false) {
-                continue;
-            }
-            $names = array_values($site->siteaccesses());
-            if ($site->languageMode === LanguageMode::Host) {
-                return $names[$index] ?? $names[0];
-            }
-            foreach ($site->languages as $position => $language) {
-                if ($position > 0 && $first === Site::short($language)) {
+            foreach ($site->siteaccesses as $siteaccess) {
+                if ($siteaccess->host !== $host) {
+                    continue;
+                }
+                if ($siteaccess->uriPrefix === null) {
+                    $bare ??= $siteaccess->name;
+                } elseif ($siteaccess->uriPrefix === $first) {
                     $this->prefix = '/' . $first;
 
-                    return $names[$position];
+                    return $siteaccess->name;
                 }
             }
-
-            return $names[0];
         }
 
-        return false;
+        return $bare ?? false;
     }
 
     public function reverseMatch(string $siteAccessName): ?VersatileMatcher
@@ -89,13 +82,12 @@ final class RegistryMatcher implements VersatileMatcher, URILexer
         if ($found === null) {
             return null;
         }
-        [$site, $language] = $found;
-        $position = (int) array_search($language, $site->languages, true);
+        $siteaccess = $found[1];
 
         $reverse = clone $this;
         $reverse->request = clone $this->request;
-        $reverse->request->setHost($site->languageMode === LanguageMode::Host ? ($site->hosts[$position] ?? $site->hosts[0]) : $site->hosts[0]);
-        $reverse->prefix = $site->languageMode === LanguageMode::Prefix && $position > 0 ? '/' . Site::short($language) : '';
+        $reverse->request->setHost($siteaccess->host);
+        $reverse->prefix = $siteaccess->uriPrefix === null ? '' : '/' . $siteaccess->uriPrefix;
         // The path of the request is the one without any prefix: the new one is added to links.
         $reverse->request->setPathinfo($this->analyseURI((string) $this->request->getPathInfo()));
 

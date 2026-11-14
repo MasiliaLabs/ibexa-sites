@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Masilia\IbexaSites\Tests\Lib;
 
-use Masilia\Contracts\IbexaSites\LanguageMode;
+use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 use Masilia\Contracts\IbexaSites\SiteInvalid;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\Validation\SiteValidator;
@@ -30,24 +30,28 @@ final class SiteValidatorTest extends TestCase
         self::assertSame([], $this->problems(['adminSiteaccess' => 'admin', 'status' => SiteStatus::Active]));
     }
 
+    private static function sa(string $name, array $languages = ['eng-GB'], string $host = 'demo.example.org', ?string $prefix = null): SiteAccessDefinition
+    {
+        return new SiteAccessDefinition($name, $languages, $host, $prefix);
+    }
+
     /** @return iterable<string, array{array<string, mixed>, string}> */
     public static function refusals(): iterable
     {
         yield 'an identifier with capitals' => [['identifier' => 'Demo'], 'identifier "Demo" is not valid'];
-        yield 'an identifier of the project' => [['identifier' => 'main'], 'siteaccess or a group of the project'];
-        yield 'a siteaccess the language would take from the project' => [['identifier' => 'main', 'languages' => ['eng-GB', 'fre-FR']], 'siteaccess "main_fr" that this site would have already exists'];
         yield 'no name' => [['name' => ' '], 'name is required'];
-        yield 'no host' => [['hosts' => []], 'at least one host'];
-        yield 'two hosts with prefixes' => [['hosts' => ['a.example.org', 'b.example.org']], 'exactly one host'];
-        yield 'a host that is not one' => [['hosts' => ['Demo Site']], 'is not a host name'];
-        yield 'a host in capitals' => [['hosts' => ['Demo.example.org']], 'is not a host name'];
-        yield 'a host of the project' => [['hosts' => ['main.example.org']], 'already used'];
-        yield 'an admin host' => [['hosts' => ['admin.example.org']], 'already used'];
-        yield 'no language' => [['languages' => []], 'at least one language'];
-        yield 'a language twice' => [['languages' => ['eng-GB', 'eng-GB']], 'given twice'];
-        yield 'a language Ibexa does not have' => [['languages' => ['eng-GB', 'spa-ES']], 'language "spa-ES" does not exist'];
+        yield 'no siteaccess' => [['siteaccesses' => []], 'at least one siteaccess'];
+        yield 'a siteaccess name that is not valid' => [['siteaccesses' => [self::sa('Demo Fr')]], 'siteaccess name "Demo Fr" is not valid'];
+        yield 'a siteaccess given twice' => [['siteaccesses' => [self::sa('demo'), self::sa('demo', host: 'other.example.org')]], 'given twice'];
+        yield 'two siteaccesses at the root of a host' => [['siteaccesses' => [self::sa('demo'), self::sa('demo_fr')]], 'Only one siteaccess can be at the root'];
+        yield 'two siteaccesses on the same prefix' => [['siteaccesses' => [self::sa('demo', prefix: 'fr'), self::sa('demo_fr', prefix: 'fr')]], 'same address'];
+        yield 'a prefix with a slash' => [['siteaccesses' => [self::sa('demo', prefix: 'a/b')]], 'prefix "a/b" is not valid'];
+        yield 'a host that is not one' => [['siteaccesses' => [self::sa('demo', host: 'Demo Site')]], 'is not a host name'];
+        yield 'a host in capitals' => [['siteaccesses' => [self::sa('demo', host: 'Demo.example.org')]], 'is not a host name'];
+        yield 'no language' => [['siteaccesses' => [self::sa('demo', [])]], 'needs at least one language'];
+        yield 'a language twice' => [['siteaccesses' => [self::sa('demo', ['eng-GB', 'eng-GB'])]], 'given twice for the siteaccess'];
+        yield 'a language Ibexa does not have' => [['siteaccesses' => [self::sa('demo', ['eng-GB', 'spa-ES'])]], 'language "spa-ES" does not exist'];
         yield 'a root that does not exist' => [['rootLocationId' => 999], 'root location 999 does not exist'];
-        yield 'the root of a site of the project' => [['rootLocationId' => 62], 'already the root of another site'];
         yield 'a design that is not declared' => [['design' => 'nope'], 'design "nope" is not declared'];
         yield 'the admin design' => [['design' => 'admin'], 'design "admin" is not declared'];
         yield 'a base that is not a front group' => [['base' => 'admin_group'], 'not a group a site can take its settings from'];
@@ -61,25 +65,45 @@ final class SiteValidatorTest extends TestCase
         self::assertStringContainsString($expected, implode("\n", $this->problems($with)));
     }
 
-    public function testOneHostPerLanguageNeedsAsManyHostsAsLanguages(): void
+    public function testASiteWithoutABaseIsAccepted(): void
     {
-        self::assertSame([], $this->problems(['languageMode' => LanguageMode::Host, 'hosts' => ['en.example.org', 'fr.example.org']]));
-        self::assertStringContainsString('give 2 hosts', implode("\n", $this->problems(['languageMode' => LanguageMode::Host, 'hosts' => ['en.example.org']])));
+        self::assertSame([], $this->problems(['base' => null]));
     }
 
-    public function testASiteCannotTakeTheHostOrTheRootOfAnotherSiteOfTheRegistry(): void
+    public function testAPrefixCanBeTheOnlySiteaccessOfAHostAndTheLanguagesAreFree(): void
     {
-        $other = SiteBuilder::site(['identifier' => 'other', 'hosts' => ['demo.example.org'], 'rootLocationId' => 500]);
+        self::assertSame([], $this->problems(['siteaccesses' => [self::sa('demo_fr', ['fre-FR', 'eng-GB'], 'demo.example.org', 'fr'), self::sa('demo_ar', ['ara-MA'], 'demo.example.org', 'ar')]]));
+    }
+
+    public function testAServedSiteMustNotClashWithWhatTheYamlStillDeclares(): void
+    {
+        $served = ['status' => SiteStatus::Active];
+
+        self::assertStringContainsString('still declares', implode("\n", $this->problems(['identifier' => 'main_group'] + $served)));
+        self::assertStringContainsString('still exists in the project', implode("\n", $this->problems(['siteaccesses' => [self::sa('main_fr')]] + $served)));
+        self::assertStringContainsString('still answered by the project', implode("\n", $this->problems(['siteaccesses' => [self::sa('demo', host: 'main.example.org')]] + $served)));
+        self::assertStringContainsString('still the root of a site', implode("\n", $this->problems(['rootLocationId' => 62] + $served)));
+    }
+
+    public function testADraftMayCarryWhatTheYamlStillDeclaresSoThatASiteCanBeTakenOverFromIt(): void
+    {
+        self::assertSame([], $this->problems(['identifier' => 'main_group', 'rootLocationId' => 62, 'siteaccesses' => [self::sa('main', host: 'main.example.org'), self::sa('main_fr', ['fre-FR'], 'main.example.org', 'fr')]]));
+    }
+
+    public function testASiteCannotTakeTheAddressTheNamesOrTheRootOfAnotherSiteOfTheRegistry(): void
+    {
+        $other = SiteBuilder::site(['identifier' => 'other']);
 
         $problems = implode("\n", $this->problems([], [$other]));
 
-        self::assertStringContainsString('host "demo.example.org" is already used', $problems);
+        self::assertStringContainsString('address demo.example.org is already used', $problems);
+        self::assertStringContainsString('siteaccess name "demo" is already used', $problems);
         self::assertStringContainsString('location 500 is already the root of another site', $problems);
     }
 
     public function testASiteAlreadyThereIsRefusedAsANewOneButNotAsAChange(): void
     {
-        $same = SiteBuilder::site(['hosts' => ['other.example.org'], 'rootLocationId' => 501]);
+        $same = SiteBuilder::site(['siteaccesses' => [self::sa('x', host: 'x.example.org')], 'rootLocationId' => 501]);
 
         self::assertStringContainsString('already exists', implode("\n", $this->problems([], [$same], true)));
         self::assertSame([], $this->problems([], [], false));
@@ -87,11 +111,16 @@ final class SiteValidatorTest extends TestCase
 
     public function testEveryProblemIsSaidAtOnce(): void
     {
-        self::assertGreaterThanOrEqual(3, count($this->problems(['name' => '', 'hosts' => [], 'design' => 'nope'])));
+        self::assertGreaterThanOrEqual(3, count($this->problems(['name' => '', 'siteaccesses' => [], 'design' => 'nope'])));
     }
 
-    public function testTheSiteaccessesOfALanguageCarryItsCode(): void
+    public function testTheHostsAndTheLanguagesOfASiteAreThoseOfItsSiteaccesses(): void
     {
-        self::assertSame(['eng-GB' => 'demo', 'fre-FR' => 'demo_fr'], SiteBuilder::site()->siteaccesses());
+        $site = SiteBuilder::site();
+
+        self::assertSame(['demo', 'demo_fr'], $site->siteaccessNames());
+        self::assertSame(['demo.example.org'], $site->hosts());
+        self::assertSame(['eng-GB', 'fre-FR'], $site->languages());
+        self::assertSame($site->toArray(), \Masilia\Contracts\IbexaSites\Site::fromArray($site->toArray())->toArray());
     }
 }

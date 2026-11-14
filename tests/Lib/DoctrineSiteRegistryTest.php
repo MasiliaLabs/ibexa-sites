@@ -49,7 +49,7 @@ final class DoctrineSiteRegistryTest extends TestCase
 
         $this->registry->create($site);
 
-        self::assertEquals($site, $this->registry->find('demo'));
+        self::assertEquals($site, $this->registry->find('demo_group'));
         self::assertEquals([$site], $this->registry->list());
         self::assertNull($this->registry->find('ghost'));
     }
@@ -70,8 +70,8 @@ final class DoctrineSiteRegistryTest extends TestCase
     {
         $this->registry->create(SiteBuilder::site());
         $this->registry->update(SiteBuilder::site(['name' => 'Demo 2']));
-        $this->registry->setStatus('demo', SiteStatus::Active);
-        $this->registry->delete('demo');
+        $this->registry->setStatus('demo_group', SiteStatus::Active);
+        $this->registry->delete('demo_group');
 
         self::assertCount(4, $this->events);
         self::assertNull($this->events[0]->before);
@@ -79,7 +79,7 @@ final class DoctrineSiteRegistryTest extends TestCase
         self::assertSame('Demo 2', $this->events[1]->after?->name);
         self::assertSame(SiteStatus::Active, $this->events[2]->after?->status);
         self::assertNull($this->events[3]->after);
-        self::assertSame('demo', $this->events[3]->identifier());
+        self::assertSame('demo_group', $this->events[3]->identifier());
         self::assertSame([], $this->registry->list());
     }
 
@@ -87,7 +87,7 @@ final class DoctrineSiteRegistryTest extends TestCase
     {
         $this->registry->create(SiteBuilder::site());
 
-        $this->registry->setStatus('demo', SiteStatus::Draft);
+        $this->registry->setStatus('demo_group', SiteStatus::Draft);
 
         self::assertCount(1, $this->events, 'the same status is not a change');
     }
@@ -97,7 +97,7 @@ final class DoctrineSiteRegistryTest extends TestCase
         $this->registry->create(SiteBuilder::site());
 
         $this->expectException(SiteInvalid::class);
-        $this->registry->create(SiteBuilder::site(['identifier' => 'demo2', 'name' => 'Demo 2']));
+        $this->registry->create(SiteBuilder::site(['identifier' => 'demo2_group', 'name' => 'Demo 2']));
     }
 
     public function testWhatIsNotThereIsSaidNotFound(): void
@@ -113,7 +113,7 @@ final class DoctrineSiteRegistryTest extends TestCase
 
         $changed = $this->registry->update(SiteBuilder::site(['name' => 'Renamed']));
 
-        self::assertSame('Renamed', $this->registry->find('demo')?->name);
+        self::assertSame('Renamed', $this->registry->find('demo_group')?->name);
         self::assertSame('Renamed', $changed->name);
     }
 }

@@ -5,6 +5,19 @@
 
 {% set heading = site is null ? 'sites.new'|trans : 'sites.edit'|trans({ '%name%': site.name }) %}
 
+{% macro row(entry) %}
+    <div class="card ibexa-card ibexa-card--light masilia-siteaccess" style="margin-bottom:1rem">
+        <div class="card-body ibexa-card__body ibexa-form-block">
+            {{ form_row(entry.name, { row_attr: { class: 'ibexa-form-field' } }) }}
+            {{ form_row(entry.language, { row_attr: { class: 'ibexa-form-field' } }) }}
+            {{ form_row(entry.fallbacks, { row_attr: { class: 'ibexa-form-field' } }) }}
+            {{ form_row(entry.host, { row_attr: { class: 'ibexa-form-field' } }) }}
+            {{ form_row(entry.uriPrefix, { row_attr: { class: 'ibexa-form-field' } }) }}
+            <button type="button" class="btn ibexa-btn ibexa-btn--secondary masilia-remove-siteaccess">{{ 'form.siteaccess.remove'|trans }}</button>
+        </div>
+    </div>
+{% endmacro %}
+
 {% block body_class %}masilia-sites-view{% endblock %}
 
 {% block breadcrumbs %}
@@ -27,13 +40,19 @@
             {{ form_errors(form) }}
             <div class="card ibexa-card ibexa-card--light">
                 <div class="card-body ibexa-card__body ibexa-form-block">
-                    {% for field in form %}
-                        {% if not field.rendered %}
-                            {{ form_row(field, { row_attr: { class: 'ibexa-form-field' } }) }}
-                        {% endif %}
+                    {% for name in ['identifier', 'name', 'rootLocationId', 'design', 'base', 'sessionCookieDomain', 'adminSiteaccess'] %}
+                        {{ form_row(attribute(form, name), { row_attr: { class: 'ibexa-form-field' } }) }}
                     {% endfor %}
                 </div>
             </div>
+            <h2 class="ibexa-header__name">{{ 'form.siteaccesses'|trans }}</h2>
+            <div id="masilia-siteaccesses" data-prototype="{{ _self.row(form.siteaccesses.vars.prototype)|e('html_attr') }}" data-index="{{ form.siteaccesses|length }}">
+                {% for entry in form.siteaccesses %}
+                    {{ _self.row(entry) }}
+                {% endfor %}
+            </div>
+            <p><button type="button" class="btn ibexa-btn ibexa-btn--secondary" id="masilia-add-siteaccess">{{ 'form.siteaccess.add'|trans }}</button></p>
+            {% do form.siteaccesses.setRendered %}
             <p>
                 <button class="btn ibexa-btn ibexa-btn--primary" type="submit">{{ 'action.save'|trans }}</button>
                 <a class="btn ibexa-btn ibexa-btn--secondary" href="{{ path('masilia.ibexa_sites.list') }}">{{ 'action.cancel'|trans }}</a>
@@ -43,4 +62,23 @@
             <div class="ibexa-alert ibexa-alert--info" role="note"><p>{{ 'form.active.note'|trans }}</p></div>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        (function () {
+            var list = document.getElementById('masilia-siteaccesses');
+            if (!list) { return; }
+            document.getElementById('masilia-add-siteaccess').addEventListener('click', function () {
+                var index = parseInt(list.dataset.index, 10);
+                list.dataset.index = index + 1;
+                list.insertAdjacentHTML('beforeend', list.dataset.prototype.replace(/__name__/g, index));
+            });
+            list.addEventListener('click', function (event) {
+                var button = event.target.closest('.masilia-remove-siteaccess');
+                if (button) { button.closest('.masilia-siteaccess').remove(); }
+            });
+        })();
+    </script>
 {% endblock %}

@@ -24,12 +24,11 @@ final class Version20261115000000 extends AbstractMigration
                 identifier VARCHAR(30) CHARACTER SET ascii NOT NULL PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
                 status VARCHAR(12) CHARACTER SET ascii NOT NULL,
-                hosts JSON NOT NULL,
-                languages JSON NOT NULL,
-                language_mode VARCHAR(8) CHARACTER SET ascii NOT NULL,
                 root_location_id INT NOT NULL,
                 design VARCHAR(80) CHARACTER SET ascii NOT NULL,
-                base_group VARCHAR(80) CHARACTER SET ascii NOT NULL,
+                base_group VARCHAR(80) CHARACTER SET ascii DEFAULT NULL,
+                session_cookie_domain VARCHAR(255) CHARACTER SET ascii DEFAULT NULL,
+                siteaccesses JSON NOT NULL,
                 admin_siteaccess VARCHAR(80) CHARACTER SET ascii DEFAULT NULL,
                 updated_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci

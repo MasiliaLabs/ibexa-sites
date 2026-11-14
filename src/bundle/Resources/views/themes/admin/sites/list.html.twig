@@ -33,8 +33,7 @@
                     <tr>
                         <th>{{ 'column.site'|trans }}</th>
                         <th>{{ 'column.status'|trans }}</th>
-                        <th>{{ 'column.hosts'|trans }}</th>
-                        <th>{{ 'column.languages'|trans }}</th>
+                        <th>{{ 'column.siteaccesses'|trans }}</th>
                         <th>{{ 'column.root'|trans }}</th>
                         <th>{{ 'column.design'|trans }}</th>
                         <th></th>
@@ -45,10 +44,13 @@
                         <tr>
                             <td><strong>{{ site.name }}</strong><br><code>{{ site.identifier }}</code></td>
                             <td>{{ ('status.' ~ site.status.value)|trans }}</td>
-                            <td>{{ site.hosts|join(', ') }}</td>
-                            <td>{{ site.languages|join(', ') }}<br><span class="ibexa-text-muted">{{ site.siteaccesses|join(', ') }}</span></td>
+                            <td>
+                                {% for sa in site.siteaccesses %}
+                                    <code>{{ sa.name }}</code> {{ sa.languages|join(' → ') }} <span class="ibexa-text-muted">{{ sa.host }}{{ sa.uriPrefix is null ? '' : '/' ~ sa.uriPrefix }}</span>{% if not loop.last %}<br>{% endif %}
+                                {% endfor %}
+                            </td>
                             <td>{{ site.rootLocationId }}</td>
-                            <td>{{ site.design }}<br><span class="ibexa-text-muted">{{ site.base }}</span></td>
+                            <td>{{ site.design }}{% if site.base is not null %}<br><span class="ibexa-text-muted">{{ site.base }}</span>{% endif %}</td>
                             <td>
                                 {% if canManage %}
                                     <a class="btn ibexa-btn ibexa-btn--secondary" href="{{ path('masilia.ibexa_sites.edit', { identifier: site.identifier }) }}">{{ 'action.edit'|trans }}</a>

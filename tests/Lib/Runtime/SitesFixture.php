@@ -4,24 +4,30 @@ declare(strict_types=1);
 
 namespace Masilia\IbexaSites\Tests\Lib\Runtime;
 
-use Masilia\Contracts\IbexaSites\LanguageMode;
 use Masilia\Contracts\IbexaSites\Site;
+use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\Persistence\SiteReader;
 use Masilia\IbexaSites\Runtime\RegistryMatcher;
 use Masilia\IbexaSites\Runtime\SiteSnapshot;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-/** Three sites (a trait of the tests that need them): "demo" (prefix, en/fr), "blog" (a host per language, en/ar), "off" (disabled). */
+/** Three sites (a trait of the tests that need them): "demo" (en at the root, fr under /fr with an english fallback), "blog" (a host per language, en/ar), "off" (disabled). */
 trait SitesFixture
 {
     /** @return list<Site> */
     private static function sites(): array
     {
         return [
-            new Site('blog', 'Blog', SiteStatus::Active, ['blog.example.org', 'blog-ar.example.org'], ['eng-GB', 'ara-MA'], LanguageMode::Host, 600, 'imal', 'site_group'),
-            new Site('demo', 'Demo', SiteStatus::Active, ['demo.example.org'], ['eng-GB', 'fre-FR'], LanguageMode::Prefix, 500, 'mattcch', 'mattcch_group'),
-            new Site('off', 'Off', SiteStatus::Disabled, ['off.example.org'], ['eng-GB'], LanguageMode::Prefix, 700, 'imal', 'site_group'),
+            new Site('blog_group', 'Blog', SiteStatus::Active, 600, 'imal', [
+                new SiteAccessDefinition('blog', ['eng-GB'], 'blog.example.org'),
+                new SiteAccessDefinition('blog_ar', ['ara-MA'], 'blog-ar.example.org'),
+            ], 'site_group'),
+            new Site('demo_group', 'Demo', SiteStatus::Active, 500, 'mattcch', [
+                new SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org'),
+                new SiteAccessDefinition('demo_fr', ['fre-FR', 'eng-GB'], 'demo.example.org', 'fr'),
+            ], 'mattcch_group', '.demo.example.org'),
+            new Site('off_group', 'Off', SiteStatus::Disabled, 700, 'imal', [new SiteAccessDefinition('off', ['eng-GB'], 'off.example.org')], 'site_group'),
         ];
     }
 

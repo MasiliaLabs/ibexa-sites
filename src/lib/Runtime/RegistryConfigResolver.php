@@ -10,8 +10,8 @@ use Ibexa\Core\MVC\Symfony\SiteAccess;
 use Ibexa\Core\MVC\Symfony\SiteAccess\SiteAccessAware;
 
 /**
- * The settings of the siteaccesses of the active sites that the registry sets: the language, the root of the tree, the design and
- * the siteaccesses of the translations. Everything else comes from the groups of the siteaccess (see DynamicSiteAccessProvider), so
+ * The settings of the siteaccesses of the active sites that the registry sets: the languages of each siteaccess, the root of the tree, the design, the
+ * cookie domain of the session and the siteaccesses of the translations. Everything else comes from the groups of the siteaccess (see DynamicSiteAccessProvider), so
  * this answers "not found" for it, and for every siteaccess the project declares: they are the static resolvers' business.
  */
 final class RegistryConfigResolver implements ConfigResolverInterface, SiteAccessAware
@@ -33,16 +33,21 @@ final class RegistryConfigResolver implements ConfigResolverInterface, SiteAcces
         $scope ??= $this->siteAccess?->name;
         $found = $scope === null ? null : $this->sites->bySiteaccess($scope);
         if ($found !== null) {
-            [$site, $language] = $found;
+            [$site, $definition] = $found;
             switch ($paramName) {
                 case 'languages':
-                    return [$language];
+                    return $definition->languages;
                 case 'content.tree_root.location_id':
                     return $site->rootLocationId;
                 case 'design':
                     return $site->design;
+                case 'session.cookie_domain':
+                    if ($site->sessionCookieDomain !== null) {
+                        return $site->sessionCookieDomain;
+                    }
+                    break;
                 case 'translation_siteaccesses':
-                    return array_values($site->siteaccesses());
+                    return $site->siteaccessNames();
             }
         }
 

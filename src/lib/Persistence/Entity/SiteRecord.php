@@ -6,11 +6,11 @@ namespace Masilia\IbexaSites\Persistence\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Masilia\Contracts\IbexaSites\LanguageMode;
 use Masilia\Contracts\IbexaSites\Site;
+use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 
-/** A row of the registry (table masilia_site): the storage of a Site. */
+/** A row of the registry (table masilia_site): the storage of a Site, its siteaccesses kept with it. */
 #[ORM\Entity]
 #[ORM\Table(name: 'masilia_site')]
 class SiteRecord
@@ -26,25 +26,21 @@ class SiteRecord
     #[ORM\Column(length: 12)]
     private string $status;
 
-    /** @var list<string> */
-    #[ORM\Column(type: Types::JSON)]
-    private array $hosts;
-
-    /** @var list<string> */
-    #[ORM\Column(type: Types::JSON)]
-    private array $languages;
-
-    #[ORM\Column(name: 'language_mode', length: 8)]
-    private string $languageMode;
-
     #[ORM\Column(name: 'root_location_id', type: Types::INTEGER)]
     private int $rootLocationId;
 
     #[ORM\Column(length: 80)]
     private string $design;
 
-    #[ORM\Column(name: 'base_group', length: 80)]
-    private string $base;
+    #[ORM\Column(name: 'base_group', length: 80, nullable: true)]
+    private ?string $base;
+
+    #[ORM\Column(name: 'session_cookie_domain', length: 255, nullable: true)]
+    private ?string $sessionCookieDomain;
+
+    /** @var list<array<string, mixed>> */
+    #[ORM\Column(type: Types::JSON)]
+    private array $siteaccesses;
 
     #[ORM\Column(name: 'admin_siteaccess', length: 80, nullable: true)]
     private ?string $adminSiteaccess;
@@ -62,12 +58,11 @@ class SiteRecord
     {
         $this->name = $site->name;
         $this->status = $site->status->value;
-        $this->hosts = $site->hosts;
-        $this->languages = $site->languages;
-        $this->languageMode = $site->languageMode->value;
         $this->rootLocationId = $site->rootLocationId;
         $this->design = $site->design;
         $this->base = $site->base;
+        $this->sessionCookieDomain = $site->sessionCookieDomain;
+        $this->siteaccesses = array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $site->siteaccesses);
         $this->adminSiteaccess = $site->adminSiteaccess;
         $this->updatedAt = new \DateTimeImmutable();
     }
@@ -83,12 +78,11 @@ class SiteRecord
             $this->identifier,
             $this->name,
             SiteStatus::from($this->status),
-            $this->hosts,
-            $this->languages,
-            LanguageMode::from($this->languageMode),
             $this->rootLocationId,
             $this->design,
+            array_map(static fn (array $row): SiteAccessDefinition => SiteAccessDefinition::fromArray($row), $this->siteaccesses),
             $this->base,
+            $this->sessionCookieDomain,
             $this->adminSiteaccess,
         );
     }

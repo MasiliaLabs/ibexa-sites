@@ -38,14 +38,6 @@
         <source>column.design</source>
         <target>Design</target>
       </trans-unit>
-      <trans-unit id="column.hosts" resname="column.hosts">
-        <source>column.hosts</source>
-        <target>Hôtes</target>
-      </trans-unit>
-      <trans-unit id="column.languages" resname="column.languages">
-        <source>column.languages</source>
-        <target>Langues</target>
-      </trans-unit>
       <trans-unit id="column.root" resname="column.root">
         <source>column.root</source>
         <target>Racine</target>
@@ -100,11 +92,7 @@
       </trans-unit>
       <trans-unit id="form.base.help" resname="form.base.help">
         <source>form.base.help</source>
-        <target>Le groupe de siteaccess dont le site reprend tout ce qu&#x27;il ne règle pas (images, texte riche, menus).</target>
-      </trans-unit>
-      <trans-unit id="form.default_language" resname="form.default_language">
-        <source>form.default_language</source>
-        <target>Langue par défaut</target>
+        <target>Un groupe dont le site reprend tout ce qu&#x27;il ne règle pas (images, texte riche, menus), facultatif.</target>
       </trans-unit>
       <trans-unit id="form.design" resname="form.design">
         <source>form.design</source>
@@ -114,45 +102,13 @@
         <source>form.design.help</source>
         <target>L&#x27;apparence du site : un des designs du projet.</target>
       </trans-unit>
-      <trans-unit id="form.hosts" resname="form.hosts">
-        <source>form.hosts</source>
-        <target>Hôtes</target>
-      </trans-unit>
-      <trans-unit id="form.hosts.help" resname="form.hosts.help">
-        <source>form.hosts.help</source>
-        <target>Un nom d&#x27;hôte par ligne (demo.example.org). Un seul pour tout le site avec un préfixe par langue, un par langue (dans l&#x27;ordre des langues) sinon.</target>
-      </trans-unit>
       <trans-unit id="form.identifier" resname="form.identifier">
         <source>form.identifier</source>
         <target>Identifiant</target>
       </trans-unit>
       <trans-unit id="form.identifier.help" resname="form.identifier.help">
         <source>form.identifier.help</source>
-        <target>Lettres minuscules, chiffres et « _ ». Il nomme les siteaccess (demo, demo_fr) et ne peut plus changer.</target>
-      </trans-unit>
-      <trans-unit id="form.language_mode" resname="form.language_mode">
-        <source>form.language_mode</source>
-        <target>Les langues se distinguent par</target>
-      </trans-unit>
-      <trans-unit id="form.language_mode.help" resname="form.language_mode.help">
-        <source>form.language_mode.help</source>
-        <target>Un préfixe (/fr) après l&#x27;hôte, ou un hôte propre à chaque langue.</target>
-      </trans-unit>
-      <trans-unit id="form.language_mode.host" resname="form.language_mode.host">
-        <source>form.language_mode.host</source>
-        <target>Un hôte par langue</target>
-      </trans-unit>
-      <trans-unit id="form.language_mode.prefix" resname="form.language_mode.prefix">
-        <source>form.language_mode.prefix</source>
-        <target>Un préfixe dans l&#x27;adresse</target>
-      </trans-unit>
-      <trans-unit id="form.languages" resname="form.languages">
-        <source>form.languages</source>
-        <target>Langues</target>
-      </trans-unit>
-      <trans-unit id="form.languages.help" resname="form.languages.help">
-        <source>form.languages.help</source>
-        <target>Les langues dans lesquelles le site est servi ; chacune a son siteaccess.</target>
+        <target>Lettres minuscules, chiffres et « _ ». C&#x27;est le nom du groupe de siteaccess (demo_group), il ne peut plus changer.</target>
       </trans-unit>
       <trans-unit id="form.name" resname="form.name">
         <source>form.name</source>
@@ -205,6 +161,70 @@
       <trans-unit id="status.draft" resname="status.draft">
         <source>status.draft</source>
         <target>Brouillon</target>
+      </trans-unit>
+      <trans-unit id="form.base.none" resname="form.base.none">
+        <source>form.base.none</source>
+        <target>Aucun</target>
+      </trans-unit>
+      <trans-unit id="form.cookie_domain" resname="form.cookie_domain">
+        <source>form.cookie_domain</source>
+        <target>Domaine du cookie de session</target>
+      </trans-unit>
+      <trans-unit id="form.cookie_domain.help" resname="form.cookie_domain.help">
+        <source>form.cookie_domain.help</source>
+        <target>Facultatif : le domaine du cookie de session du site (.example.org).</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccesses" resname="form.siteaccesses">
+        <source>form.siteaccesses</source>
+        <target>Siteaccess</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.add" resname="form.siteaccess.add">
+        <source>form.siteaccess.add</source>
+        <target>Ajouter un siteaccess</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.remove" resname="form.siteaccess.remove">
+        <source>form.siteaccess.remove</source>
+        <target>Retirer</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.name" resname="form.siteaccess.name">
+        <source>form.siteaccess.name</source>
+        <target>Nom du siteaccess</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.name.help" resname="form.siteaccess.name.help">
+        <source>form.siteaccess.name.help</source>
+        <target>Lettres minuscules, chiffres et « _ » (demo_fr). Unique dans le projet.</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.language" resname="form.siteaccess.language">
+        <source>form.siteaccess.language</source>
+        <target>Langue</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.fallbacks" resname="form.siteaccess.fallbacks">
+        <source>form.siteaccess.fallbacks</source>
+        <target>Repli sur</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.fallbacks.help" resname="form.siteaccess.fallbacks.help">
+        <source>form.siteaccess.fallbacks.help</source>
+        <target>Autres langues utilisées quand un contenu n&#x27;est pas traduit.</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.host" resname="form.siteaccess.host">
+        <source>form.siteaccess.host</source>
+        <target>Hôte</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.host.help" resname="form.siteaccess.host.help">
+        <source>form.siteaccess.host.help</source>
+        <target>demo.example.org. Un même hôte peut porter plusieurs siteaccess, distingués par leur préfixe.</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.prefix" resname="form.siteaccess.prefix">
+        <source>form.siteaccess.prefix</source>
+        <target>Préfixe du chemin</target>
+      </trans-unit>
+      <trans-unit id="form.siteaccess.prefix.help" resname="form.siteaccess.prefix.help">
+        <source>form.siteaccess.prefix.help</source>
+        <target>« fr » pour /fr. Vide : ce siteaccess est à la racine de l&#x27;hôte (un seul par hôte).</target>
+      </trans-unit>
+      <trans-unit id="column.siteaccesses" resname="column.siteaccesses">
+        <source>column.siteaccesses</source>
+        <target>Siteaccess</target>
       </trans-unit>
     </body>
   </file>

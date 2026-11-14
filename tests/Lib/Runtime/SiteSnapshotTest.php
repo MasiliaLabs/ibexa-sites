@@ -17,9 +17,9 @@ final class SiteSnapshotTest extends TestCase
     {
         $snapshot = $this->snapshot();
 
-        self::assertSame(['blog', 'demo'], array_map(static fn ($site): string => $site->identifier, $snapshot->active()));
-        self::assertSame('fre-FR', $snapshot->bySiteaccess('demo_fr')[1] ?? null);
-        self::assertSame('ara-MA', $snapshot->bySiteaccess('blog_ar')[1] ?? null);
+        self::assertSame(['blog_group', 'demo_group'], array_map(static fn ($site): string => $site->identifier, $snapshot->active()));
+        self::assertSame(['fre-FR', 'eng-GB'], $snapshot->bySiteaccess('demo_fr')[1]->languages ?? null);
+        self::assertSame('blog-ar.example.org', $snapshot->bySiteaccess('blog_ar')[1]->host ?? null);
         self::assertNull($snapshot->bySiteaccess('off'), 'a disabled site has no siteaccess');
         self::assertNull($snapshot->bySiteaccess('site'));
     }

@@ -22,7 +22,7 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertSame(['blog', 'blog_ar', 'demo', 'demo_fr'], array_map(static fn (SiteAccess $s): string => $s->name, iterator_to_array($provider->getSiteAccesses(), false)));
         self::assertTrue($provider->isDefined('demo_fr'));
         self::assertFalse($provider->isDefined('off'));
-        self::assertSame(['front_group', 'mattcch_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('demo')->groups), 'what the registry does not set comes from the base group');
+        self::assertSame(['front_group', 'demo_group', 'mattcch_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('demo')->groups), 'the group of the site, then the base group the rest comes from');
     }
 
     public function testTheProviderRefusesASiteaccessItDoesNotHave(): void
@@ -36,7 +36,9 @@ final class DynamicSiteaccessesTest extends TestCase
     {
         $resolver = new RegistryConfigResolver($this->snapshot());
 
-        self::assertSame(['fre-FR'], $resolver->getParameter('languages', null, 'demo_fr'));
+        self::assertSame(['fre-FR', 'eng-GB'], $resolver->getParameter('languages', null, 'demo_fr'), 'the languages of the siteaccess, with its fallback');
+        self::assertSame('.demo.example.org', $resolver->getParameter('session.cookie_domain', null, 'demo'));
+        self::assertFalse($resolver->hasParameter('session.cookie_domain', null, 'blog'), 'no cookie domain set: the groups answer');
         self::assertSame(500, $resolver->getParameter('content.tree_root.location_id', null, 'demo'));
         self::assertSame('mattcch', $resolver->getParameter('design', null, 'demo_fr'));
         self::assertSame(['demo', 'demo_fr'], $resolver->getParameter('translation_siteaccesses', null, 'demo'));

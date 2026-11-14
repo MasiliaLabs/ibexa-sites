@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Masilia\IbexaSites\Tests\Lib;
 
+use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\Access\AnonymousLoginAccess;
 use PHPUnit\Framework\TestCase;
@@ -37,10 +38,10 @@ final class AnonymousLoginAccessTest extends TestCase
         self::assertSame(['111'], AnonymousLoginAccess::values($existing, $active, null));
     }
 
-    public function testAChangeOfLanguagesMovesTheSiteaccesses(): void
+    public function testAChangeOfSiteaccessesMovesThem(): void
     {
         $before = SiteBuilder::site(['status' => SiteStatus::Active]);
-        $after = SiteBuilder::site(['status' => SiteStatus::Active, 'languages' => ['eng-GB', 'ara-MA']]);
+        $after = SiteBuilder::site(['status' => SiteStatus::Active, 'siteaccesses' => [new SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org'), new SiteAccessDefinition('demo_ar', ['ara-MA'], 'demo.example.org', 'ar')]]);
 
         $values = AnonymousLoginAccess::values(['111', $this->crc('demo'), $this->crc('demo_fr')], $before, $after);
 

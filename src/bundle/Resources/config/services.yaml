@@ -46,6 +46,8 @@ services:
 
     Masilia\Bundle\IbexaSites\Form\SiteType: ~
 
+    Masilia\Bundle\IbexaSites\Form\SiteAccessType: ~
+
     Masilia\Bundle\IbexaSites\Controller\:
         resource: '../../Controller/'
         public: true

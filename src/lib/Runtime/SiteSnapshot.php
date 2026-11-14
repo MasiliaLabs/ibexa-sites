@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Masilia\IbexaSites\Runtime;
 
 use Masilia\Contracts\IbexaSites\Site;
+use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 use Masilia\IbexaSites\Persistence\SiteReader;
 use Psr\Cache\CacheItemPoolInterface;
 use Throwable;
@@ -56,17 +57,15 @@ final class SiteSnapshot
     }
 
     /**
-     * The site that has this siteaccess, and the language it serves.
+     * The site that has this siteaccess, and the siteaccess itself.
      *
-     * @return array{0: Site, 1: string}|null
+     * @return array{0: Site, 1: SiteAccessDefinition}|null
      */
     public function bySiteaccess(string $siteaccess): ?array
     {
         foreach ($this->active() as $site) {
-            foreach ($site->siteaccesses() as $language => $name) {
-                if ($name === $siteaccess) {
-                    return [$site, $language];
-                }
+            if (($definition = $site->siteaccess($siteaccess)) !== null) {
+                return [$site, $definition];
             }
         }
 
