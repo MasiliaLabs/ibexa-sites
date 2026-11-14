@@ -1,0 +1,48 @@
+{
+    "name": "masilia/ibexa-sites",
+    "description": "Sites created at run time: a registry of sites (hosts, languages, root, design) that Ibexa serves without a deploy",
+    "type": "ibexa-bundle",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.3",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/orm": "^3.0",
+        "ibexa/core": "^5.0",
+        "psr/event-dispatcher": "^1.0",
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/http-kernel": "^7.4"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Masilia\\Bundle\\IbexaSites\\": "src/bundle/",
+            "Masilia\\Contracts\\IbexaSites\\": "src/contracts/",
+            "Masilia\\IbexaSites\\": "src/lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Masilia\\IbexaSites\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpunit": "phpunit",
+        "phpstan": "phpstan analyse --memory-limit=1G",
+        "test": [
+            "@phpunit",
+            "@phpstan"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    }
+}

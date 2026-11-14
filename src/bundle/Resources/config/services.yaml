@@ -1,0 +1,18 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # The implementation lives in src/lib (as in the Ibexa packages); this file only wires it.
+    Masilia\IbexaSites\Validation\SiteValidator: ~
+    Masilia\IbexaSites\Ibexa\IbexaSiteFacts: ~
+    Masilia\IbexaSites\Validation\SiteFacts:
+        alias: Masilia\IbexaSites\Ibexa\IbexaSiteFacts
+
+    Masilia\IbexaSites\DoctrineSiteRegistry:
+        arguments:
+            $events: '@event_dispatcher'
+    Masilia\Contracts\IbexaSites\SiteRegistry:
+        alias: Masilia\IbexaSites\DoctrineSiteRegistry
+        public: true
