@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Masilia\Bundle\IbexaSites;
 
+use Masilia\Bundle\IbexaSites\DependencyInjection\Compiler\TranslationHelperPass;
 use Masilia\Bundle\IbexaSites\Security\SitesPolicyProvider;
 use Masilia\IbexaSites\Runtime\RegistryMatcher;
 use Masilia\IbexaSites\Runtime\SiteSnapshot;
@@ -21,6 +22,7 @@ final class MasiliaIbexaSitesBundle extends Bundle
         /** @var \Ibexa\Bundle\Core\DependencyInjection\IbexaCoreExtension $core */
         $core = $container->getExtension('ibexa');
         $core->addPolicyProvider(new SitesPolicyProvider());
+        $container->addCompilerPass(new TranslationHelperPass());
     }
 
     public function boot(): void

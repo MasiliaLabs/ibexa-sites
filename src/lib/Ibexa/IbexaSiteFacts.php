@@ -94,9 +94,12 @@ readonly class IbexaSiteFacts implements SiteFacts
         return array_map('strval', $this->groups[$this->adminGroup] ?? []);
     }
 
+    /** A group the project declares empty is only kept for its settings (a site taken over from the YAML): its name is free for that site. */
     public function reservedNames(): array
     {
-        return array_values(array_unique([...array_map('strval', $this->siteaccesses), ...array_map('strval', array_keys($this->groups)), ...$this->adminSiteaccesses()]));
+        $groups = array_keys(array_filter($this->groups, static fn (array $members): bool => $members !== []));
+
+        return array_values(array_unique([...array_map('strval', $this->siteaccesses), ...array_map('strval', $groups), ...$this->adminSiteaccesses()]));
     }
 
     public function staticHosts(): array
