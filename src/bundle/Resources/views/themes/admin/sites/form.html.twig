@@ -1,0 +1,46 @@
+{% extends "@ibexadesign/ui/layout.html.twig" %}
+
+{% trans_default_domain 'masilia_ibexa_sites' %}
+{% form_theme form '@ibexadesign/ui/form_fields.html.twig' %}
+
+{% set heading = site is null ? 'sites.new'|trans : 'sites.edit'|trans({ '%name%': site.name }) %}
+
+{% block body_class %}masilia-sites-view{% endblock %}
+
+{% block breadcrumbs %}
+    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'breadcrumb.admin'|trans },
+        { value: 'sites.title'|trans, url: path('masilia.ibexa_sites.list') },
+        { value: heading }
+    ]} %}
+{% endblock %}
+
+{% block title %}{{ heading }}{% endblock %}
+
+{% block header %}
+    {% include '@ibexadesign/ui/page_title.html.twig' with { title: heading } %}
+{% endblock %}
+
+{% block content %}
+    <div class="masilia-sites">
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="card ibexa-card ibexa-card--light">
+                <div class="card-body ibexa-card__body ibexa-form-block">
+                    {% for field in form %}
+                        {% if not field.rendered %}
+                            {{ form_row(field, { row_attr: { class: 'ibexa-form-field' } }) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <p>
+                <button class="btn ibexa-btn ibexa-btn--primary" type="submit">{{ 'action.save'|trans }}</button>
+                <a class="btn ibexa-btn ibexa-btn--secondary" href="{{ path('masilia.ibexa_sites.list') }}">{{ 'action.cancel'|trans }}</a>
+            </p>
+        {{ form_end(form) }}
+        {% if site is not null and site.status.value == 'active' %}
+            <div class="ibexa-alert ibexa-alert--info" role="note"><p>{{ 'form.active.note'|trans }}</p></div>
+        {% endif %}
+    </div>
+{% endblock %}

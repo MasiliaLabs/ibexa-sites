@@ -11,6 +11,9 @@ interface SiteFacts
 
     public function languageExists(string $code): bool;
 
+    /** @return list<string> The language codes Ibexa has, enabled ones first */
+    public function languages(): array;
+
     /** @return list<string> The designs already declared */
     public function designs(): array;
 

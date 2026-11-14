@@ -60,6 +60,19 @@ readonly class IbexaSiteFacts implements SiteFacts
         }
     }
 
+    public function languages(): array
+    {
+        $codes = [];
+        foreach ($this->languages->loadLanguages() as $language) {
+            if ($language->enabled) {
+                $codes[] = $language->languageCode;
+            }
+        }
+        sort($codes);
+
+        return $codes;
+    }
+
     public function designs(): array
     {
         $names = array_map('strval', array_keys($this->designs));

@@ -1,0 +1,6 @@
+# The pages of the sites are the admin's: no /admin prefix here (the siteaccess gives it), and only the siteaccesses of the admin group match.
+masilia_ibexa_sites_controllers:
+    resource: '../../Controller/'
+    type: attribute
+    defaults:
+        siteaccess_group_whitelist: '%admin_group_name%'

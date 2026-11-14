@@ -19,6 +19,11 @@ final class FakeFacts implements SiteFacts
         return in_array($code, ['eng-GB', 'fre-FR', 'ara-MA'], true);
     }
 
+    public function languages(): array
+    {
+        return ['ara-MA', 'eng-GB', 'fre-FR'];
+    }
+
     public function designs(): array
     {
         return ['imal', 'mattcch'];

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="action.activate" resname="action.activate">
+        <source>action.activate</source>
+        <target>Activer</target>
+      </trans-unit>
+      <trans-unit id="action.cancel" resname="action.cancel">
+        <source>action.cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="action.delete" resname="action.delete">
+        <source>action.delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="action.delete.confirm" resname="action.delete.confirm">
+        <source>action.delete.confirm</source>
+        <target>Supprimer ce site ? Ses contenus restent ; seule sa configuration disparaît.</target>
+      </trans-unit>
+      <trans-unit id="action.disable" resname="action.disable">
+        <source>action.disable</source>
+        <target>Désactiver</target>
+      </trans-unit>
+      <trans-unit id="action.edit" resname="action.edit">
+        <source>action.edit</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="action.save" resname="action.save">
+        <source>action.save</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit id="breadcrumb.admin" resname="breadcrumb.admin">
+        <source>breadcrumb.admin</source>
+        <target>Administration</target>
+      </trans-unit>
+      <trans-unit id="column.design" resname="column.design">
+        <source>column.design</source>
+        <target>Design</target>
+      </trans-unit>
+      <trans-unit id="column.hosts" resname="column.hosts">
+        <source>column.hosts</source>
+        <target>Hôtes</target>
+      </trans-unit>
+      <trans-unit id="column.languages" resname="column.languages">
+        <source>column.languages</source>
+        <target>Langues</target>
+      </trans-unit>
+      <trans-unit id="column.root" resname="column.root">
+        <source>column.root</source>
+        <target>Racine</target>
+      </trans-unit>
+      <trans-unit id="column.site" resname="column.site">
+        <source>column.site</source>
+        <target>Site</target>
+      </trans-unit>
+      <trans-unit id="column.status" resname="column.status">
+        <source>column.status</source>
+        <target>Statut</target>
+      </trans-unit>
+      <trans-unit id="flash.created" resname="flash.created">
+        <source>flash.created</source>
+        <target>Le site « %name% » est créé (un brouillon : activez-le pour le servir).</target>
+      </trans-unit>
+      <trans-unit id="flash.deleted" resname="flash.deleted">
+        <source>flash.deleted</source>
+        <target>Le site « %identifier% » est supprimé.</target>
+      </trans-unit>
+      <trans-unit id="flash.status.active" resname="flash.status.active">
+        <source>flash.status.active</source>
+        <target>Le site « %name% » est actif.</target>
+      </trans-unit>
+      <trans-unit id="flash.status.disabled" resname="flash.status.disabled">
+        <source>flash.status.disabled</source>
+        <target>Le site « %name% » est désactivé.</target>
+      </trans-unit>
+      <trans-unit id="flash.updated" resname="flash.updated">
+        <source>flash.updated</source>
+        <target>Le site « %name% » est modifié.</target>
+      </trans-unit>
+      <trans-unit id="form.active.note" resname="form.active.note">
+        <source>form.active.note</source>
+        <target>Ce site est actif : un changement de ses hôtes, langues ou racine s&#x27;applique aussitôt.</target>
+      </trans-unit>
+      <trans-unit id="form.admin" resname="form.admin">
+        <source>form.admin</source>
+        <target>Siteaccess admin</target>
+      </trans-unit>
+      <trans-unit id="form.admin.help" resname="form.admin.help">
+        <source>form.admin.help</source>
+        <target>Le siteaccess admin qui édite ce site, s&#x27;il a le sien.</target>
+      </trans-unit>
+      <trans-unit id="form.admin.none" resname="form.admin.none">
+        <source>form.admin.none</source>
+        <target>Aucun</target>
+      </trans-unit>
+      <trans-unit id="form.base" resname="form.base">
+        <source>form.base</source>
+        <target>Réglages repris de</target>
+      </trans-unit>
+      <trans-unit id="form.base.help" resname="form.base.help">
+        <source>form.base.help</source>
+        <target>Le groupe de siteaccess dont le site reprend tout ce qu&#x27;il ne règle pas (images, texte riche, menus).</target>
+      </trans-unit>
+      <trans-unit id="form.default_language" resname="form.default_language">
+        <source>form.default_language</source>
+        <target>Langue par défaut</target>
+      </trans-unit>
+      <trans-unit id="form.design" resname="form.design">
+        <source>form.design</source>
+        <target>Design</target>
+      </trans-unit>
+      <trans-unit id="form.design.help" resname="form.design.help">
+        <source>form.design.help</source>
+        <target>L&#x27;apparence du site : un des designs du projet.</target>
+      </trans-unit>
+      <trans-unit id="form.hosts" resname="form.hosts">
+        <source>form.hosts</source>
+        <target>Hôtes</target>
+      </trans-unit>
+      <trans-unit id="form.hosts.help" resname="form.hosts.help">
+        <source>form.hosts.help</source>
+        <target>Un nom d&#x27;hôte par ligne (demo.example.org). Un seul pour tout le site avec un préfixe par langue, un par langue (dans l&#x27;ordre des langues) sinon.</target>
+      </trans-unit>
+      <trans-unit id="form.identifier" resname="form.identifier">
+        <source>form.identifier</source>
+        <target>Identifiant</target>
+      </trans-unit>
+      <trans-unit id="form.identifier.help" resname="form.identifier.help">
+        <source>form.identifier.help</source>
+        <target>Lettres minuscules, chiffres et « _ ». Il nomme les siteaccess (demo, demo_fr) et ne peut plus changer.</target>
+      </trans-unit>
+      <trans-unit id="form.language_mode" resname="form.language_mode">
+        <source>form.language_mode</source>
+        <target>Les langues se distinguent par</target>
+      </trans-unit>
+      <trans-unit id="form.language_mode.help" resname="form.language_mode.help">
+        <source>form.language_mode.help</source>
+        <target>Un préfixe (/fr) après l&#x27;hôte, ou un hôte propre à chaque langue.</target>
+      </trans-unit>
+      <trans-unit id="form.language_mode.host" resname="form.language_mode.host">
+        <source>form.language_mode.host</source>
+        <target>Un hôte par langue</target>
+      </trans-unit>
+      <trans-unit id="form.language_mode.prefix" resname="form.language_mode.prefix">
+        <source>form.language_mode.prefix</source>
+        <target>Un préfixe dans l&#x27;adresse</target>
+      </trans-unit>
+      <trans-unit id="form.languages" resname="form.languages">
+        <source>form.languages</source>
+        <target>Langues</target>
+      </trans-unit>
+      <trans-unit id="form.languages.help" resname="form.languages.help">
+        <source>form.languages.help</source>
+        <target>Les langues dans lesquelles le site est servi ; chacune a son siteaccess.</target>
+      </trans-unit>
+      <trans-unit id="form.name" resname="form.name">
+        <source>form.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="form.root" resname="form.root">
+        <source>form.root</source>
+        <target>Emplacement racine</target>
+      </trans-unit>
+      <trans-unit id="form.root.help" resname="form.root.help">
+        <source>form.root.help</source>
+        <target>L&#x27;id de l&#x27;emplacement où le site commence (sa page d&#x27;accueil). Pas la racine d&#x27;un autre site.</target>
+      </trans-unit>
+      <trans-unit id="menu.sites" resname="menu.sites">
+        <source>menu.sites</source>
+        <target>Sites</target>
+      </trans-unit>
+      <trans-unit id="sites.edit" resname="sites.edit">
+        <source>sites.edit</source>
+        <target>Modifier %name%</target>
+      </trans-unit>
+      <trans-unit id="sites.empty" resname="sites.empty">
+        <source>sites.empty</source>
+        <target>Aucun site n&#x27;a encore été créé ici.</target>
+      </trans-unit>
+      <trans-unit id="sites.intro" resname="sites.intro">
+        <source>sites.intro</source>
+        <target>Sites créés à l&#x27;exécution : un site est servi sur ses hôtes, un siteaccess par langue, dès qu&#x27;il est actif. Les sites du projet (déclarés dans sa configuration) ne sont pas listés ici.</target>
+      </trans-unit>
+      <trans-unit id="sites.limits" resname="sites.limits">
+        <source>sites.limits</source>
+        <target>Les hôtes doivent aussi répondre côté serveur : DNS, serveur web, certificat et cache ne se règlent pas d&#x27;ici. Un design se choisit parmi ceux que le projet déclare. Activer un site laisse entrer les visiteurs dans ses siteaccess (le rôle Anonymous est mis à jour).</target>
+      </trans-unit>
+      <trans-unit id="sites.new" resname="sites.new">
+        <source>sites.new</source>
+        <target>Nouveau site</target>
+      </trans-unit>
+      <trans-unit id="sites.title" resname="sites.title">
+        <source>sites.title</source>
+        <target>Sites</target>
+      </trans-unit>
+      <trans-unit id="status.active" resname="status.active">
+        <source>status.active</source>
+        <target>Actif</target>
+      </trans-unit>
+      <trans-unit id="status.disabled" resname="status.disabled">
+        <source>status.disabled</source>
+        <target>Désactivé</target>
+      </trans-unit>
+      <trans-unit id="status.draft" resname="status.draft">
+        <source>status.draft</source>
+        <target>Brouillon</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

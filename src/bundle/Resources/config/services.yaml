@@ -41,3 +41,12 @@ services:
             $repository: '@ibexa.api.repository'
 
     Masilia\Bundle\IbexaSites\EventListener\SiteChangedListener: ~
+
+    Masilia\Bundle\IbexaSites\EventListener\MainMenuBuilderListener: ~
+
+    Masilia\Bundle\IbexaSites\Form\SiteType: ~
+
+    Masilia\Bundle\IbexaSites\Controller\:
+        resource: '../../Controller/'
+        public: true
+        tags: ['controller.service_arguments']

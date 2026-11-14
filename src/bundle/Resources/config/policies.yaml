@@ -1,0 +1,5 @@
+# The sites created at run time. "manage" creates, changes, activates and deletes them: activating one also lets visitors into its
+# siteaccesses (the Anonymous role), so give it with the care of a role change.
+masilia_site:
+    view: ~
+    manage: ~

@@ -1,0 +1,82 @@
+{% extends "@ibexadesign/ui/layout.html.twig" %}
+
+{% trans_default_domain 'masilia_ibexa_sites' %}
+
+{% block body_class %}masilia-sites-view{% endblock %}
+
+{% block breadcrumbs %}
+    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
+        { value: 'breadcrumb.admin'|trans },
+        { value: 'sites.title'|trans }
+    ]} %}
+{% endblock %}
+
+{% block title %}{{ 'sites.title'|trans }}{% endblock %}
+
+{% block header %}
+    {% include '@ibexadesign/ui/page_title.html.twig' with { title: 'sites.title'|trans } %}
+{% endblock %}
+
+{% block content %}
+    <div class="masilia-sites">
+        <p class="ibexa-text-muted">{{ 'sites.intro'|trans }}</p>
+
+        {% if canManage %}
+            <p><a class="btn ibexa-btn ibexa-btn--primary" href="{{ path('masilia.ibexa_sites.new') }}">{{ 'sites.new'|trans }}</a></p>
+        {% endif %}
+
+        {% if sites is empty %}
+            <p>{{ 'sites.empty'|trans }}</p>
+        {% else %}
+            <table class="table ibexa-table">
+                <thead>
+                    <tr>
+                        <th>{{ 'column.site'|trans }}</th>
+                        <th>{{ 'column.status'|trans }}</th>
+                        <th>{{ 'column.hosts'|trans }}</th>
+                        <th>{{ 'column.languages'|trans }}</th>
+                        <th>{{ 'column.root'|trans }}</th>
+                        <th>{{ 'column.design'|trans }}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for site in sites %}
+                        <tr>
+                            <td><strong>{{ site.name }}</strong><br><code>{{ site.identifier }}</code></td>
+                            <td>{{ ('status.' ~ site.status.value)|trans }}</td>
+                            <td>{{ site.hosts|join(', ') }}</td>
+                            <td>{{ site.languages|join(', ') }}<br><span class="ibexa-text-muted">{{ site.siteaccesses|join(', ') }}</span></td>
+                            <td>{{ site.rootLocationId }}</td>
+                            <td>{{ site.design }}<br><span class="ibexa-text-muted">{{ site.base }}</span></td>
+                            <td>
+                                {% if canManage %}
+                                    <a class="btn ibexa-btn ibexa-btn--secondary" href="{{ path('masilia.ibexa_sites.edit', { identifier: site.identifier }) }}">{{ 'action.edit'|trans }}</a>
+                                    {% if site.status.value == 'active' %}
+                                        <form method="post" style="display:inline" action="{{ path('masilia.ibexa_sites.status', { identifier: site.identifier, status: 'disabled' }) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('masilia_site_' ~ site.identifier) }}">
+                                            <button class="btn ibexa-btn ibexa-btn--secondary" type="submit">{{ 'action.disable'|trans }}</button>
+                                        </form>
+                                    {% else %}
+                                        <form method="post" style="display:inline" action="{{ path('masilia.ibexa_sites.status', { identifier: site.identifier, status: 'active' }) }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('masilia_site_' ~ site.identifier) }}">
+                                            <button class="btn ibexa-btn ibexa-btn--primary" type="submit">{{ 'action.activate'|trans }}</button>
+                                        </form>
+                                    {% endif %}
+                                    <form method="post" style="display:inline" action="{{ path('masilia.ibexa_sites.delete', { identifier: site.identifier }) }}" onsubmit="return confirm('{{ 'action.delete.confirm'|trans|e('js') }}');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('masilia_site_' ~ site.identifier) }}">
+                                        <button class="btn ibexa-btn ibexa-btn--ghost" type="submit">{{ 'action.delete'|trans }}</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        <div class="ibexa-alert ibexa-alert--info" role="note">
+            <p>{{ 'sites.limits'|trans }}</p>
+        </div>
+    </div>
+{% endblock %}
