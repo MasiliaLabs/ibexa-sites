@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Masilia\Bundle\IbexaSites\EventListener;
 
 use Ibexa\AdminUi\Menu\Event\ConfigureMenuEvent;
+use Ibexa\Core\MVC\Symfony\Security\Authorization\Attribute;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/** "Sites" under the Admin group of the Ibexa sidebar. */
-final class MainMenuBuilderListener implements EventSubscriberInterface
+/** "Sites" under the Admin group of the Ibexa sidebar, for those who may see the sites. */
+final readonly class MainMenuBuilderListener implements EventSubscriberInterface
 {
+    public function __construct(private AuthorizationCheckerInterface $authorization)
+    {
+    }
+
     public static function getSubscribedEvents(): array
     {
         return [ConfigureMenuEvent::MAIN_MENU => 'onMainMenuBuild'];
@@ -19,7 +25,7 @@ final class MainMenuBuilderListener implements EventSubscriberInterface
     public function onMainMenuBuild(ConfigureMenuEvent $event): void
     {
         $admin = $event->getMenu()->getChild('main__admin');
-        if (!$admin instanceof ItemInterface) {
+        if (!$admin instanceof ItemInterface || !$this->authorization->isGranted(new Attribute('masilia_site', 'view'))) {
             return;
         }
 

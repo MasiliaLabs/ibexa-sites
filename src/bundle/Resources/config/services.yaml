@@ -69,10 +69,6 @@ services:
 
     Masilia\Bundle\IbexaSites\EventListener\MainMenuBuilderListener: ~
 
-    Masilia\Bundle\IbexaSites\Form\SiteType: ~
-
-    Masilia\Bundle\IbexaSites\Form\SiteAccessType: ~
-
     Masilia\Bundle\IbexaSites\Controller\:
         resource: '../../Controller/'
         public: true

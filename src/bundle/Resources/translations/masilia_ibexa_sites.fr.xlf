@@ -14,10 +14,6 @@
         <source>action.delete</source>
         <target>Supprimer</target>
       </trans-unit>
-      <trans-unit id="action.delete.confirm" resname="action.delete.confirm">
-        <source>action.delete.confirm</source>
-        <target>Supprimer ce site ? Ses contenus restent ; seule sa configuration disparaît.</target>
-      </trans-unit>
       <trans-unit id="action.disable" resname="action.disable">
         <source>action.disable</source>
         <target>Désactiver</target>
@@ -58,69 +54,9 @@
         <source>flash.deleted</source>
         <target>Le site « %identifier% » est supprimé.</target>
       </trans-unit>
-      <trans-unit id="flash.status.active" resname="flash.status.active">
-        <source>flash.status.active</source>
-        <target>Le site « %name% » est actif.</target>
-      </trans-unit>
-      <trans-unit id="flash.status.disabled" resname="flash.status.disabled">
-        <source>flash.status.disabled</source>
-        <target>Le site « %name% » est désactivé.</target>
-      </trans-unit>
       <trans-unit id="flash.updated" resname="flash.updated">
         <source>flash.updated</source>
         <target>Le site « %name% » est modifié.</target>
-      </trans-unit>
-      <trans-unit id="form.active.note" resname="form.active.note">
-        <source>form.active.note</source>
-        <target>Ce site est actif : un changement de ses hôtes, langues ou racine s&#x27;applique aussitôt.</target>
-      </trans-unit>
-      <trans-unit id="form.admin" resname="form.admin">
-        <source>form.admin</source>
-        <target>Siteaccess admin</target>
-      </trans-unit>
-      <trans-unit id="form.admin.help" resname="form.admin.help">
-        <source>form.admin.help</source>
-        <target>Le siteaccess admin qui édite ce site, s&#x27;il a le sien.</target>
-      </trans-unit>
-      <trans-unit id="form.admin.none" resname="form.admin.none">
-        <source>form.admin.none</source>
-        <target>Aucun</target>
-      </trans-unit>
-      <trans-unit id="form.base" resname="form.base">
-        <source>form.base</source>
-        <target>Réglages repris de</target>
-      </trans-unit>
-      <trans-unit id="form.base.help" resname="form.base.help">
-        <source>form.base.help</source>
-        <target>Un groupe dont le site reprend tout ce qu&#x27;il ne règle pas (images, texte riche, menus), facultatif.</target>
-      </trans-unit>
-      <trans-unit id="form.design" resname="form.design">
-        <source>form.design</source>
-        <target>Design</target>
-      </trans-unit>
-      <trans-unit id="form.design.help" resname="form.design.help">
-        <source>form.design.help</source>
-        <target>L&#x27;apparence du site : un des designs du projet.</target>
-      </trans-unit>
-      <trans-unit id="form.identifier" resname="form.identifier">
-        <source>form.identifier</source>
-        <target>Identifiant</target>
-      </trans-unit>
-      <trans-unit id="form.identifier.help" resname="form.identifier.help">
-        <source>form.identifier.help</source>
-        <target>Lettres minuscules, chiffres et « _ ». C&#x27;est le nom du groupe de siteaccess (demo_group), il ne peut plus changer.</target>
-      </trans-unit>
-      <trans-unit id="form.name" resname="form.name">
-        <source>form.name</source>
-        <target>Nom</target>
-      </trans-unit>
-      <trans-unit id="form.root" resname="form.root">
-        <source>form.root</source>
-        <target>Emplacement racine</target>
-      </trans-unit>
-      <trans-unit id="form.root.help" resname="form.root.help">
-        <source>form.root.help</source>
-        <target>L&#x27;id de l&#x27;emplacement où le site commence (sa page d&#x27;accueil). Pas la racine d&#x27;un autre site.</target>
       </trans-unit>
       <trans-unit id="menu.sites" resname="menu.sites">
         <source>menu.sites</source>
@@ -162,85 +98,9 @@
         <source>status.draft</source>
         <target>Brouillon</target>
       </trans-unit>
-      <trans-unit id="form.base.none" resname="form.base.none">
-        <source>form.base.none</source>
-        <target>Aucun</target>
-      </trans-unit>
-      <trans-unit id="form.cookie_domain" resname="form.cookie_domain">
-        <source>form.cookie_domain</source>
-        <target>Domaine du cookie de session</target>
-      </trans-unit>
-      <trans-unit id="form.cookie_domain.help" resname="form.cookie_domain.help">
-        <source>form.cookie_domain.help</source>
-        <target>Facultatif : le domaine du cookie de session du site et de ses admins (.example.org). Il doit couvrir tous leurs hôtes et aucun hôte d&#x27;un autre site. Un nom de session propre au site en est dérivé.</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccesses" resname="form.siteaccesses">
-        <source>form.siteaccesses</source>
-        <target>Siteaccess</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.add" resname="form.siteaccess.add">
-        <source>form.siteaccess.add</source>
-        <target>Ajouter un siteaccess</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.remove" resname="form.siteaccess.remove">
-        <source>form.siteaccess.remove</source>
-        <target>Retirer</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.name" resname="form.siteaccess.name">
-        <source>form.siteaccess.name</source>
-        <target>Nom du siteaccess</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.name.help" resname="form.siteaccess.name.help">
-        <source>form.siteaccess.name.help</source>
-        <target>Lettres minuscules, chiffres et « _ » (demo_fr). Unique dans le projet.</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.language" resname="form.siteaccess.language">
-        <source>form.siteaccess.language</source>
-        <target>Langue</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.fallbacks" resname="form.siteaccess.fallbacks">
-        <source>form.siteaccess.fallbacks</source>
-        <target>Repli sur</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.fallbacks.help" resname="form.siteaccess.fallbacks.help">
-        <source>form.siteaccess.fallbacks.help</source>
-        <target>Autres langues utilisées quand un contenu n&#x27;est pas traduit.</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.host" resname="form.siteaccess.host">
-        <source>form.siteaccess.host</source>
-        <target>Hôte</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.host.help" resname="form.siteaccess.host.help">
-        <source>form.siteaccess.host.help</source>
-        <target>demo.example.org. Un même hôte peut porter plusieurs siteaccess, distingués par leur préfixe.</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.prefix" resname="form.siteaccess.prefix">
-        <source>form.siteaccess.prefix</source>
-        <target>Préfixe du chemin</target>
-      </trans-unit>
-      <trans-unit id="form.siteaccess.prefix.help" resname="form.siteaccess.prefix.help">
-        <source>form.siteaccess.prefix.help</source>
-        <target>« fr » pour /fr. Vide : ce siteaccess est à la racine de l&#x27;hôte (un seul par hôte).</target>
-      </trans-unit>
       <trans-unit id="column.siteaccesses" resname="column.siteaccesses">
         <source>column.siteaccesses</source>
         <target>Siteaccess</target>
-      </trans-unit>
-      <trans-unit id="form.var_dir" resname="form.var_dir">
-        <source>form.var_dir</source>
-        <target>Dossier des fichiers</target>
-      </trans-unit>
-      <trans-unit id="form.var_dir.help" resname="form.var_dir.help">
-        <source>form.var_dir.help</source>
-        <target>Facultatif, relatif au projet (« var/demo »). Vide : le dossier du projet. À choisir avant d&#x27;ajouter des images ou des fichiers : le changer ensuite rend les existants inaccessibles.</target>
-      </trans-unit>
-      <trans-unit id="form.layout" resname="form.layout">
-        <source>form.layout</source>
-        <target>Remote id du layout</target>
-      </trans-unit>
-      <trans-unit id="form.layout.help" resname="form.layout.help">
-        <source>form.layout.help</source>
-        <target>Facultatif : le remote id du contenu qui porte le layout du site (logo, pied de page). Repris du groupe de base si vide.</target>
       </trans-unit>
       <trans-unit id="default.label" resname="default.label">
         <source>default.label</source>
@@ -257,14 +117,6 @@
       <trans-unit id="flash.default" resname="flash.default">
         <source>flash.default</source>
         <target>Le siteaccess par défaut est enregistré.</target>
-      </trans-unit>
-      <trans-unit id="form.admin_siteaccesses" resname="form.admin_siteaccesses">
-        <source>form.admin_siteaccesses</source>
-        <target>Siteaccess d&#x27;admin</target>
-      </trans-unit>
-      <trans-unit id="form.admin_siteaccesses.help" resname="form.admin_siteaccesses.help">
-        <source>form.admin_siteaccesses.help</source>
-        <target>Là où les éditeurs travaillent sur ce site (l&#x27;admin du projet, sur un hôte propre). Ils partagent la session du site quand le domaine du cookie couvre leur hôte. Activer le site leur permet de se connecter (le rôle Anonymous est mis à jour).</target>
       </trans-unit>
       <trans-unit id="validation.identifier" resname="validation.identifier">
         <source>validation.identifier</source>
