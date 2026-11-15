@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { createTranslator } from '../shared/i18n';
+import { createTranslator } from '@masilia-admin-kit/i18n';
 import { DEFAULTS } from './messages';
 import { emptyRow } from './rows';
 import type { SiteDraft, SiteDto } from './types';

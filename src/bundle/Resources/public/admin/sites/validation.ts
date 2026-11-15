@@ -1,6 +1,6 @@
-import { messageFor } from '../shared/http';
-import type { FieldProblem } from '../shared/http';
-import type { Translate } from '../shared/i18n';
+import { messageFor } from '@masilia-admin-kit/http';
+import type { FieldProblem } from '@masilia-admin-kit/http';
+import type { Translate } from '@masilia-admin-kit/i18n';
 import type { Options, SiteDraft, SiteDto, SiteaccessDraft } from './types';
 
 // The rules of the server's SiteValidator for what a form can see for itself. The server checks again and has the last word:

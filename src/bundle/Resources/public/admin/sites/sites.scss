@@ -1,5 +1,5 @@
 // The sites page. The components are the kit's (../shared/kit.scss); here is the layout of the page itself.
-@use '../shared/kit';
+@use '@masilia-admin-kit/kit';
 @use '@ibexa-admin-ui/src/bundle/Resources/public/scss/custom' as ibexa;
 @use '@ibexa-admin-ui/src/bundle/Resources/public/scss/functions/calculate.rem' as *;
 

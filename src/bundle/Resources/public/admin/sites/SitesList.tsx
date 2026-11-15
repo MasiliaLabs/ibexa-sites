@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from 'react';
 
-import { ConfirmDialog } from '../shared/ConfirmDialog';
-import { FilterCard, FilterSelect, FilterZone } from '../shared/FilterCard';
-import { ExternalLink } from '../shared/ExternalLink';
-import { IconButton } from '../shared/IconButton';
-import { Badge, Button } from '../shared/ids';
-import { notify } from '../shared/notify';
-import { SearchInput } from '../shared/SearchInput';
-import { DataTable, TableHeader } from '../shared/Table';
-import type { Column } from '../shared/Table';
-import { StatusTag } from '../shared/StatusTag';
+import { ConfirmDialog } from '@masilia-admin-kit/ConfirmDialog';
+import { FilterCard, FilterSelect, FilterZone } from '@masilia-admin-kit/FilterCard';
+import { ExternalLink } from '@masilia-admin-kit/ExternalLink';
+import { IconButton } from '@masilia-admin-kit/IconButton';
+import { Badge, Button } from '@masilia-admin-kit/ids';
+import { notify } from '@masilia-admin-kit/notify';
+import { SearchInput } from '@masilia-admin-kit/SearchInput';
+import { DataTable, TableHeader } from '@masilia-admin-kit/Table';
+import type { Column } from '@masilia-admin-kit/Table';
+import { StatusTag } from '@masilia-admin-kit/StatusTag';
 import { addressOf } from './addresses';
 import type { Api } from './api';
 import { t } from './messages';

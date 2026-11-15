@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { fakeFetch } from '../shared/testing';
+import { fakeFetch } from '@masilia-admin-kit/testing';
 import { apiBase, createApi } from './api';
 import { draftFrom } from './payload';
 import type { SiteDto } from './types';

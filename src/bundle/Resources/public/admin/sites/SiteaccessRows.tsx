@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { TextField } from '../shared/Field';
-import { messageFor } from '../shared/http';
-import type { FieldProblem } from '../shared/http';
-import { Button } from '../shared/ids';
-import { OrderedChoice } from '../shared/OrderedChoice';
+import { TextField } from '@masilia-admin-kit/Field';
+import { messageFor } from '@masilia-admin-kit/http';
+import type { FieldProblem } from '@masilia-admin-kit/http';
+import { Button } from '@masilia-admin-kit/ids';
+import { OrderedChoice } from '@masilia-admin-kit/OrderedChoice';
 import { addressOf } from './addresses';
 import { t } from './messages';
 import { emptyRow, moveRow, removeRow, updateRow } from './rows';

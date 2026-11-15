@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 
-import { iconPath } from '../shared/icons';
-import { AssetsProvider, TranslatorProvider } from '../shared/ids';
-import { Spinner } from '../shared/Spinner';
-import { Tabs } from '../shared/Tabs';
+import { iconPath } from '@masilia-admin-kit/icons';
+import { AssetsProvider, TranslatorProvider } from '@masilia-admin-kit/ids';
+import { Spinner } from '@masilia-admin-kit/Spinner';
+import { Tabs } from '@masilia-admin-kit/Tabs';
 import { apiBase, createApi } from './api';
 import { DefaultCard } from './DefaultCard';
 import { t } from './messages';

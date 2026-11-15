@@ -1,4 +1,4 @@
-import { createTranslator } from '../shared/i18n';
+import { createTranslator } from '@masilia-admin-kit/i18n';
 
 /** The texts of the sites page, in English: what shows when the admin has no translation of a key (see the translation files of the bundle). */
 export const DEFAULTS: Readonly<Record<string, string>> = {

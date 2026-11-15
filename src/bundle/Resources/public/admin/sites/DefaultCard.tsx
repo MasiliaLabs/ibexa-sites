@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { DropdownField } from '../shared/Dropdown';
-import { Button } from '../shared/ids';
-import { notify } from '../shared/notify';
+import { DropdownField } from '@masilia-admin-kit/Dropdown';
+import { Button } from '@masilia-admin-kit/ids';
+import { notify } from '@masilia-admin-kit/notify';
 import type { Api } from './api';
 import { t } from './messages';
 

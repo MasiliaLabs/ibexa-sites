@@ -1,5 +1,5 @@
-import { request } from '../shared/http';
-import type { ApiResult, Fetcher } from '../shared/http';
+import { request } from '@masilia-admin-kit/http';
+import type { ApiResult, Fetcher } from '@masilia-admin-kit/http';
 import { toPayload } from './payload';
 import type { SiteDraft, SiteDto, SitesData } from './types';
 
