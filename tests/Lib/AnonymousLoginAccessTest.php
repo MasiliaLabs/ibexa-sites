@@ -59,4 +59,41 @@ final class AnonymousLoginAccessTest extends TestCase
     {
         self::assertSame(['111'], AnonymousLoginAccess::values(['111'], SiteBuilder::site(), SiteBuilder::site(['name' => 'Renamed'])));
     }
+
+    public function testADraftOfTheRoleLeftBehindIsDiscardedBeforeANewOneIsMade(): void
+    {
+        $limitation = new \Ibexa\Contracts\Core\Repository\Values\User\Limitation\SiteAccessLimitation(['limitationValues' => ['111']]);
+        $policy = new \Ibexa\Core\Repository\Values\User\Policy(['module' => 'user', 'function' => 'login', 'limitations' => [$limitation]]);
+        $role = new \Ibexa\Core\Repository\Values\User\Role(['id' => 7, 'identifier' => 'Anonymous', 'policies' => [$policy]]);
+        $draftPolicy = new \Ibexa\Core\Repository\Values\User\PolicyDraft(['innerPolicy' => $policy]);
+        $draft = new \Ibexa\Core\Repository\Values\User\RoleDraft(['innerRole' => $role]);
+
+        $calls = [];
+        $roles = $this->createMock(\Ibexa\Contracts\Core\Repository\RoleService::class);
+        $roles->method('loadRoleByIdentifier')->willReturn($role);
+        $roles->method('loadRoleDraftByRoleId')->willReturnCallback(function () use (&$calls, $draft) {
+            $calls[] = 'load draft';
+
+            return $draft;
+        });
+        $roles->method('deleteRoleDraft')->willReturnCallback(function () use (&$calls): void {
+            $calls[] = 'delete draft';
+        });
+        $roles->method('createRoleDraft')->willReturnCallback(function () use (&$calls, $draft) {
+            $calls[] = 'create draft';
+
+            return $draft;
+        });
+        $roles->method('newPolicyUpdateStruct')->willReturn(new \Ibexa\Core\Repository\Values\User\PolicyUpdateStruct());
+        $roles->method('publishRoleDraft')->willReturnCallback(function () use (&$calls): void {
+            $calls[] = 'publish';
+        });
+        $repository = $this->createMock(\Ibexa\Contracts\Core\Repository\Repository::class);
+        $repository->method('getRoleService')->willReturn($roles);
+        $repository->method('sudo')->willReturnCallback(static fn (callable $callback) => $callback($repository));
+
+        (new AnonymousLoginAccess($repository))->sync(null, SiteBuilder::site(['status' => SiteStatus::Active]));
+
+        self::assertSame(['load draft', 'delete draft', 'create draft', 'publish'], $calls);
+    }
 }

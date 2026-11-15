@@ -65,6 +65,12 @@ readonly class AnonymousLoginAccess
                     if ($values === $existing || (count($values) === count($existing) && array_diff($values, $existing) === [])) {
                         return;
                     }
+                    // A draft left behind (a change that did not end) would refuse a new one: this list is the registry's, it starts over.
+                    try {
+                        $roles->deleteRoleDraft($roles->loadRoleDraftByRoleId($role->id));
+                    } catch (NotFoundException) {
+                        // No draft: the normal case.
+                    }
                     $draft = $roles->createRoleDraft($role);
                     foreach ($draft->getPolicies() as $draftPolicy) {
                         if ($draftPolicy instanceof PolicyDraft && $draftPolicy->module === 'user' && $draftPolicy->function === 'login') {
