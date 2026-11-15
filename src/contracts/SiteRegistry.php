@@ -40,6 +40,9 @@ interface SiteRegistry
      */
     public function setStatus(string $identifier, SiteStatus $status): Site;
 
-    /** @throws SiteNotFound */
+    /**
+     * @throws SiteInvalid When the site holds the default siteaccess of the platform
+     * @throws SiteNotFound
+     */
     public function delete(string $identifier): void;
 }
