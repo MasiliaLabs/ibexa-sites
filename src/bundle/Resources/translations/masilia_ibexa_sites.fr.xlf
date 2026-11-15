@@ -562,6 +562,22 @@
         <source>addresses.open</source>
         <target>Ouvrir l’adresse</target>
       </trans-unit>
+      <trans-unit id="list.title" resname="list.title">
+        <source>list.title</source>
+        <target>Sites</target>
+      </trans-unit>
+      <trans-unit id="list.search.clear" resname="list.search.clear">
+        <source>list.search.clear</source>
+        <target>Effacer la recherche</target>
+      </trans-unit>
+      <trans-unit id="tab.sites" resname="tab.sites">
+        <source>tab.sites</source>
+        <target>Sites</target>
+      </trans-unit>
+      <trans-unit id="tab.default" resname="tab.default">
+        <source>tab.default</source>
+        <target>Siteaccess par défaut</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

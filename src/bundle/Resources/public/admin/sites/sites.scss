@@ -30,6 +30,7 @@ $transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transitio
     align-items: flex-end;
     gap: calculateRem(16px);
     max-width: calculateRem(560px);
+    padding: calculateRem(24px) 0;
 
     .masilia-kit-field {
         flex: 1 1 auto;
@@ -37,35 +38,9 @@ $transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transitio
     }
 }
 
-.masilia-sites-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: calculateRem(12px);
-    margin-bottom: calculateRem(16px);
-
-    &__search {
-        flex: 1 1 calculateRem(260px);
-        max-width: calculateRem(420px);
-    }
-
-    &__status {
-        flex: 0 0 auto;
-        width: auto;
-    }
-}
-
 .masilia-sites-table {
-    tbody tr {
-        transition: background-color $transition;
-    }
-
     &__sa {
         margin: calculateRem(2px) 0;
-    }
-
-    &__actions {
-        white-space: nowrap;
     }
 }
 

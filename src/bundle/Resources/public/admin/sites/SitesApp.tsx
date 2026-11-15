@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { iconPath } from '../shared/icons';
 import { AssetsProvider } from '../shared/ids';
 import { Spinner } from '../shared/Spinner';
+import { Tabs } from '../shared/Tabs';
 import { createApi } from './api';
 import { DefaultCard } from './DefaultCard';
 import { t } from './messages';
@@ -23,6 +24,7 @@ export function SitesApp({ udw }: SitesAppProps): React.ReactElement {
     const api = useMemo(() => createApi((input, init) => window.fetch(input, init), t('ui.failed')), []);
     const { data, loading, failed, reload } = useSites(api);
     const [editing, setEditing] = useState<Editing>(null);
+    const [tab, setTab] = useState('sites');
 
     let body: React.ReactElement;
     if (loading) {
@@ -32,8 +34,15 @@ export function SitesApp({ udw }: SitesAppProps): React.ReactElement {
     } else {
         body = (
             <>
-                <DefaultCard api={api} defaultSiteaccess={data.defaultSiteaccess} choices={data.defaultChoices} canManage={data.canManage} onSaved={() => void reload()} />
-                <SitesList api={api} data={data} onEdit={(site) => setEditing({ site })} onNew={() => setEditing({ site: null })} onChanged={() => void reload()} />
+                <Tabs
+                    label={t('ui.title')}
+                    active={tab}
+                    onChange={setTab}
+                    tabs={[
+                        { id: 'sites', label: t('tab.sites'), content: <SitesList api={api} data={data} onEdit={(site) => setEditing({ site })} onNew={() => setEditing({ site: null })} onChanged={() => void reload()} /> },
+                        { id: 'default', label: t('tab.default'), content: <DefaultCard api={api} defaultSiteaccess={data.defaultSiteaccess} choices={data.defaultChoices} canManage={data.canManage} onSaved={() => void reload()} /> },
+                    ]}
+                />
                 {editing !== null ? (
                     <SiteEditor
                         api={api}

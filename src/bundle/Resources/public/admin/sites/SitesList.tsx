@@ -1,8 +1,14 @@
 import React, { useMemo, useState } from 'react';
 
 import { ConfirmDialog } from '../shared/ConfirmDialog';
+import { FilterCard, FilterSelect, FilterZone } from '../shared/FilterCard';
+import { ExternalLink } from '../shared/ExternalLink';
+import { IconButton } from '../shared/IconButton';
 import { Button } from '../shared/ids';
 import { notify } from '../shared/notify';
+import { SearchInput } from '../shared/SearchInput';
+import { DataTable, TableHeader } from '../shared/Table';
+import type { Column } from '../shared/Table';
 import { StatusChip } from '../shared/StatusChip';
 import type { ChipTone } from '../shared/StatusChip';
 import { addressOf } from './addresses';
@@ -61,72 +67,77 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
         }
     };
 
+    const columns: Column<SiteDto>[] = [
+        { key: 'site', header: t('column.site'), render: (site) => <><strong>{site.name}</strong><br /><code>{site.identifier}</code></> },
+        { key: 'status', header: t('column.status'), render: (site) => <StatusChip tone={TONES[site.status]}>{t(`status.${site.status}`)}</StatusChip> },
+        {
+            key: 'siteaccesses',
+            header: t('column.siteaccesses'),
+            render: (site) => (
+                <>
+                    {site.siteaccesses.map((sa) => {
+                        const url = addressOf({ host: sa.host, uriPrefix: sa.uriPrefix ?? '' });
+                        const shownUrl = url.replace(/^https?:\/\//, '');
+
+                        return (
+                            <div className="masilia-sites-table__sa" key={sa.name}>
+                                <code>{sa.name}</code> <span className="masilia-sites-muted">{sa.languages.join(' → ')}</span>{' '}
+                                {site.status === 'active' ? <ExternalLink href={url} label={t('addresses.open')}>{shownUrl}</ExternalLink> : <span className="masilia-sites-muted">{shownUrl}</span>}
+                            </div>
+                        );
+                    })}
+                    {site.adminSiteaccesses.map((sa) => (
+                        <div className="masilia-sites-table__sa" key={sa.name}>
+                            <code>{sa.name}</code> <span className="masilia-sites-muted">admin · {sa.host}</span>
+                        </div>
+                    ))}
+                </>
+            ),
+        },
+        { key: 'design', header: t('column.design'), render: (site) => <>{site.design}{site.base !== null ? <><br /><span className="masilia-sites-muted">{site.base}</span></> : null}</> },
+        ...(data.canManage ? [{
+            key: 'actions',
+            header: '',
+            actions: true,
+            render: (site: SiteDto) => (
+                <>
+                    <IconButton icon="edit" label={`${t('action.edit')}: ${site.name}`} onClick={() => onEdit(site)} />
+                    {site.status === 'active'
+                        ? <Button type="secondary" size="small" disabled={holdsDefault(site)} title={holdsDefault(site) ? t('default.held') : undefined} onClick={() => { setError(undefined); setPending({ kind: 'disable', site }); }}>{t('action.disable')}</Button>
+                        : <Button type="secondary" size="small" onClick={() => { setError(undefined); setPending({ kind: 'activate', site }); }}>{t('action.activate')}</Button>}
+                    <IconButton icon="trash" label={holdsDefault(site) ? t('default.held') : `${t('action.delete')}: ${site.name}`} disabled={holdsDefault(site)} onClick={() => { setError(undefined); setPending({ kind: 'delete', site }); }} />
+                </>
+            ),
+        }] : []),
+    ];
+
     return (
         <section className="masilia-sites-list">
-            <div className="masilia-sites-toolbar">
-                <input
-                    className="ibexa-input ibexa-input--text form-control masilia-sites-toolbar__search"
-                    type="search"
-                    value={query}
-                    placeholder={t('list.search')}
-                    aria-label={t('list.search')}
-                    onChange={(event) => setQuery(event.target.value)}
-                />
-                <select className="ibexa-input ibexa-input--text form-select masilia-kit-select masilia-sites-toolbar__status" value={status} aria-label={t('column.status')} onChange={(event) => setStatus(event.target.value as '' | SiteStatus)}>
-                    <option value="">{t('list.filter.all')}</option>
-                    {(['draft', 'active', 'disabled'] as const).map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
-                </select>
-                {data.canManage ? <Button type="primary" icon="create" onClick={onNew}>{t('list.new')}</Button> : null}
-            </div>
+            <FilterCard>
+                <FilterZone><SearchInput value={query} onChange={setQuery} placeholder={t('list.search')} clearLabel={t('list.search.clear')} /></FilterZone>
+                <FilterZone>
+                    <FilterSelect
+                        label={t('column.status')}
+                        value={status}
+                        onChange={(value) => setStatus(value as '' | SiteStatus)}
+                        options={[{ value: '', label: t('list.filter.all') }, ...(['draft', 'active', 'disabled'] as const).map((s) => ({ value: s, label: t(`status.${s}`) }))]}
+                    />
+                </FilterZone>
+            </FilterCard>
 
-            {data.sites.length === 0 ? <p className="masilia-sites-muted">{t('list.empty')}</p> : shown.length === 0 ? <p className="masilia-sites-muted">{t('list.none_found')}</p> : (
-                <table className="table ibexa-table masilia-sites-table">
-                    <thead>
-                        <tr>
-                            <th>{t('column.site')}</th>
-                            <th>{t('column.status')}</th>
-                            <th>{t('column.siteaccesses')}</th>
-                            <th>{t('column.design')}</th>
-                            {data.canManage ? <th>{t('column.actions')}</th> : null}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {shown.map((site) => (
-                            <tr key={site.identifier}>
-                                <td><strong>{site.name}</strong><br /><code>{site.identifier}</code></td>
-                                <td><StatusChip tone={TONES[site.status]}>{t(`status.${site.status}`)}</StatusChip></td>
-                                <td>
-                                    {site.siteaccesses.map((sa) => {
-                                        const url = addressOf({ host: sa.host, uriPrefix: sa.uriPrefix ?? '' });
-
-                                        return (
-                                            <div className="masilia-sites-table__sa" key={sa.name}>
-                                                <code>{sa.name}</code> <span className="masilia-sites-muted">{sa.languages.join(' → ')}</span>{' '}
-                                                {site.status === 'active' ? <a href={url} target="_blank" rel="noreferrer" title={t('addresses.open')}>{url.replace(/^https?:\/\//, '')}</a> : <span className="masilia-sites-muted">{url.replace(/^https?:\/\//, '')}</span>}
-                                            </div>
-                                        );
-                                    })}
-                                    {site.adminSiteaccesses.map((sa) => (
-                                        <div className="masilia-sites-table__sa" key={sa.name}>
-                                            <code>{sa.name}</code> <span className="masilia-sites-muted">admin · {sa.host}</span>
-                                        </div>
-                                    ))}
-                                </td>
-                                <td>{site.design}{site.base !== null ? <><br /><span className="masilia-sites-muted">{site.base}</span></> : null}</td>
-                                {data.canManage ? (
-                                    <td className="masilia-sites-table__actions">
-                                        <Button type="tertiary" size="small" icon="edit" ariaLabel={`${t('action.edit')}: ${site.name}`} title={t('action.edit')} onClick={() => onEdit(site)} />
-                                        {site.status === 'active'
-                                            ? <Button type="secondary" size="small" disabled={holdsDefault(site)} title={holdsDefault(site) ? t('default.held') : undefined} onClick={() => { setError(undefined); setPending({ kind: 'disable', site }); }}>{t('action.disable')}</Button>
-                                            : <Button type="secondary" size="small" onClick={() => { setError(undefined); setPending({ kind: 'activate', site }); }}>{t('action.activate')}</Button>}
-                                        <Button type="tertiary" size="small" icon="trash" ariaLabel={`${t('action.delete')}: ${site.name}`} title={holdsDefault(site) ? t('default.held') : t('action.delete')} disabled={holdsDefault(site)} onClick={() => { setError(undefined); setPending({ kind: 'delete', site }); }} />
-                                    </td>
-                                ) : null}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+            <TableHeader
+                headline={t('list.title')}
+                count={shown.length}
+                actions={data.canManage ? <Button type="primary" icon="create" onClick={onNew}>{t('list.new')}</Button> : undefined}
+            />
+            <DataTable
+                columns={columns}
+                rows={shown}
+                rowKey={(site) => site.identifier}
+                empty={data.sites.length === 0
+                    ? { info: t('list.empty'), action: data.canManage ? <Button type="secondary" size="small" onClick={onNew}>{t('list.new')}</Button> : undefined }
+                    : { info: t('list.none_found') }}
+            />
 
             {pending !== null ? (
                 <ConfirmDialog

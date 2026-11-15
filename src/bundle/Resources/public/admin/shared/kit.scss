@@ -225,3 +225,58 @@ $line: 1px solid ibexa.$ibexa-color-light;
         animation: none;
     }
 }
+
+// ----- Lists: the filter card, the search field, the address with its icon
+.masilia-kit-filters {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin: calculateRem(12px) 0 calculateRem(24px);
+    padding: calculateRem(8px) calculateRem(24px) calculateRem(14px);
+    border: calculateRem(1px) solid ibexa.$ibexa-color-light;
+    border-radius: $radius;
+
+    &__zone {
+        padding-right: calculateRem(24px);
+
+        .ibexa-input-text-wrapper {
+            min-width: calculateRem(410px);
+            max-width: 100%;
+        }
+
+        & + & {
+            padding-right: 0;
+            padding-left: calculateRem(24px);
+            border-left: calculateRem(1px) solid ibexa.$ibexa-color-light;
+        }
+    }
+
+    &__select {
+        .ibexa-label {
+            margin-top: 0;
+        }
+
+        .masilia-kit-select {
+            min-width: calculateRem(216px);
+        }
+    }
+}
+
+.masilia-kit-search {
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: default;
+    }
+}
+
+.masilia-kit-extlink {
+    display: inline-flex;
+    align-items: center;
+    gap: calculateRem(4px);
+
+    &__text {
+        word-break: break-all;
+    }
+}
