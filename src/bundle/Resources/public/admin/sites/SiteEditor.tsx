@@ -11,6 +11,7 @@ import type { FieldProblem } from '@masilia-admin-kit/http';
 import { Button } from '@masilia-admin-kit/ids';
 import { notify } from '@masilia-admin-kit/notify';
 import { OrderedChoice } from '@masilia-admin-kit/OrderedChoice';
+import { Notice } from '@masilia-admin-kit/Notice';
 import { Spinner } from '@masilia-admin-kit/Spinner';
 import { UdwPicker } from '@masilia-admin-kit/UdwPicker';
 import type { PickedView } from '@masilia-admin-kit/UdwPicker';
@@ -187,7 +188,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                 <Section title={t('section.addresses')} open={isOpen('addresses', filled, withProblems)}>
                     {draft.siteaccesses.length === 0 && isNew ? (
                         <div className="masilia-sites-suggest">
-                            <p className="masilia-sites-muted">{t('rows.suggest.hint')}</p>
+                            <Notice>{t('rows.suggest.hint')}</Notice>
                             <OrderedChoice
                                 label={t('sa.languages')}
                                 options={data.options.languages.map((code) => ({ value: code, label: code }))}
@@ -226,7 +227,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                 </Section>
 
                 <Section title={t('section.admins')} open={isOpen('admins', filled, withProblems)}>
-                    <p className="masilia-sites-muted">{t('section.admins.hint')}</p>
+                    <Notice>{t('section.admins.hint')}</Notice>
                     <SiteaccessRows
                         path="adminSiteaccesses"
                         rows={draft.adminSiteaccesses}

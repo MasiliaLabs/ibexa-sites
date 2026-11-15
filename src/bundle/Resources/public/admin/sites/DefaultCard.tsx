@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
+import { Notice } from '@masilia-admin-kit/Notice';
 import { notify } from '@masilia-admin-kit/notify';
 import type { Api } from './api';
 import { t } from './messages';
@@ -50,7 +51,7 @@ export function DefaultCard({ api, defaultSiteaccess, choices, canManage, onSave
                     onChange={setValue}
                 />
             </FilterCard>
-            <p className="masilia-sites-muted">{t('default.help')}</p>
+            <Notice>{t('default.help')}</Notice>
             {error !== undefined ? <p className="ibexa-alert ibexa-alert--error" role="alert">{error}</p> : null}
         </section>
     );

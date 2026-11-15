@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 
 import { iconPath } from '@masilia-admin-kit/icons';
 import { AssetsProvider, TranslatorProvider } from '@masilia-admin-kit/ids';
+import { Notice } from '@masilia-admin-kit/Notice';
 import { Spinner } from '@masilia-admin-kit/Spinner';
 import { Tabs } from '@masilia-admin-kit/Tabs';
 import { apiBase, createApi } from './api';
@@ -63,9 +64,9 @@ export function SitesApp({ udw, dataUrl }: SitesAppProps): React.ReactElement {
         <TranslatorProvider value={{ trans: (id) => t(id) }}>
         <AssetsProvider value={{ getIconPath: iconPath }}>
             <div className="masilia-sites-react">
-                <p className="masilia-sites-muted">{t('ui.intro')}</p>
+                <Notice>{t('ui.intro')}</Notice>
                 {body}
-                <div className="ibexa-alert ibexa-alert--info masilia-sites-limits" role="note">{t('ui.limits')}</div>
+                <Notice>{t('ui.limits')}</Notice>
             </div>
         </AssetsProvider>
         </TranslatorProvider>
