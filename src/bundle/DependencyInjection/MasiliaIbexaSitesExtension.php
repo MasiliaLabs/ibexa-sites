@@ -36,6 +36,13 @@ final class MasiliaIbexaSitesExtension extends Extension implements PrependExten
         $container->prependExtensionConfig('ibexa', [
             'siteaccess' => ['match' => ['\\Masilia\\IbexaSites\\Runtime\\RegistryMatcher' => null]],
         ]);
+        // What the Universal Discovery Widget offers for a site: a container to start from, and the content of its layout.
+        $container->prependExtensionConfig('ibexa', [
+            'system' => ['default' => ['universal_discovery_widget_module' => ['configuration' => [
+                'masilia_site_root' => ['multiple' => false, 'containers_only' => true, 'allow_confirmation' => true, 'allow_redirects' => false],
+                'masilia_site_layout' => ['multiple' => false, 'allowed_content_types' => ['layout_config'], 'allow_confirmation' => true, 'allow_redirects' => false],
+            ]]]],
+        ]);
         $container->prependExtensionConfig('doctrine_migrations', [
             'migrations_paths' => [
                 'Masilia\\Bundle\\IbexaSites\\Migrations' => __DIR__ . '/../Migrations',

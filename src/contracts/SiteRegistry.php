@@ -16,6 +16,13 @@ interface SiteRegistry
     public function find(string $identifier): ?Site;
 
     /**
+     * Same as {@see problems()}, field by field: each reason carries the field it is about ("siteaccesses[1].host").
+     *
+     * @return list<Problem>
+     */
+    public function check(Site $site, bool $isNew): array;
+
+    /**
      * What is wrong with a site, without writing anything: the problems a {@see create()} (or an {@see update()} when $isNew is
      * false) would refuse it with, empty when it is acceptable. For checking before a person approves a change.
      *

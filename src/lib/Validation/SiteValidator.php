@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Masilia\IbexaSites\Validation;
 
+use Masilia\Contracts\IbexaSites\Problem;
 use Masilia\Contracts\IbexaSites\Site;
 use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 use Masilia\Contracts\IbexaSites\SiteInvalid;
@@ -35,36 +36,48 @@ readonly class SiteValidator
      */
     public function validate(Site $site, array $others, bool $isNew): void
     {
-        $problems = [
+        $problems = $this->check($site, $others, $isNew);
+        if ($problems !== []) {
+            throw SiteInvalid::fromProblems($problems);
+        }
+    }
+
+    /**
+     * What is wrong with a site, field by field, without refusing it.
+     *
+     * @param list<Site> $others The sites of the registry other than this one
+     *
+     * @return list<Problem>
+     */
+    public function check(Site $site, array $others, bool $isNew): array
+    {
+        return [
             ...$this->identity($site, $others, $isNew),
             ...$this->siteaccesses($site, $others),
             ...$this->session($site, $others),
             ...$this->settings($site, $others),
         ];
-        if ($problems !== []) {
-            throw new SiteInvalid($problems);
-        }
     }
 
     /**
      * @param list<Site> $others
      *
-     * @return list<string>
+     * @return list<Problem>
      */
     private function identity(Site $site, array $others, bool $isNew): array
     {
         $problems = [];
         if (preg_match(self::IDENTIFIER, $site->identifier) !== 1) {
-            $problems[] = sprintf('The identifier "%s" is not valid: 2 to 30 characters, lower case letters, digits and "_", starting with a letter.', $site->identifier);
+            $problems[] = new Problem('identifier', sprintf('The identifier "%s" is not valid: 2 to 30 characters, lower case letters, digits and "_", starting with a letter.', $site->identifier));
         }
         if ($site->status->isServed() && in_array($site->identifier, $this->facts->reservedNames(), true)) {
-            $problems[] = sprintf('"%s" is a siteaccess or a group the project still declares: take it out of the YAML first, or choose another identifier.', $site->identifier);
+            $problems[] = new Problem('identifier', sprintf('"%s" is a siteaccess or a group the project still declares: take it out of the YAML first, or choose another identifier.', $site->identifier));
         }
         if ($isNew && array_filter($others, static fn (Site $o): bool => $o->identifier === $site->identifier) !== []) {
-            $problems[] = sprintf('A site "%s" already exists.', $site->identifier);
+            $problems[] = new Problem('identifier', sprintf('A site "%s" already exists.', $site->identifier));
         }
         if (trim($site->name) === '' || mb_strlen($site->name) > 100) {
-            $problems[] = 'The name is required, 100 characters at most.';
+            $problems[] = new Problem('name', 'The name is required, 100 characters at most.');
         }
 
         return $problems;
@@ -73,12 +86,12 @@ readonly class SiteValidator
     /**
      * @param list<Site> $others
      *
-     * @return list<string>
+     * @return list<Problem>
      */
     private function siteaccesses(Site $site, array $others): array
     {
         if ($site->siteaccesses === []) {
-            return ['A site needs at least one siteaccess.'];
+            return [new Problem('siteaccesses', 'A site needs at least one siteaccess.')];
         }
         $problems = [];
         $takenNames = [];
@@ -93,20 +106,27 @@ readonly class SiteValidator
         $seenNames = [];
         $seenAddresses = [];
         $bareHosts = [];
-        foreach ($site->allSiteaccesses() as $s) {
-            $problems = [...$problems, ...$this->siteaccess($site, $s, $takenNames)];
+        $entries = [];
+        foreach ($site->siteaccesses as $index => $s) {
+            $entries[] = [sprintf('siteaccesses[%d]', $index), $s];
+        }
+        foreach ($site->adminSiteaccesses as $index => $s) {
+            $entries[] = [sprintf('adminSiteaccesses[%d]', $index), $s];
+        }
+        foreach ($entries as [$path, $s]) {
+            $problems = [...$problems, ...$this->siteaccess($site, $s, $takenNames, $path)];
             $address = $s->host . '/' . ($s->uriPrefix ?? '');
             if (in_array($s->name, $seenNames, true)) {
-                $problems[] = sprintf('The siteaccess "%s" is given twice.', $s->name);
+                $problems[] = new Problem($path . '.name', sprintf('The siteaccess "%s" is given twice.', $s->name));
             }
             if (in_array($address, $seenAddresses, true)) {
-                $problems[] = sprintf('Two siteaccesses answer on the same address (%s).', $this->shown($s));
+                $problems[] = new Problem($path . '.host', sprintf('Two siteaccesses answer on the same address (%s).', $this->shown($s)));
             } elseif (in_array($address, $takenAddresses, true)) {
-                $problems[] = sprintf('The address %s is already used by another site.', $this->shown($s));
+                $problems[] = new Problem($path . '.host', sprintf('The address %s is already used by another site.', $this->shown($s)));
             }
             if ($s->uriPrefix === null) {
                 if (in_array($s->host, $bareHosts, true)) {
-                    $problems[] = sprintf('Only one siteaccess can be at the root of the host "%s": give the others a prefix.', $s->host);
+                    $problems[] = new Problem($path . '.uriPrefix', sprintf('Only one siteaccess can be at the root of the host "%s": give the others a prefix.', $s->host));
                 }
                 $bareHosts[] = $s->host;
             }
@@ -124,26 +144,26 @@ readonly class SiteValidator
      *
      * @param list<Site> $others
      *
-     * @return list<string>
+     * @return list<Problem>
      */
     private function session(Site $site, array $others): array
     {
         if ($site->sessionCookieDomain === null) {
             // Without a cookie of its own the site gets the session of its base group: the one of another site, if the YAML gives it one.
             return $site->base !== null && $this->facts->groupHasSession($site->base)
-                ? [sprintf('The group "%s" has a session of its own (the cookie of another site): give this site its own cookie domain, or take another base group.', $site->base)]
+                ? [new Problem('sessionCookieDomain', sprintf('The group "%s" has a session of its own (the cookie of another site): give this site its own cookie domain, or take another base group.', $site->base))]
                 : [];
         }
         $domain = $site->sessionCookieDomain;
         $bare = ltrim($domain, '.');
         if ($domain !== strtolower($domain) || preg_match(self::COOKIE_DOMAIN, $bare) !== 1) {
-            return [sprintf('"%s" is not a cookie domain (lower case, at least two labels, like ".example.org").', $domain)];
+            return [new Problem('sessionCookieDomain', sprintf('"%s" is not a cookie domain (lower case, at least two labels, like ".example.org").', $domain))];
         }
         $covers = static fn (string $host): bool => $host === $bare || str_ends_with($host, '.' . $bare);
         $problems = [];
         foreach ($site->hosts() as $host) {
             if (!$covers($host)) {
-                $problems[] = sprintf('The cookie domain "%s" does not cover the host "%s" of the site: the session would not be shared by its siteaccesses.', $domain, $host);
+                $problems[] = new Problem('sessionCookieDomain', sprintf('The cookie domain "%s" does not cover the host "%s" of the site: the session would not be shared by its siteaccesses.', $domain, $host));
             }
         }
         $foreign = $this->facts->staticHosts();
@@ -152,7 +172,7 @@ readonly class SiteValidator
         }
         foreach (array_unique($foreign) as $host) {
             if ($covers($host)) {
-                $problems[] = sprintf('The cookie domain "%s" would also be sent to "%s", which belongs to another site: a user logged in here would be known there. Use a narrower domain.', $domain, $host);
+                $problems[] = new Problem('sessionCookieDomain', sprintf('The cookie domain "%s" would also be sent to "%s", which belongs to another site: a user logged in here would be known there. Use a narrower domain.', $domain, $host));
             }
         }
 
@@ -161,38 +181,39 @@ readonly class SiteValidator
 
     /**
      * @param list<string> $takenNames
+     * @param string       $path       The field of the siteaccess ("siteaccesses[0]")
      *
-     * @return list<string>
+     * @return list<Problem>
      */
-    private function siteaccess(Site $site, SiteAccessDefinition $s, array $takenNames): array
+    private function siteaccess(Site $site, SiteAccessDefinition $s, array $takenNames, string $path): array
     {
         $problems = [];
         if (preg_match(self::SITEACCESS, $s->name) !== 1) {
-            $problems[] = sprintf('The siteaccess name "%s" is not valid: 2 to 40 characters, lower case letters, digits and "_", starting with a letter.', $s->name);
+            $problems[] = new Problem($path . '.name', sprintf('The siteaccess name "%s" is not valid: 2 to 40 characters, lower case letters, digits and "_", starting with a letter.', $s->name));
         }
         if ($s->name === $site->identifier || in_array($s->name, $takenNames, true)) {
-            $problems[] = sprintf('The siteaccess name "%s" is already used by another site.', $s->name);
+            $problems[] = new Problem($path . '.name', sprintf('The siteaccess name "%s" is already used by another site.', $s->name));
         }
         if ($site->status->isServed() && in_array($s->name, $this->facts->reservedNames(), true)) {
-            $problems[] = sprintf('The siteaccess "%s" still exists in the project\'s YAML: take it out first.', $s->name);
+            $problems[] = new Problem($path . '.name', sprintf('The siteaccess "%s" still exists in the project\'s YAML: take it out first.', $s->name));
         }
         if ($s->host !== strtolower($s->host) || preg_match(self::HOST, $s->host) !== 1) {
-            $problems[] = sprintf('"%s" is not a host name (lower case, like "demo.example.org").', $s->host);
+            $problems[] = new Problem($path . '.host', sprintf('"%s" is not a host name (lower case, like "demo.example.org").', $s->host));
         } elseif ($site->status->isServed() && in_array($s->host, $this->facts->staticHosts(), true)) {
-            $problems[] = sprintf('The host "%s" is still answered by the project\'s YAML: take it out first.', $s->host);
+            $problems[] = new Problem($path . '.host', sprintf('The host "%s" is still answered by the project\'s YAML: take it out first.', $s->host));
         }
         if ($s->uriPrefix !== null && preg_match(self::PREFIX, $s->uriPrefix) !== 1) {
-            $problems[] = sprintf('The prefix "%s" is not valid: lower case letters, digits and "-", without slash.', $s->uriPrefix);
+            $problems[] = new Problem($path . '.uriPrefix', sprintf('The prefix "%s" is not valid: lower case letters, digits and "-", without slash.', $s->uriPrefix));
         }
         if ($s->languages === []) {
-            $problems[] = sprintf('The siteaccess "%s" needs at least one language.', $s->name);
+            $problems[] = new Problem($path . '.languages', sprintf('The siteaccess "%s" needs at least one language.', $s->name));
         }
         if (count($s->languages) !== count(array_unique($s->languages))) {
-            $problems[] = sprintf('A language is given twice for the siteaccess "%s".', $s->name);
+            $problems[] = new Problem($path . '.languages', sprintf('A language is given twice for the siteaccess "%s".', $s->name));
         }
         foreach ($s->languages as $code) {
             if (!$this->facts->languageExists($code)) {
-                $problems[] = sprintf('The language "%s" does not exist in Ibexa: add it to the installation first.', $code);
+                $problems[] = new Problem($path . '.languages', sprintf('The language "%s" does not exist in Ibexa: add it to the installation first.', $code));
             }
         }
 
@@ -207,36 +228,36 @@ readonly class SiteValidator
     /**
      * @param list<Site> $others
      *
-     * @return list<string>
+     * @return list<Problem>
      */
     private function settings(Site $site, array $others): array
     {
         $problems = [];
         if (!$this->facts->locationExists($site->rootLocationId)) {
-            $problems[] = sprintf('The root location %d does not exist.', $site->rootLocationId);
+            $problems[] = new Problem('rootLocationId', sprintf('The root location %d does not exist.', $site->rootLocationId));
         } elseif (array_filter($others, static fn (Site $o): bool => $o->rootLocationId === $site->rootLocationId) !== []) {
-            $problems[] = sprintf('The location %d is already the root of another site.', $site->rootLocationId);
+            $problems[] = new Problem('rootLocationId', sprintf('The location %d is already the root of another site.', $site->rootLocationId));
         } elseif ($site->status->isServed() && in_array($site->rootLocationId, $this->facts->staticRoots(), true)) {
-            $problems[] = sprintf('The location %d is still the root of a site of the project\'s YAML.', $site->rootLocationId);
+            $problems[] = new Problem('rootLocationId', sprintf('The location %d is still the root of a site of the project\'s YAML.', $site->rootLocationId));
         }
         if (!in_array($site->design, $this->facts->designs(), true)) {
-            $problems[] = sprintf('The design "%s" is not declared. Available designs: %s.', $site->design, implode(', ', $this->facts->designs()));
+            $problems[] = new Problem('design', sprintf('The design "%s" is not declared. Available designs: %s.', $site->design, implode(', ', $this->facts->designs())));
         }
         if ($site->base !== null && !in_array($site->base, $this->facts->baseGroups(), true)) {
-            $problems[] = sprintf('"%s" is not a group a site can take its settings from. Available: %s.', $site->base, implode(', ', $this->facts->baseGroups()));
+            $problems[] = new Problem('base', sprintf('"%s" is not a group a site can take its settings from. Available: %s.', $site->base, implode(', ', $this->facts->baseGroups())));
         }
         if ($site->adminSiteaccess !== null && !in_array($site->adminSiteaccess, $this->facts->adminSiteaccesses(), true)) {
-            $problems[] = sprintf('"%s" is not an admin siteaccess of the project. Available: %s.', $site->adminSiteaccess, implode(', ', $this->facts->adminSiteaccesses()));
+            $problems[] = new Problem('adminSiteaccess', sprintf('"%s" is not an admin siteaccess of the project. Available: %s.', $site->adminSiteaccess, implode(', ', $this->facts->adminSiteaccesses())));
         }
 
         if ($site->varDir !== null && preg_match(self::VAR_DIR, $site->varDir) !== 1) {
-            $problems[] = sprintf('The directory "%s" is not valid: a relative path of lower case letters, digits, "-" and "_" ("var/demo").', $site->varDir);
+            $problems[] = new Problem('varDir', sprintf('The directory "%s" is not valid: a relative path of lower case letters, digits, "-" and "_" ("var/demo").', $site->varDir));
         }
         if ($site->layoutRemoteId !== null) {
             if (preg_match(self::REMOTE_ID, $site->layoutRemoteId) !== 1) {
-                $problems[] = sprintf('The layout remote id "%s" is not valid.', $site->layoutRemoteId);
+                $problems[] = new Problem('layoutRemoteId', sprintf('The layout remote id "%s" is not valid.', $site->layoutRemoteId));
             } elseif (!$this->facts->contentExists($site->layoutRemoteId)) {
-                $problems[] = sprintf('No content has the remote id "%s": create the layout of the site first.', $site->layoutRemoteId);
+                $problems[] = new Problem('layoutRemoteId', sprintf('No content has the remote id "%s": create the layout of the site first.', $site->layoutRemoteId));
             }
         }
 

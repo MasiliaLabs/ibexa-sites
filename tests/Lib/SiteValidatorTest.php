@@ -115,6 +115,37 @@ final class SiteValidatorTest extends TestCase
         self::assertStringContainsString('would also be sent to "main.example.org"', $problems, 'a host of the YAML is another site too');
     }
 
+    public function testEachProblemIsRelatedToTheFieldItIsAbout(): void
+    {
+        $site = SiteBuilder::site([
+            'identifier' => 'Bad',
+            'name' => '',
+            'rootLocationId' => 999,
+            'design' => 'nope',
+            'varDir' => '../x',
+            'layoutRemoteId' => 'nope',
+            'siteaccesses' => [self::sa('demo', ['spa-ES'], 'Bad Host', 'a/b')],
+            'adminSiteaccesses' => [self::admin('admin_demo', 'Worse Host')],
+        ]);
+
+        $paths = array_map(static fn (\Masilia\Contracts\IbexaSites\Problem $p): string => $p->path, (new SiteValidator(new FakeFacts()))->check($site, [], true));
+
+        foreach (['identifier', 'name', 'rootLocationId', 'design', 'varDir', 'layoutRemoteId', 'siteaccesses[0].host', 'siteaccesses[0].uriPrefix', 'siteaccesses[0].languages', 'adminSiteaccesses[0].host'] as $expected) {
+            self::assertContains($expected, $paths, $expected);
+        }
+    }
+
+    public function testTheExceptionKeepsTheSentencesAndTheFields(): void
+    {
+        try {
+            (new SiteValidator(new FakeFacts()))->validate(SiteBuilder::site(['name' => '']), [], true);
+            self::fail('The site was accepted.');
+        } catch (SiteInvalid $invalid) {
+            self::assertSame(['The name is required, 100 characters at most.'], $invalid->problems);
+            self::assertSame('name', $invalid->items[0]->path);
+        }
+    }
+
     public function testASiteWithoutABaseIsAccepted(): void
     {
         self::assertSame([], $this->problems(['base' => null]));

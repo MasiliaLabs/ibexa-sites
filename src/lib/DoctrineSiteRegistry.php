@@ -6,6 +6,7 @@ namespace Masilia\IbexaSites;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Masilia\Contracts\IbexaSites\Event\SiteChanged;
+use Masilia\Contracts\IbexaSites\Problem;
 use Masilia\Contracts\IbexaSites\Site;
 use Masilia\Contracts\IbexaSites\SiteInvalid;
 use Masilia\Contracts\IbexaSites\SiteNotFound;
@@ -39,15 +40,14 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         return $this->record($identifier)?->toSite();
     }
 
+    public function check(Site $site, bool $isNew): array
+    {
+        return $this->validator->check($site, $isNew ? $this->list() : $this->others($site->identifier), $isNew);
+    }
+
     public function problems(Site $site, bool $isNew): array
     {
-        try {
-            $this->validator->validate($site, $isNew ? $this->list() : $this->others($site->identifier), $isNew);
-        } catch (SiteInvalid $invalid) {
-            return $invalid->problems;
-        }
-
-        return [];
+        return array_map(static fn (Problem $p): string => $p->message, $this->check($site, $isNew));
     }
 
     public function create(Site $site): Site

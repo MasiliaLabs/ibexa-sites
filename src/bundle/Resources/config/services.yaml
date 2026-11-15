@@ -62,7 +62,10 @@ services:
         arguments:
             $repository: '@ibexa.api.repository'
 
+    Masilia\IbexaSites\Ibexa\LocationLookup: ~
+
     Masilia\Bundle\IbexaSites\EventListener\SiteChangedListener: ~
+    Masilia\Bundle\IbexaSites\EventListener\CsrfTokenSubscriber: ~
 
     Masilia\Bundle\IbexaSites\EventListener\MainMenuBuilderListener: ~
 
