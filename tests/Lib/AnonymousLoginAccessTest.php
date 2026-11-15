@@ -92,7 +92,10 @@ final class AnonymousLoginAccessTest extends TestCase
         $repository->method('getRoleService')->willReturn($roles);
         $repository->method('sudo')->willReturnCallback(static fn (callable $callback) => $callback($repository));
 
-        (new AnonymousLoginAccess($repository))->sync(null, SiteBuilder::site(['status' => SiteStatus::Active]));
+        $logger = $this->createMock(\Psr\Log\LoggerInterface::class);
+        $logger->expects(self::once())->method('warning')->with(self::stringContains('was discarded'));
+
+        (new AnonymousLoginAccess($repository, 'Anonymous', $logger))->sync(null, SiteBuilder::site(['status' => SiteStatus::Active]));
 
         self::assertSame(['load draft', 'delete draft', 'create draft', 'publish'], $calls);
     }

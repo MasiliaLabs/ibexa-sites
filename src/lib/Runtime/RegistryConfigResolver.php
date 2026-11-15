@@ -8,6 +8,8 @@ use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use Ibexa\Core\MVC\Exception\ParameterNotFoundException;
 use Ibexa\Core\MVC\Symfony\SiteAccess;
 use Ibexa\Core\MVC\Symfony\SiteAccess\SiteAccessAware;
+use Masilia\Contracts\IbexaSites\Site;
+use Masilia\Contracts\IbexaSites\SiteAccessDefinition;
 
 /**
  * The settings of the siteaccesses of the active sites that the registry sets: the languages, the directory of the files and the session of each siteaccess (fronts and
@@ -35,35 +37,45 @@ final class RegistryConfigResolver implements ConfigResolverInterface, SiteAcces
         $found = $scope === null ? null : $this->sites->bySiteaccess($scope);
         if ($found !== null) {
             [$site, $definition] = $found;
-            $own = ($namespace ?? $this->defaultNamespace) === $this->defaultNamespace;
-            $isAdmin = $site->isAdmin($scope);
-            if ($own) {
-                // What the files and the session of a site are the same for its fronts and its admins.
-                if ($paramName === 'var_dir' && $site->varDir !== null) {
-                    return $site->varDir;
-                }
-                if ($paramName === 'session' && $site->sessionCookieDomain !== null) {
-                    return ['name' => 'IBX_SESSION_ID_' . md5($site->identifier), 'cookie_domain' => $site->sessionCookieDomain];
-                }
-                if ($paramName === 'languages') {
-                    return $definition->languages;
-                }
-                if (!$isAdmin) {
-                    switch ($paramName) {
-                        case 'content.tree_root.location_id':
-                            return $site->rootLocationId;
-                        case 'design':
-                            return $site->design;
-                        case 'translation_siteaccesses':
-                            return $site->siteaccessNames();
-                    }
-                }
-            } elseif ($namespace === 'masilia_ibexa_blocks' && $paramName === 'layout_remote_id' && !$isAdmin && $site->layoutRemoteId !== null) {
-                return $site->layoutRemoteId;
-            }
+            $value = $this->answer($site, $definition, $site->isAdmin((string) $scope), $paramName, $namespace);
+        } else {
+            // The scope can be the group of a site too (what the siteaccesses of the site share).
+            $site = $scope === null ? null : $this->sites->byIdentifier($scope);
+            $value = $site === null ? null : $this->answer($site, null, false, $paramName, $namespace);
+        }
+        if ($value === null) {
+            throw new ParameterNotFoundException($paramName, $namespace ?? $this->defaultNamespace, [$scope]);
         }
 
-        throw new ParameterNotFoundException($paramName, $namespace ?? $this->defaultNamespace, [$scope]);
+        return $value;
+    }
+
+    /** What the registry sets for a site: null when it does not set it (the groups, then the project's defaults, answer). */
+    private function answer(Site $site, ?SiteAccessDefinition $definition, bool $isAdmin, string $paramName, ?string $namespace): mixed
+    {
+        if (($namespace ?? $this->defaultNamespace) !== $this->defaultNamespace) {
+            return $namespace === 'masilia_ibexa_blocks' && $paramName === 'layout_remote_id' && !$isAdmin ? $site->layoutRemoteId : null;
+        }
+        // What the files and the session of a site are the same for its fronts, its admins and its group.
+        if ($paramName === 'var_dir') {
+            return $site->varDir;
+        }
+        if ($paramName === 'session') {
+            return $site->sessionCookieDomain === null ? null : ['name' => 'IBX_SESSION_ID_' . md5($site->identifier), 'cookie_domain' => $site->sessionCookieDomain];
+        }
+        if ($paramName === 'languages') {
+            return $definition?->languages;
+        }
+        if ($isAdmin) {
+            return null;
+        }
+
+        return match ($paramName) {
+            'content.tree_root.location_id' => $site->rootLocationId,
+            'design' => $site->design,
+            'translation_siteaccesses' => $site->siteaccessNames(),
+            default => null,
+        };
     }
 
     public function hasParameter(string $paramName, ?string $namespace = null, ?string $scope = null): bool

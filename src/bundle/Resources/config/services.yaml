@@ -38,7 +38,7 @@ services:
             $cache: '@cache.app'
         public: true
 
-    # The siteaccess that answers when no host matches (see DefaultSiteaccessPass: Ibexa's router and listeners ask it).
+    # The siteaccess that answers when no host matches (see CompiledSiteaccessPass: Ibexa's router and listeners ask it).
     Masilia\IbexaSites\Runtime\DefaultSiteaccess:
         arguments:
             $cache: '@cache.app'

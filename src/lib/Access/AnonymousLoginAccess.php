@@ -9,6 +9,7 @@ use Ibexa\Contracts\Core\Repository\Repository;
 use Ibexa\Contracts\Core\Repository\Values\User\Limitation\SiteAccessLimitation;
 use Ibexa\Contracts\Core\Repository\Values\User\PolicyDraft;
 use Masilia\Contracts\IbexaSites\Site;
+use Psr\Log\LoggerInterface;
 
 /**
  * Lets visitors into the siteaccesses of the active sites. The Anonymous role limits user/login to a list of siteaccesses (the
@@ -18,7 +19,7 @@ use Masilia\Contracts\IbexaSites\Site;
  */
 readonly class AnonymousLoginAccess
 {
-    public function __construct(private Repository $repository, private string $role = 'Anonymous')
+    public function __construct(private Repository $repository, private string $role = 'Anonymous', private ?LoggerInterface $logger = null)
     {
     }
 
@@ -67,7 +68,9 @@ readonly class AnonymousLoginAccess
                     }
                     // A draft left behind (a change that did not end) would refuse a new one: this list is the registry's, it starts over.
                     try {
-                        $roles->deleteRoleDraft($roles->loadRoleDraftByRoleId($role->id));
+                        $left = $roles->loadRoleDraftByRoleId($role->id);
+                        $roles->deleteRoleDraft($left);
+                        $this->logger?->warning('A draft of the role "{role}" was discarded to update its login list for the sites of the registry.', ['role' => $this->role, 'draft_id' => $left->id]);
                     } catch (NotFoundException) {
                         // No draft: the normal case.
                     }

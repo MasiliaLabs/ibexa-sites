@@ -11,6 +11,7 @@ use Ibexa\Contracts\Core\Repository\LocationService;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use Masilia\IbexaSites\Validation\SiteFacts;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Throwable;
 
 /** The facts of the validation, read from Ibexa and from the configuration the project compiled. */
@@ -37,6 +38,7 @@ readonly class IbexaSiteFacts implements SiteFacts
         private array $matchConfig,
         #[Autowire('%admin_group_name%')]
         private string $adminGroup,
+        private ParameterBagInterface $parameters,
     ) {
     }
 
@@ -105,6 +107,11 @@ readonly class IbexaSiteFacts implements SiteFacts
     public function adminSiteaccesses(): array
     {
         return array_map('strval', $this->groups[$this->adminGroup] ?? []);
+    }
+
+    public function groupHasSession(string $group): bool
+    {
+        return $this->parameters->has(sprintf('ibexa.site_access.config.%s.session', $group));
     }
 
     public function staticFrontSiteaccesses(): array

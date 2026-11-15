@@ -24,10 +24,13 @@ final class IbexaSiteFactsTest extends TestCase
             ['shop'],
             [],
             'admin_group',
+            new \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag(['ibexa.site_access.config.shop_group.session' => ['name' => 'eZSESSID']]),
         );
 
         self::assertContains('shop_group', $facts->reservedNames());
         self::assertContains('shop', $facts->reservedNames());
         self::assertNotContains('taken_over_group', $facts->reservedNames());
+        self::assertTrue($facts->groupHasSession('shop_group'));
+        self::assertFalse($facts->groupHasSession('taken_over_group'));
     }
 }

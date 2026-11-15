@@ -36,12 +36,17 @@ final class FakeFacts implements SiteFacts
 
     public function baseGroups(): array
     {
-        return ['front_group', 'main_group'];
+        return ['front_group', 'main_group', 'session_group'];
     }
 
     public function adminSiteaccesses(): array
     {
         return ['admin'];
+    }
+
+    public function groupHasSession(string $group): bool
+    {
+        return $group === 'session_group';
     }
 
     public function staticFrontSiteaccesses(): array

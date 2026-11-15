@@ -23,6 +23,9 @@ interface SiteFacts
     /** @return list<string> The siteaccess groups a site can take its settings from (the front ones, not the admin) */
     public function baseGroups(): array;
 
+    /** Whether the project's YAML gives that group a session of its own (a name and a cookie domain), which its siteaccesses would share */
+    public function groupHasSession(string $group): bool;
+
     /** @return list<string> The front siteaccesses the project declares in its YAML (not the admin ones) */
     public function staticFrontSiteaccesses(): array;
 

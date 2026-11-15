@@ -97,6 +97,13 @@ final class SiteValidatorTest extends TestCase
         self::assertStringContainsString('is not a cookie domain', implode("\n", $this->problems(['sessionCookieDomain' => '.Demo.example.org'])));
     }
 
+    public function testABaseGroupThatHasASessionOfItsOwnNeedsACookieDomainOfTheSite(): void
+    {
+        self::assertStringContainsString('has a session of its own', implode("\n", $this->problems(['base' => 'session_group'])));
+        self::assertSame([], $this->problems(['base' => 'session_group', 'sessionCookieDomain' => '.demo.example.org']));
+        self::assertSame([], $this->problems(['base' => 'main_group']), 'a base group with no session of its own is fine');
+    }
+
     public function testACookieDomainThatReachesAnotherSiteOrTheYamlIsRefused(): void
     {
         $wide = ['sessionCookieDomain' => '.example.org', 'siteaccesses' => [self::sa('demo', host: 'demo.example.org')]];

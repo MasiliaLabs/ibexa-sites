@@ -71,4 +71,16 @@ final class SiteSnapshot
 
         return null;
     }
+
+    /** The served site whose group has this name (the scope a setting of the group is asked for). */
+    public function byIdentifier(string $identifier): ?Site
+    {
+        foreach ($this->active() as $site) {
+            if ($site->identifier === $identifier) {
+                return $site;
+            }
+        }
+
+        return null;
+    }
 }

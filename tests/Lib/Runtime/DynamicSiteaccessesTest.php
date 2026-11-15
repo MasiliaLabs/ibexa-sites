@@ -63,6 +63,20 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertFalse($resolver->hasParameter('layout_remote_id', 'masilia_ibexa_blocks', 'admin_demo'));
     }
 
+    public function testTheGroupOfASiteAnswersWhatItsSiteaccessesShare(): void
+    {
+        $resolver = new RegistryConfigResolver($this->snapshot());
+
+        self::assertSame(500, $resolver->getParameter('content.tree_root.location_id', null, 'demo_group'));
+        self::assertSame('mattcch', $resolver->getParameter('design', null, 'demo_group'));
+        self::assertSame(['demo', 'demo_fr'], $resolver->getParameter('translation_siteaccesses', null, 'demo_group'));
+        self::assertSame('var/demo', $resolver->getParameter('var_dir', null, 'demo_group'));
+        self::assertSame('.demo.example.org', $resolver->getParameter('session', null, 'demo_group')['cookie_domain']);
+        self::assertSame('demo_layout_config', $resolver->getParameter('layout_remote_id', 'masilia_ibexa_blocks', 'demo_group'));
+        self::assertFalse($resolver->hasParameter('languages', null, 'demo_group'), 'the languages are those of a siteaccess');
+        self::assertFalse($resolver->hasParameter('design', null, 'off_group'), 'a site that is not served has no scope');
+    }
+
     public function testTheResolverUsesTheCurrentSiteaccessWithoutAScope(): void
     {
         $resolver = new RegistryConfigResolver($this->snapshot());

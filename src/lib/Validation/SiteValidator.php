@@ -119,7 +119,8 @@ readonly class SiteValidator
 
     /**
      * The cookie of the session of a site: one for the site, its siteaccesses and its admins (the editor is known on the site he
-     * works on), and for nobody else.
+     * works on), and for nobody else. A site with no cookie domain takes the session of its base group, so that group must not have
+     * one of its own.
      *
      * @param list<Site> $others
      *
@@ -128,7 +129,10 @@ readonly class SiteValidator
     private function session(Site $site, array $others): array
     {
         if ($site->sessionCookieDomain === null) {
-            return [];
+            // Without a cookie of its own the site gets the session of its base group: the one of another site, if the YAML gives it one.
+            return $site->base !== null && $this->facts->groupHasSession($site->base)
+                ? [sprintf('The group "%s" has a session of its own (the cookie of another site): give this site its own cookie domain, or take another base group.', $site->base)]
+                : [];
         }
         $domain = $site->sessionCookieDomain;
         $bare = ltrim($domain, '.');
