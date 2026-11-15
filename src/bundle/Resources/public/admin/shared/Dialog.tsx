@@ -91,7 +91,7 @@ export function Dialog({ title, variant, onClose, children, footer, role = 'dial
 
     return (
         <>
-            <div className="masilia-kit-overlay" onClick={() => onClose()} />
+            <div className={`masilia-kit-overlay masilia-kit-overlay--${variant}`} onClick={() => onClose()} />
             <div ref={ref} className={`masilia-kit-dialog masilia-kit-dialog--${variant}`} role={role} aria-modal="true" aria-labelledby={titleId} aria-describedby={describedBy}>
                 <header className="masilia-kit-dialog__header">
                     <h2 className="masilia-kit-dialog__title" id={titleId}>{title}</h2>
