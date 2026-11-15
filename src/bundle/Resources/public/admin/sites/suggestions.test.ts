@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { commonCookieDomain, stem, suggestIdentifier, suggestSiteaccessName, suggestSiteaccesses } from './suggestions';
+import { commonCookieDomain, initialLanguages, stem, suggestIdentifier, suggestSiteaccessName, suggestSiteaccesses } from './suggestions';
 
 test('an identifier is made from a name', () => {
     assert.equal(suggestIdentifier('Fossil Exit'), 'fossil_exit_group');
@@ -35,4 +35,10 @@ test('the cookie domain is what the hosts share, with its dot', () => {
     assert.equal(commonCookieDomain(['a.one.org', 'b.two.net']), null);
     assert.equal(commonCookieDomain(['a.org', 'b.net']), null, 'one label is not enough');
     assert.equal(commonCookieDomain([' ', '']), null);
+});
+
+test('a new site starts with English when there is some, else with the first language', () => {
+    assert.deepEqual(initialLanguages(['ara-MA', 'eng-GB', 'fre-FR']), ['eng-GB']);
+    assert.deepEqual(initialLanguages(['ara-MA', 'fre-FR']), ['ara-MA']);
+    assert.deepEqual(initialLanguages([]), []);
 });

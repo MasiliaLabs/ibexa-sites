@@ -36,6 +36,8 @@ final class MasiliaIbexaSitesExtension extends Extension implements PrependExten
         $container->prependExtensionConfig('ibexa', [
             'siteaccess' => ['match' => ['\\Masilia\\IbexaSites\\Runtime\\RegistryMatcher' => null]],
         ]);
+        // The texts of the sites page (React) come from the translation domain of this bundle, published to the scripts of the admin.
+        $container->prependExtensionConfig('bazinga_js_translation', ['active_domains' => ['masilia_ibexa_sites']]);
         // What the Universal Discovery Widget offers for a site: a container to start from, and the content of its layout.
         $container->prependExtensionConfig('ibexa', [
             'system' => ['default' => ['universal_discovery_widget_module' => ['configuration' => [

@@ -16,6 +16,22 @@ readonly class LocationLookup
     }
 
     /**
+     * The content that has this remote id, told by its main location (the layout of a site is kept by remote id).
+     *
+     * @return array{id: int, name: string, path: list<string>, pathString: string, contentId: int, remoteId: string, contentType: string}|null
+     */
+    public function describeByRemoteId(string $remoteId): ?array
+    {
+        try {
+            $info = $this->repository->getContentService()->loadContentInfoByRemoteId($remoteId);
+        } catch (NotFoundException|UnauthorizedException) {
+            return null;
+        }
+
+        return $info->mainLocationId === null ? null : $this->describe((int) $info->mainLocationId);
+    }
+
+    /**
      * Read with the rights of the user: a location they cannot see is as good as one that is not there.
      *
      * @return array{id: int, name: string, path: list<string>, pathString: string, contentId: int, remoteId: string, contentType: string}|null

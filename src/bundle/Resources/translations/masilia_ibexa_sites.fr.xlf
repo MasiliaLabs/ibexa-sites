@@ -266,6 +266,450 @@
         <source>form.admin_siteaccesses.help</source>
         <target>Là où les éditeurs travaillent sur ce site (l&#x27;admin du projet, sur un hôte propre). Ils partagent la session du site quand le domaine du cookie couvre leur hôte. Activer le site leur permet de se connecter (le rôle Anonymous est mis à jour).</target>
       </trans-unit>
+      <trans-unit id="validation.identifier" resname="validation.identifier">
+        <source>validation.identifier</source>
+        <target>L&#x27;identifiant fait de 2 à 30 caractères : lettres minuscules, chiffres et « _ », en commençant par une lettre.</target>
+      </trans-unit>
+      <trans-unit id="validation.identifier.taken" resname="validation.identifier.taken">
+        <source>validation.identifier.taken</source>
+        <target>Un site « %identifier% » existe déjà.</target>
+      </trans-unit>
+      <trans-unit id="validation.name" resname="validation.name">
+        <source>validation.name</source>
+        <target>Le nom est obligatoire, 100 caractères au plus.</target>
+      </trans-unit>
+      <trans-unit id="validation.root.required" resname="validation.root.required">
+        <source>validation.root.required</source>
+        <target>Choisissez l&#x27;emplacement où le site commence.</target>
+      </trans-unit>
+      <trans-unit id="validation.root.used" resname="validation.root.used">
+        <source>validation.root.used</source>
+        <target>Cet emplacement est déjà la racine d’un autre site.</target>
+      </trans-unit>
+      <trans-unit id="validation.design" resname="validation.design">
+        <source>validation.design</source>
+        <target>Choisissez un design.</target>
+      </trans-unit>
+      <trans-unit id="validation.base" resname="validation.base">
+        <source>validation.base</source>
+        <target>« %base% » n’est pas un groupe dont un site peut reprendre les réglages.</target>
+      </trans-unit>
+      <trans-unit id="validation.var_dir" resname="validation.var_dir">
+        <source>validation.var_dir</source>
+        <target>Un chemin relatif en lettres minuscules, chiffres, « - » et « _ » (« var/demo »).</target>
+      </trans-unit>
+      <trans-unit id="validation.layout" resname="validation.layout">
+        <source>validation.layout</source>
+        <target>Lettres, chiffres, « - » et « _ » seulement, 100 au plus.</target>
+      </trans-unit>
+      <trans-unit id="validation.cookie.invalid" resname="validation.cookie.invalid">
+        <source>validation.cookie.invalid</source>
+        <target>Ce n’est pas un domaine de cookie : minuscules, au moins deux étiquettes, comme « .example.org ».</target>
+      </trans-unit>
+      <trans-unit id="validation.cookie.cover" resname="validation.cookie.cover">
+        <source>validation.cookie.cover</source>
+        <target>Le domaine du cookie ne couvre pas l’hôte « %host% » : la session ne serait pas partagée.</target>
+      </trans-unit>
+      <trans-unit id="validation.siteaccesses.none" resname="validation.siteaccesses.none">
+        <source>validation.siteaccesses.none</source>
+        <target>Un site a besoin d’au moins un siteaccess.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.name" resname="validation.sa.name">
+        <source>validation.sa.name</source>
+        <target>2 à 40 caractères : lettres minuscules, chiffres et « _ », en commençant par une lettre.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.name.twice" resname="validation.sa.name.twice">
+        <source>validation.sa.name.twice</source>
+        <target>Ce nom est donné deux fois.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.name.taken" resname="validation.sa.name.taken">
+        <source>validation.sa.name.taken</source>
+        <target>Ce nom est déjà utilisé par un autre site.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.host" resname="validation.sa.host">
+        <source>validation.sa.host</source>
+        <target>Ce n’est pas un nom d’hôte (minuscules, comme « demo.example.org »).</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.prefix" resname="validation.sa.prefix">
+        <source>validation.sa.prefix</source>
+        <target>Lettres minuscules, chiffres et « - », sans barre oblique.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.languages.none" resname="validation.sa.languages.none">
+        <source>validation.sa.languages.none</source>
+        <target>Choisissez au moins une langue.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.languages.twice" resname="validation.sa.languages.twice">
+        <source>validation.sa.languages.twice</source>
+        <target>Une langue est donnée deux fois.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.languages.unknown" resname="validation.sa.languages.unknown">
+        <source>validation.sa.languages.unknown</source>
+        <target>La langue « %language% » n’existe pas dans Ibexa.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.address.twice" resname="validation.sa.address.twice">
+        <source>validation.sa.address.twice</source>
+        <target>Deux siteaccess répondent sur cette adresse.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.address.taken" resname="validation.sa.address.taken">
+        <source>validation.sa.address.taken</source>
+        <target>Cette adresse est déjà utilisée par un autre site.</target>
+      </trans-unit>
+      <trans-unit id="validation.sa.bare" resname="validation.sa.bare">
+        <source>validation.sa.bare</source>
+        <target>Un seul siteaccess peut être à la racine de cet hôte : donnez un préfixe aux autres.</target>
+      </trans-unit>
+      <trans-unit id="ui.title" resname="ui.title">
+        <source>ui.title</source>
+        <target>Sites</target>
+      </trans-unit>
+      <trans-unit id="ui.intro" resname="ui.intro">
+        <source>ui.intro</source>
+        <target>Sites créés à l’exécution : un site est servi sur ses hôtes dès qu’il est actif. Les sites que le projet déclare dans sa configuration ne sont pas listés ici.</target>
+      </trans-unit>
+      <trans-unit id="ui.limits" resname="ui.limits">
+        <source>ui.limits</source>
+        <target>Les hôtes doivent aussi répondre côté serveur : DNS, serveur web, certificat et cache ne se règlent pas d’ici.</target>
+      </trans-unit>
+      <trans-unit id="ui.loading" resname="ui.loading">
+        <source>ui.loading</source>
+        <target>Chargement des sites…</target>
+      </trans-unit>
+      <trans-unit id="ui.load_failed" resname="ui.load_failed">
+        <source>ui.load_failed</source>
+        <target>Les sites n’ont pas pu être chargés.</target>
+      </trans-unit>
+      <trans-unit id="ui.failed" resname="ui.failed">
+        <source>ui.failed</source>
+        <target>La requête a échoué.</target>
+      </trans-unit>
+      <trans-unit id="list.search" resname="list.search">
+        <source>list.search</source>
+        <target>Chercher un site, un hôte…</target>
+      </trans-unit>
+      <trans-unit id="list.filter.all" resname="list.filter.all">
+        <source>list.filter.all</source>
+        <target>Tous les statuts</target>
+      </trans-unit>
+      <trans-unit id="list.new" resname="list.new">
+        <source>list.new</source>
+        <target>Nouveau site</target>
+      </trans-unit>
+      <trans-unit id="list.empty" resname="list.empty">
+        <source>list.empty</source>
+        <target>Aucun site pour le moment. Créez le premier.</target>
+      </trans-unit>
+      <trans-unit id="list.none_found" resname="list.none_found">
+        <source>list.none_found</source>
+        <target>Aucun site ne correspond.</target>
+      </trans-unit>
+      <trans-unit id="column.actions" resname="column.actions">
+        <source>column.actions</source>
+        <target>Actions</target>
+      </trans-unit>
+      <trans-unit id="action.create" resname="action.create">
+        <source>action.create</source>
+        <target>Créer le site</target>
+      </trans-unit>
+      <trans-unit id="action.close" resname="action.close">
+        <source>action.close</source>
+        <target>Fermer</target>
+      </trans-unit>
+      <trans-unit id="action.discard" resname="action.discard">
+        <source>action.discard</source>
+        <target>Abandonner</target>
+      </trans-unit>
+      <trans-unit id="confirm.activate.title" resname="confirm.activate.title">
+        <source>confirm.activate.title</source>
+        <target>Servir « %name% » ?</target>
+      </trans-unit>
+      <trans-unit id="confirm.activate.text" resname="confirm.activate.text">
+        <source>confirm.activate.text</source>
+        <target>Ses siteaccess répondent aussitôt sur leurs hôtes et les visiteurs peuvent se connecter : le rôle Anonymous est mis à jour.</target>
+      </trans-unit>
+      <trans-unit id="confirm.disable.title" resname="confirm.disable.title">
+        <source>confirm.disable.title</source>
+        <target>Ne plus servir « %name% » ?</target>
+      </trans-unit>
+      <trans-unit id="confirm.disable.text" resname="confirm.disable.text">
+        <source>confirm.disable.text</source>
+        <target>Ses siteaccess cessent de répondre (leurs hôtes retombent sur le siteaccess par défaut). Les contenus restent.</target>
+      </trans-unit>
+      <trans-unit id="confirm.delete.title" resname="confirm.delete.title">
+        <source>confirm.delete.title</source>
+        <target>Supprimer « %name% » ?</target>
+      </trans-unit>
+      <trans-unit id="confirm.delete.text" resname="confirm.delete.text">
+        <source>confirm.delete.text</source>
+        <target>La configuration du site est supprimée : ses siteaccess cessent d’exister. Les contenus ne sont pas touchés. Cette action est irréversible.</target>
+      </trans-unit>
+      <trans-unit id="confirm.discard.title" resname="confirm.discard.title">
+        <source>confirm.discard.title</source>
+        <target>Abandonner les modifications ?</target>
+      </trans-unit>
+      <trans-unit id="confirm.discard.text" resname="confirm.discard.text">
+        <source>confirm.discard.text</source>
+        <target>Ce que vous avez écrit n’est pas encore enregistré.</target>
+      </trans-unit>
+      <trans-unit id="flash.activated" resname="flash.activated">
+        <source>flash.activated</source>
+        <target>Le site « %name% » est servi.</target>
+      </trans-unit>
+      <trans-unit id="flash.disabled" resname="flash.disabled">
+        <source>flash.disabled</source>
+        <target>Le site « %name% » n’est plus servi.</target>
+      </trans-unit>
+      <trans-unit id="default.held" resname="default.held">
+        <source>default.held</source>
+        <target>Ce site porte le siteaccess par défaut : choisissez-en un autre d’abord.</target>
+      </trans-unit>
+      <trans-unit id="editor.new" resname="editor.new">
+        <source>editor.new</source>
+        <target>Nouveau site</target>
+      </trans-unit>
+      <trans-unit id="editor.edit" resname="editor.edit">
+        <source>editor.edit</source>
+        <target>Modifier « %name% »</target>
+      </trans-unit>
+      <trans-unit id="editor.checking" resname="editor.checking">
+        <source>editor.checking</source>
+        <target>Vérification…</target>
+      </trans-unit>
+      <trans-unit id="editor.saving" resname="editor.saving">
+        <source>editor.saving</source>
+        <target>Enregistrement…</target>
+      </trans-unit>
+      <trans-unit id="editor.server_problems" resname="editor.server_problems">
+        <source>editor.server_problems</source>
+        <target>Le serveur a refusé le site :</target>
+      </trans-unit>
+      <trans-unit id="section.identity" resname="section.identity">
+        <source>section.identity</source>
+        <target>Identité</target>
+      </trans-unit>
+      <trans-unit id="section.addresses" resname="section.addresses">
+        <source>section.addresses</source>
+        <target>Langues et adresses</target>
+      </trans-unit>
+      <trans-unit id="section.admins" resname="section.admins">
+        <source>section.admins</source>
+        <target>Siteaccess d’admin</target>
+      </trans-unit>
+      <trans-unit id="section.admins.hint" resname="section.admins.hint">
+        <source>section.admins.hint</source>
+        <target>Là où les éditeurs travaillent sur ce site, sur des hôtes à eux. Ils partagent la session du site quand le domaine du cookie couvre leur hôte.</target>
+      </trans-unit>
+      <trans-unit id="section.settings" resname="section.settings">
+        <source>section.settings</source>
+        <target>Réglages</target>
+      </trans-unit>
+      <trans-unit id="field.name" resname="field.name">
+        <source>field.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="field.name.hint" resname="field.name.hint">
+        <source>field.name.hint</source>
+        <target>Affiché dans l’admin.</target>
+      </trans-unit>
+      <trans-unit id="field.identifier" resname="field.identifier">
+        <source>field.identifier</source>
+        <target>Identifiant</target>
+      </trans-unit>
+      <trans-unit id="field.identifier.hint" resname="field.identifier.hint">
+        <source>field.identifier.hint</source>
+        <target>Lettres minuscules, chiffres et « _ » : le nom du groupe de siteaccess. Il ne peut plus changer.</target>
+      </trans-unit>
+      <trans-unit id="field.root" resname="field.root">
+        <source>field.root</source>
+        <target>Emplacement racine</target>
+      </trans-unit>
+      <trans-unit id="field.root.hint" resname="field.root.hint">
+        <source>field.root.hint</source>
+        <target>Là où le site commence : sa page d’accueil. Parcourez l’arbre de contenu pour la choisir.</target>
+      </trans-unit>
+      <trans-unit id="field.root.title" resname="field.root.title">
+        <source>field.root.title</source>
+        <target>Choisir la racine du site</target>
+      </trans-unit>
+      <trans-unit id="field.layout" resname="field.layout">
+        <source>field.layout</source>
+        <target>Layout</target>
+      </trans-unit>
+      <trans-unit id="field.layout.hint" resname="field.layout.hint">
+        <source>field.layout.hint</source>
+        <target>Le contenu qui porte le layout du site (logo, pied de page). Repris du groupe de base si vide.</target>
+      </trans-unit>
+      <trans-unit id="field.layout.title" resname="field.layout.title">
+        <source>field.layout.title</source>
+        <target>Choisir le layout du site</target>
+      </trans-unit>
+      <trans-unit id="field.picker.empty" resname="field.picker.empty">
+        <source>field.picker.empty</source>
+        <target>Rien de choisi</target>
+      </trans-unit>
+      <trans-unit id="field.picker.choose" resname="field.picker.choose">
+        <source>field.picker.choose</source>
+        <target>Parcourir…</target>
+      </trans-unit>
+      <trans-unit id="field.picker.change" resname="field.picker.change">
+        <source>field.picker.change</source>
+        <target>Changer</target>
+      </trans-unit>
+      <trans-unit id="field.picker.clear" resname="field.picker.clear">
+        <source>field.picker.clear</source>
+        <target>Effacer</target>
+      </trans-unit>
+      <trans-unit id="field.picker.unavailable" resname="field.picker.unavailable">
+        <source>field.picker.unavailable</source>
+        <target>Le navigateur de contenu n’est pas disponible sur cette page.</target>
+      </trans-unit>
+      <trans-unit id="field.design" resname="field.design">
+        <source>field.design</source>
+        <target>Design</target>
+      </trans-unit>
+      <trans-unit id="field.design.hint" resname="field.design.hint">
+        <source>field.design.hint</source>
+        <target>L’apparence du site : un des designs du projet.</target>
+      </trans-unit>
+      <trans-unit id="field.design.placeholder" resname="field.design.placeholder">
+        <source>field.design.placeholder</source>
+        <target>Choisir un design</target>
+      </trans-unit>
+      <trans-unit id="field.base" resname="field.base">
+        <source>field.base</source>
+        <target>Groupe de base</target>
+      </trans-unit>
+      <trans-unit id="field.base.hint" resname="field.base.hint">
+        <source>field.base.hint</source>
+        <target>Un groupe dont le site reprend tout ce qu’il ne règle pas (images, texte riche, menus).</target>
+      </trans-unit>
+      <trans-unit id="field.base.none" resname="field.base.none">
+        <source>field.base.none</source>
+        <target>Aucun</target>
+      </trans-unit>
+      <trans-unit id="field.var_dir" resname="field.var_dir">
+        <source>field.var_dir</source>
+        <target>Dossier des fichiers</target>
+      </trans-unit>
+      <trans-unit id="field.var_dir.hint" resname="field.var_dir.hint">
+        <source>field.var_dir.hint</source>
+        <target>Facultatif, relatif au projet (« var/demo »). À choisir avant d’ajouter des images ou des fichiers : le changer ensuite rend les existants inaccessibles.</target>
+      </trans-unit>
+      <trans-unit id="field.cookie" resname="field.cookie">
+        <source>field.cookie</source>
+        <target>Domaine du cookie de session</target>
+      </trans-unit>
+      <trans-unit id="field.cookie.hint" resname="field.cookie.hint">
+        <source>field.cookie.hint</source>
+        <target>Facultatif : le domaine du cookie de session du site et de ses admins (« .example.org »). Il doit couvrir tous leurs hôtes et aucun hôte d’un autre site.</target>
+      </trans-unit>
+      <trans-unit id="field.cookie.use" resname="field.cookie.use">
+        <source>field.cookie.use</source>
+        <target>Utiliser « %domain% »</target>
+      </trans-unit>
+      <trans-unit id="field.admin_siteaccess" resname="field.admin_siteaccess">
+        <source>field.admin_siteaccess</source>
+        <target>Siteaccess d’admin du projet</target>
+      </trans-unit>
+      <trans-unit id="field.admin_siteaccess.hint" resname="field.admin_siteaccess.hint">
+        <source>field.admin_siteaccess.hint</source>
+        <target>Un siteaccess d’admin du YAML du projet qui édite ce site, le cas échéant.</target>
+      </trans-unit>
+      <trans-unit id="rows.add" resname="rows.add">
+        <source>rows.add</source>
+        <target>Ajouter un siteaccess</target>
+      </trans-unit>
+      <trans-unit id="rows.remove" resname="rows.remove">
+        <source>rows.remove</source>
+        <target>Retirer ce siteaccess</target>
+      </trans-unit>
+      <trans-unit id="rows.none" resname="rows.none">
+        <source>rows.none</source>
+        <target>Aucun siteaccess pour le moment.</target>
+      </trans-unit>
+      <trans-unit id="rows.suggest.title" resname="rows.suggest.title">
+        <source>rows.suggest.title</source>
+        <target>Partir des langues</target>
+      </trans-unit>
+      <trans-unit id="rows.suggest.hint" resname="rows.suggest.hint">
+        <source>rows.suggest.hint</source>
+        <target>Choisissez les langues et l’hôte : un siteaccess par langue est créé, le premier à la racine de l’hôte, les autres sous leur préfixe.</target>
+      </trans-unit>
+      <trans-unit id="rows.suggest.host" resname="rows.suggest.host">
+        <source>rows.suggest.host</source>
+        <target>Hôte</target>
+      </trans-unit>
+      <trans-unit id="rows.suggest.apply" resname="rows.suggest.apply">
+        <source>rows.suggest.apply</source>
+        <target>Créer les siteaccess</target>
+      </trans-unit>
+      <trans-unit id="sa.name" resname="sa.name">
+        <source>sa.name</source>
+        <target>Nom du siteaccess</target>
+      </trans-unit>
+      <trans-unit id="sa.name.hint" resname="sa.name.hint">
+        <source>sa.name.hint</source>
+        <target>Unique dans le projet (« demo_fr »).</target>
+      </trans-unit>
+      <trans-unit id="sa.languages" resname="sa.languages">
+        <source>sa.languages</source>
+        <target>Langues</target>
+      </trans-unit>
+      <trans-unit id="sa.languages.hint" resname="sa.languages.hint">
+        <source>sa.languages.hint</source>
+        <target>La première est la langue du siteaccess ; les autres sont celles sur lesquelles le contenu se replie.</target>
+      </trans-unit>
+      <trans-unit id="sa.languages.add" resname="sa.languages.add">
+        <source>sa.languages.add</source>
+        <target>Ajouter une langue…</target>
+      </trans-unit>
+      <trans-unit id="sa.languages.main" resname="sa.languages.main">
+        <source>sa.languages.main</source>
+        <target>Principale</target>
+      </trans-unit>
+      <trans-unit id="sa.up" resname="sa.up">
+        <source>sa.up</source>
+        <target>Monter</target>
+      </trans-unit>
+      <trans-unit id="sa.down" resname="sa.down">
+        <source>sa.down</source>
+        <target>Descendre</target>
+      </trans-unit>
+      <trans-unit id="sa.language.remove" resname="sa.language.remove">
+        <source>sa.language.remove</source>
+        <target>Retirer</target>
+      </trans-unit>
+      <trans-unit id="sa.host" resname="sa.host">
+        <source>sa.host</source>
+        <target>Hôte</target>
+      </trans-unit>
+      <trans-unit id="sa.host.hint" resname="sa.host.hint">
+        <source>sa.host.hint</source>
+        <target>« demo.example.org ». Un même hôte peut porter plusieurs siteaccess, distingués par leur préfixe.</target>
+      </trans-unit>
+      <trans-unit id="sa.prefix" resname="sa.prefix">
+        <source>sa.prefix</source>
+        <target>Préfixe du chemin</target>
+      </trans-unit>
+      <trans-unit id="sa.prefix.hint" resname="sa.prefix.hint">
+        <source>sa.prefix.hint</source>
+        <target>« fr » pour /fr. Vide : le siteaccess à la racine de l’hôte (un seul par hôte).</target>
+      </trans-unit>
+      <trans-unit id="sa.address" resname="sa.address">
+        <source>sa.address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="addresses.title" resname="addresses.title">
+        <source>addresses.title</source>
+        <target>Adresses</target>
+      </trans-unit>
+      <trans-unit id="addresses.empty" resname="addresses.empty">
+        <source>addresses.empty</source>
+        <target>Donnez un hôte pour voir l’adresse.</target>
+      </trans-unit>
+      <trans-unit id="addresses.open" resname="addresses.open">
+        <source>addresses.open</source>
+        <target>Ouvrir l’adresse</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -70,6 +70,15 @@ final class SitesApiController extends Controller
         return $location === null ? $this->error('not_found', sprintf('The location %d does not exist, or you cannot see it.', $id), Response::HTTP_NOT_FOUND) : new JsonResponse($location);
     }
 
+    /** The content that holds the layout of a site, by its remote id, told like a location. */
+    #[Route('/layouts/{remoteId}', name: self::ROUTE_PREFIX . 'layout', requirements: ['remoteId' => '[A-Za-z0-9_-]{1,100}'], methods: ['GET'])]
+    public function layout(string $remoteId): JsonResponse
+    {
+        $location = $this->locations->describeByRemoteId($remoteId);
+
+        return $location === null ? $this->error('not_found', sprintf('No content has the remote id "%s", or you cannot see it.', $remoteId), Response::HTTP_NOT_FOUND) : new JsonResponse($location);
+    }
+
     /** What is wrong with a site as it is being written, field by field: nothing is saved. */
     #[Route('/validate', name: self::ROUTE_PREFIX . 'validate', methods: ['POST'])]
     public function validate(Request $request): JsonResponse

@@ -1,10 +1,150 @@
+// The sites page. The components are the kit's (../shared/kit.scss); here is the layout of the page itself.
 @use '../shared/kit';
 @use '@ibexa-admin-ui/src/bundle/Resources/public/scss/custom' as ibexa;
 @use '@ibexa-admin-ui/src/bundle/Resources/public/scss/functions/calculate.rem' as *;
 
+$line: 1px solid ibexa.$ibexa-color-light;
+$transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transition;
+
 .masilia-sites-react {
-    max-width: calculateRem(1100px);
+    display: flex;
+    flex-direction: column;
+    gap: calculateRem(16px);
+    max-width: calculateRem(1200px);
     padding: calculateRem(8px) 0 calculateRem(32px);
     color: ibexa.$ibexa-color-dark;
     font-size: ibexa.$ibexa-text-font-size;
+
+    code {
+        color: inherit;
+    }
+}
+
+.masilia-sites-muted {
+    margin: 0;
+    color: ibexa.$ibexa-color-dark-400;
+}
+
+.masilia-sites-default {
+    display: flex;
+    align-items: flex-end;
+    gap: calculateRem(16px);
+    max-width: calculateRem(560px);
+
+    .masilia-kit-field {
+        flex: 1 1 auto;
+        margin-bottom: 0;
+    }
+}
+
+.masilia-sites-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: calculateRem(12px);
+    margin-bottom: calculateRem(16px);
+
+    &__search {
+        flex: 1 1 calculateRem(260px);
+        max-width: calculateRem(420px);
+    }
+
+    &__status {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+.masilia-sites-table {
+    tbody tr {
+        transition: background-color $transition;
+    }
+
+    &__sa {
+        margin: calculateRem(2px) 0;
+    }
+
+    &__actions {
+        white-space: nowrap;
+    }
+}
+
+.masilia-sites-section {
+    margin: calculateRem(24px) 0 calculateRem(12px);
+    padding-bottom: calculateRem(8px);
+    border-bottom: $line;
+    font-size: ibexa.$ibexa-text-font-size-large;
+    font-weight: ibexa.$ibexa-font-weight-bold;
+
+    &:first-of-type {
+        margin-top: 0;
+    }
+}
+
+.masilia-sites-rows {
+    display: flex;
+    flex-direction: column;
+    gap: calculateRem(16px);
+    margin-bottom: calculateRem(16px);
+}
+
+.masilia-sites-row {
+    min-width: 0;
+    margin: 0;
+    padding: calculateRem(16px);
+    border: $line;
+    border-radius: ibexa.$ibexa-border-radius;
+    transition: border-color $transition;
+
+    &:hover {
+        border-color: ibexa.$ibexa-color-dark-300;
+    }
+
+    &__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: calculateRem(12px);
+    }
+
+    &__tools {
+        display: inline-flex;
+    }
+
+    &__address {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: calculateRem(16px);
+    }
+
+    &__url {
+        margin: 0;
+    }
+}
+
+.masilia-sites-suggest {
+    margin-bottom: calculateRem(16px);
+    padding: calculateRem(16px);
+    border: 1px dashed ibexa.$ibexa-color-dark-300;
+    border-radius: ibexa.$ibexa-border-radius;
+}
+
+.masilia-sites-addresses {
+    margin-bottom: calculateRem(16px);
+
+    h4 {
+        margin: 0 0 calculateRem(4px);
+        font-size: ibexa.$ibexa-text-font-size;
+        font-weight: ibexa.$ibexa-font-weight-bold;
+    }
+
+    ul {
+        margin: 0;
+        padding-left: calculateRem(20px);
+    }
+}
+
+.masilia-sites-editor__status {
+    margin-right: auto;
+    color: ibexa.$ibexa-color-dark-400;
 }

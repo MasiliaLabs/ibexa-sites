@@ -61,3 +61,10 @@ export function commonCookieDomain(hosts: readonly string[]): string | null {
 
     return common.length >= 2 ? `.${[...common].reverse().join('.')}` : null;
 }
+
+/** The language a new site starts with: English when Ibexa has it (the usual main language), otherwise the first one. */
+export function initialLanguages(languages: readonly string[]): string[] {
+    const first = languages.find((code) => code.toLowerCase().startsWith('eng')) ?? languages[0];
+
+    return first === undefined ? [] : [first];
+}
