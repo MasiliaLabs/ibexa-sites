@@ -9,6 +9,7 @@ use Masilia\Bundle\IbexaSites\DependencyInjection\Compiler\TranslationHelperPass
 use Masilia\Bundle\IbexaSites\Security\SitesPolicyProvider;
 use Masilia\IbexaSites\Runtime\RegistryMatcher;
 use Masilia\IbexaSites\Runtime\SiteSnapshot;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -24,7 +25,10 @@ final class MasiliaIbexaSitesBundle extends Bundle
         $core = $container->getExtension('ibexa');
         $core->addPolicyProvider(new SitesPolicyProvider());
         $container->addCompilerPass(new TranslationHelperPass());
+        // Twice: once for what the YAML of services says, once after autowiring, which resolves #[Autowire('%ibexa.site_access.groups%…')]
+        // arguments late (a service that asks for them that way, like masilia/ibexa-ai's SiteUrls, would else get the YAML alone).
         $container->addCompilerPass(new CompiledSiteaccessPass());
+        $container->addCompilerPass(new CompiledSiteaccessPass(), PassConfig::TYPE_BEFORE_REMOVING);
     }
 
     public function boot(): void

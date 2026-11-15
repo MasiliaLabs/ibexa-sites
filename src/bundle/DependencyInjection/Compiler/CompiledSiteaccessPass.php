@@ -41,6 +41,16 @@ final class CompiledSiteaccessPass implements CompilerPassInterface
         $container->setDefinition(self::SERVICES[self::DEFAULT], (new Definition('string'))
             ->setFactory([new Reference(DefaultSiteaccess::class), 'name'])->setArguments([self::DEFAULT])->setShared(false));
 
+        // After autowiring, an argument that asked for a parameter through #[Autowire('%…%')] already holds its value: the compiled groups of
+        // the YAML, which are recognised by what they are (a group list is never the value of anything else).
+        $this->resolved = [];
+        foreach ([self::GROUPS, self::GROUPS_BY_SITEACCESS] as $parameter) {
+            $name = trim($parameter, '%');
+            if ($container->hasParameter($name) && is_array($container->getParameter($name)) && $container->getParameter($name) !== []) {
+                $this->resolved[$parameter] = $container->getParameter($name);
+            }
+        }
+
         foreach ($container->getDefinitions() as $id => $definition) {
             if (in_array($id, self::SERVICES, true)) {
                 continue;
@@ -49,6 +59,9 @@ final class CompiledSiteaccessPass implements CompilerPassInterface
             $definition->setMethodCalls(array_map(fn (array $call): array => [$call[0], $this->replace($call[1]), ...array_slice($call, 2)], $definition->getMethodCalls()));
         }
     }
+
+    /** @var array<string, array<mixed>> The parameter => its value in the YAML, to recognise it once resolved */
+    private array $resolved = [];
 
     /**
      * @param array<mixed> $arguments
@@ -60,6 +73,8 @@ final class CompiledSiteaccessPass implements CompilerPassInterface
         foreach ($arguments as $key => $argument) {
             if (is_string($argument) && isset(self::SERVICES[$argument])) {
                 $arguments[$key] = new Reference(self::SERVICES[$argument]);
+            } elseif (is_array($argument) && ($parameter = array_search($argument, $this->resolved, true)) !== false) {
+                $arguments[$key] = new Reference(self::SERVICES[$parameter]);
             } elseif (is_array($argument)) {
                 $arguments[$key] = $this->replace($argument);
             }
