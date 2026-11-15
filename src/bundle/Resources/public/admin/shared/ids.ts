@@ -7,6 +7,8 @@
 
 import type { ComponentType, ReactNode } from 'react';
 import * as ids from '@ids-components';
+// The package root does not re-export the chip: it is reached by its own path.
+import * as chipModule from '@ids-components/components/Chip';
 
 export type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'secondary-alt' | 'tertiary-alt';
 
@@ -83,7 +85,6 @@ interface IdsComponents {
     TranslatorProvider: ComponentType<{ value: TranslatorValue; children?: ReactNode }>;
     DropdownSingleInput: ComponentType<DropdownSingleProps>;
     Tag: ComponentType<TagProps>;
-    Chip: ComponentType<ChipProps>;
     Badge: ComponentType<BadgeProps>;
     Accordion: ComponentType<AccordionProps>;
 }
@@ -95,6 +96,6 @@ export const AssetsProvider = components.AssetsProvider;
 export const TranslatorProvider = components.TranslatorProvider;
 export const DropdownSingleInput = components.DropdownSingleInput;
 export const Tag = components.Tag;
-export const Chip = components.Chip;
+export const Chip = (chipModule as unknown as { Chip: ComponentType<ChipProps> }).Chip;
 export const Badge = components.Badge;
 export const Accordion = components.Accordion;
