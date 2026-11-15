@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
-import { Button } from '@masilia-admin-kit/ids';
 import { notify } from '@masilia-admin-kit/notify';
 import type { Api } from './api';
 import { t } from './messages';
@@ -40,7 +39,7 @@ export function DefaultCard({ api, defaultSiteaccess, choices, canManage, onSave
     return (
         <section>
             <FilterCard
-                actions={canManage ? <Button type="secondary" size="small" disabled={saving || value === (defaultSiteaccess ?? '')} onClick={() => void save()}>{t('action.save')}</Button> : undefined}
+                actions={canManage ? <button type="button" className="btn ibexa-btn ibexa-btn--secondary ibexa-adaptive-filters__submit-btn" disabled={saving || value === (defaultSiteaccess ?? '')} onClick={() => void save()}>{t('action.save')}</button> : undefined}
             >
                 <FilterSelect
                     label={t('default.label')}
