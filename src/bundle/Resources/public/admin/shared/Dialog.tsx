@@ -49,6 +49,10 @@ export function Dialog({ title, variant, onClose, children, footer, role = 'dial
                 return;
             }
             if (event.key === 'Escape') {
+                // Escape belongs to an open dropdown first: it closes the list, not the dialog behind it.
+                if (document.activeElement instanceof Element && document.activeElement.closest('.ids-dropdown') !== null) {
+                    return;
+                }
                 event.preventDefault();
                 onCloseRef.current();
 
