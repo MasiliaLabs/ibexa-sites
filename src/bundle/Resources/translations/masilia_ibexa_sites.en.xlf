@@ -574,6 +574,14 @@
         <source>ids.clear_btn.label</source>
         <target>Clear</target>
       </trans-unit>
+      <trans-unit id="ibexa.expander.label.collapse" resname="ibexa.expander.label.collapse">
+        <source>ibexa.expander.label.collapse</source>
+        <target>Hide</target>
+      </trans-unit>
+      <trans-unit id="ibexa.expander.label.expand" resname="ibexa.expander.label.expand">
+        <source>ibexa.expander.label.expand</source>
+        <target>Show</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

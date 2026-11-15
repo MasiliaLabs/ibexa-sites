@@ -53,6 +53,8 @@ export const DEFAULTS: Readonly<Record<string, string>> = {
     'ids.dropdown.placeholder': 'Select an item',
     'ids.dropdown.search.placeholder': 'Search…',
     'ids.clear_btn.label': 'Clear',
+    'ibexa.expander.label.collapse': 'Hide',
+    'ibexa.expander.label.expand': 'Show',
     'column.actions': 'Actions',
     'action.edit': 'Edit',
     'action.activate': 'Activate',
