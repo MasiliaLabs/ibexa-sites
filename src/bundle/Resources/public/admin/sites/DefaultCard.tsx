@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { DropdownField } from '@masilia-admin-kit/Dropdown';
+import { FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
 import { Button } from '@masilia-admin-kit/ids';
 import { notify } from '@masilia-admin-kit/notify';
 import type { Api } from './api';
@@ -38,18 +38,21 @@ export function DefaultCard({ api, defaultSiteaccess, choices, canManage, onSave
     };
 
     return (
-        <section className="masilia-sites-default">
-            <DropdownField
-                label={t('default.label')}
-                hint={t('default.help')}
-                value={value}
-                error={error}
-                disabled={!canManage || saving}
-                emptyLabel={t('default.project')}
-                options={choices.map((name) => ({ value: name, label: name }))}
-                onChange={setValue}
-            />
-            {canManage ? <Button type="secondary" size="small" disabled={saving || value === (defaultSiteaccess ?? '')} onClick={() => void save()}>{t('action.save')}</Button> : null}
+        <section>
+            <FilterCard
+                actions={canManage ? <Button type="secondary" size="small" disabled={saving || value === (defaultSiteaccess ?? '')} onClick={() => void save()}>{t('action.save')}</Button> : undefined}
+            >
+                <FilterSelect
+                    label={t('default.label')}
+                    value={value}
+                    disabled={!canManage || saving}
+                    emptyLabel={t('default.project')}
+                    options={choices.map((name) => ({ value: name, label: name }))}
+                    onChange={setValue}
+                />
+            </FilterCard>
+            <p className="masilia-sites-muted">{t('default.help')}</p>
+            {error !== undefined ? <p className="ibexa-alert ibexa-alert--error" role="alert">{error}</p> : null}
         </section>
     );
 }
