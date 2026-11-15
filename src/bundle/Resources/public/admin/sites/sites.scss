@@ -1,0 +1,10 @@
+@use '../shared/kit';
+@use '@ibexa-admin-ui/src/bundle/Resources/public/scss/custom' as ibexa;
+@use '@ibexa-admin-ui/src/bundle/Resources/public/scss/functions/calculate.rem' as *;
+
+.masilia-sites-react {
+    max-width: calculateRem(1100px);
+    padding: calculateRem(8px) 0 calculateRem(32px);
+    color: ibexa.$ibexa-color-dark;
+    font-size: ibexa.$ibexa-text-font-size;
+}
