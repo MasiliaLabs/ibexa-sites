@@ -7,18 +7,27 @@ interface FieldFrameProps {
     required?: boolean;
     hint?: string;
     error?: string;
+    /** The control is several controls (buttons, a list): the label names the group instead of pointing at one of them */
+    group?: boolean;
     children: ReactNode;
 }
 
 /** A field as the admin forms draw it: a label, the control, what is wrong with it, then a hint. */
-export function FieldFrame({ id, label, required, hint, error, children }: FieldFrameProps): React.ReactElement {
+export function FieldFrame({ id, label, required, hint, error, group, children }: FieldFrameProps): React.ReactElement {
     return (
         <div className="ibexa-field-edit masilia-kit-field">
-            <label className="ibexa-label" htmlFor={id}>
-                {label}
-                {required === true ? <span className="masilia-kit-required" aria-hidden="true"> *</span> : null}
-            </label>
-            {children}
+            {group === true ? (
+                <span className="ibexa-label" id={`${id}-label`}>
+                    {label}
+                    {required === true ? <span className="masilia-kit-required" aria-hidden="true"> *</span> : null}
+                </span>
+            ) : (
+                <label className="ibexa-label" htmlFor={id}>
+                    {label}
+                    {required === true ? <span className="masilia-kit-required" aria-hidden="true"> *</span> : null}
+                </label>
+            )}
+            {group === true ? <div role="group" aria-labelledby={`${id}-label`}>{children}</div> : children}
             <div className="ibexa-form-error" aria-live="polite">
                 {error !== undefined ? <em className="ibexa-form-error__row" id={`${id}-error`}>{error}</em> : null}
             </div>

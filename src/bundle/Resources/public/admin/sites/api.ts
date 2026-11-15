@@ -3,8 +3,6 @@ import type { ApiResult, Fetcher } from '../shared/http';
 import { toPayload } from './payload';
 import type { SiteDraft, SiteDto, SitesData } from './types';
 
-const BASE = '/api/masilia/sites';
-
 /** A location told by name: what the picker shows. */
 export interface LocationDto {
     id: number;
@@ -21,7 +19,12 @@ export interface ProblemsDto {
 }
 
 /** The calls of the sites page: one function for each thing it asks of the server. */
-export function createApi(fetcher: Fetcher, failed: string) {
+/** The base of the API of the page, from the address of its `data` route (the page knows its siteaccess prefix: the script does not guess it). */
+export function apiBase(dataUrl: string): string {
+    return dataUrl.replace(/\/data$/, '');
+}
+
+export function createApi(fetcher: Fetcher, failed: string, BASE: string) {
     return {
         data: () => request<SitesData>(fetcher, 'GET', `${BASE}/data`, undefined, failed),
         location: (id: number) => request<LocationDto>(fetcher, 'GET', `${BASE}/locations/${id}`, undefined, failed),

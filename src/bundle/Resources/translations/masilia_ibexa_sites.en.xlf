@@ -34,10 +34,6 @@
         <source>column.design</source>
         <target>Design</target>
       </trans-unit>
-      <trans-unit id="column.root" resname="column.root">
-        <source>column.root</source>
-        <target>Root</target>
-      </trans-unit>
       <trans-unit id="column.site" resname="column.site">
         <source>column.site</source>
         <target>Site</target>
@@ -52,7 +48,7 @@
       </trans-unit>
       <trans-unit id="flash.deleted" resname="flash.deleted">
         <source>flash.deleted</source>
-        <target>The site &quot;%identifier%&quot; was deleted.</target>
+        <target>The site &quot;%name%&quot; was deleted.</target>
       </trans-unit>
       <trans-unit id="flash.updated" resname="flash.updated">
         <source>flash.updated</source>
@@ -61,26 +57,6 @@
       <trans-unit id="menu.sites" resname="menu.sites">
         <source>menu.sites</source>
         <target>Sites</target>
-      </trans-unit>
-      <trans-unit id="sites.edit" resname="sites.edit">
-        <source>sites.edit</source>
-        <target>Edit %name%</target>
-      </trans-unit>
-      <trans-unit id="sites.empty" resname="sites.empty">
-        <source>sites.empty</source>
-        <target>No site was created here yet.</target>
-      </trans-unit>
-      <trans-unit id="sites.intro" resname="sites.intro">
-        <source>sites.intro</source>
-        <target>Sites created at run time: a site is served on its hosts, one siteaccess per language, as soon as it is active. The sites of the project (declared in its configuration) are not listed here.</target>
-      </trans-unit>
-      <trans-unit id="sites.limits" resname="sites.limits">
-        <source>sites.limits</source>
-        <target>The hosts must also answer at the server: DNS, web server, certificate and cache are not set from here. A design is chosen among the ones the project declares. Activating a site lets visitors into its siteaccesses (the Anonymous role is updated).</target>
-      </trans-unit>
-      <trans-unit id="sites.new" resname="sites.new">
-        <source>sites.new</source>
-        <target>New site</target>
       </trans-unit>
       <trans-unit id="sites.title" resname="sites.title">
         <source>sites.title</source>

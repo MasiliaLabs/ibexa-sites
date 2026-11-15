@@ -1,4 +1,4 @@
-import React, { useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 
 import { Button } from './ids';
 import { FieldFrame } from './Field';
@@ -39,6 +39,9 @@ export function UdwPicker({ label, config, title, value, onPick, onClear, choose
     const [unavailable, setUnavailable] = useState(false);
     const close = useRef<(() => void) | null>(null);
 
+    // The widget is drawn by the page, not by this field: it goes when the field does.
+    useEffect(() => () => close.current?.(), []);
+
     const open = (): void => {
         const host = udwHost();
         if (host === null) {
@@ -47,11 +50,11 @@ export function UdwPicker({ label, config, title, value, onPick, onClear, choose
             return;
         }
         close.current?.();
-        close.current = openUdw(host, { config, title, startingLocationId: value?.id, onConfirm: onPick }, (type, props) => React.createElement(type as React.ComponentType<Record<string, unknown>>, props));
+        close.current = openUdw(host, { config, title, startingLocationId: value !== null && value.id > 0 ? value.id : undefined, onConfirm: onPick }, (type, props) => React.createElement(type as React.ComponentType<Record<string, unknown>>, props));
     };
 
     return (
-        <FieldFrame id={id} label={label} required={required} hint={unavailable ? undefined : hint} error={unavailable ? unavailableLabel : error}>
+        <FieldFrame id={id} group label={label} required={required} hint={unavailable ? undefined : hint} error={unavailable ? unavailableLabel : error}>
             <div className="masilia-kit-picker" id={id}>
                 <div className={`masilia-kit-picker__value${value === null ? ' masilia-kit-picker__value--empty' : ''}`} aria-live="polite">
                     {value === null ? emptyLabel : (

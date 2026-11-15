@@ -34,7 +34,7 @@ export function OrderedChoice({ label, options, value, onChange, addPlaceholder,
     };
 
     return (
-        <FieldFrame id={id} label={label} required={required} hint={hint} error={error}>
+        <FieldFrame id={id} group label={label} required={required} hint={hint} error={error}>
             <ol className="masilia-kit-ordered" id={id}>
                 {value.map((v, index) => (
                     <li className="masilia-kit-ordered__item" key={v}>

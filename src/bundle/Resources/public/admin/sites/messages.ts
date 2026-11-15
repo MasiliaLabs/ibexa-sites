@@ -119,7 +119,6 @@ export const DEFAULTS: Readonly<Record<string, string>> = {
     'rows.add': 'Add a siteaccess',
     'rows.remove': 'Remove this siteaccess',
     'rows.none': 'No siteaccess yet.',
-    'rows.suggest.title': 'Start from the languages',
     'rows.suggest.hint': 'Choose the languages and the host: one siteaccess per language is made, the first at the root of the host, the others under their prefix.',
     'rows.suggest.host': 'Host',
     'rows.suggest.apply': 'Make the siteaccesses',

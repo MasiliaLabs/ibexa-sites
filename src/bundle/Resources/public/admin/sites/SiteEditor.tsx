@@ -82,6 +82,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
     useEffect(() => {
         if (draft.identifier.trim() === '' && draft.name.trim() === '') {
             setServerProblems([]);
+            setChecking(false);
 
             return undefined;
         }
@@ -115,13 +116,15 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
             return;
         }
         setSaving(true);
+        setSaveError(undefined);
         const result = site === null ? await api.create(draft) : await api.update(site.identifier, draft);
         setSaving(false);
         if (result.ok) {
             notify('success', t(site === null ? 'flash.created' : 'flash.updated', { name: result.data.site.name }));
             onSaved(result.data.site, site === null);
         } else {
-            setSaveError(result.message);
+            // What the server tied to a field is shown under that field; the sentence on top is for what it did not.
+            setSaveError(result.problems.length > 0 && result.problems.every((p) => p.path !== '') ? undefined : result.message);
             setServerProblems(result.problems);
         }
     };

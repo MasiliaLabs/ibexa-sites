@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
 import { fakeFetch } from '../shared/testing';
-import { createApi } from './api';
+import { apiBase, createApi } from './api';
 import { draftFrom } from './payload';
 import type { SiteDto } from './types';
 
@@ -13,7 +13,7 @@ const site: SiteDto = {
 
 test('each call goes to its route with its method and body', async () => {
     const { fetcher, calls } = fakeFetch(Array.from({ length: 9 }, () => ({ status: 200, body: {} })));
-    const api = createApi(fetcher, 'failed');
+    const api = createApi(fetcher, 'failed', '/api/masilia/sites');
     const draft = draftFrom(site);
 
     await api.data();
@@ -41,4 +41,9 @@ test('each call goes to its route with its method and body', async () => {
     assert.equal(JSON.parse(String(calls[3].init?.body)).site.identifier, 'demo_group');
     assert.equal(calls[0].init?.body, undefined);
     assert.equal(JSON.parse(String(calls[6].init?.body)).status, 'active');
+});
+
+test('the base of the API follows the siteaccess prefix the page was given', () => {
+    assert.equal(apiBase('/api/masilia/sites/data'), '/api/masilia/sites');
+    assert.equal(apiBase('/admin/api/masilia/sites/data'), '/admin/api/masilia/sites');
 });

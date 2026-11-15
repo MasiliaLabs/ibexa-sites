@@ -5,6 +5,14 @@ import { Button } from './ids';
 
 const FOCUSABLE = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+/** The open dialogs, the last one on top: only that one answers the keyboard. */
+const stack: symbol[] = [];
+
+/** The Universal Discovery Widget has its own keyboard: while it is open (it is drawn over a dialog) a dialog leaves the keys to it. */
+function browserOpen(): boolean {
+    return document.querySelector('#react-udw .m-ud') !== null;
+}
+
 interface DialogProps {
     title: string;
     /** `panel` slides in from the right (forms); `center` is a small confirmation. */
@@ -14,10 +22,12 @@ interface DialogProps {
     footer?: ReactNode;
     role?: 'dialog' | 'alertdialog';
     closeLabel?: string;
+    /** The id of the element that says what the dialog asks (for assistive technology) */
+    describedBy?: string;
 }
 
 /** A modal dialog: Escape closes it, Tab stays inside, and the focus goes back to what opened it. */
-export function Dialog({ title, variant, onClose, children, footer, role = 'dialog', closeLabel = 'Close' }: DialogProps): React.ReactElement {
+export function Dialog({ title, variant, onClose, children, footer, role = 'dialog', closeLabel = 'Close', describedBy }: DialogProps): React.ReactElement {
     const ref = useRef<HTMLDivElement>(null);
     const titleId = useId();
     const onCloseRef = useRef(onClose);
@@ -31,7 +41,13 @@ export function Dialog({ title, variant, onClose, children, footer, role = 'dial
             ?? ref.current?.querySelector<HTMLElement>(FOCUSABLE);
         target?.focus();
 
+        const me = Symbol('dialog');
+        stack.push(me);
+
         const onKeyDown = (event: KeyboardEvent): void => {
+            if (stack[stack.length - 1] !== me || browserOpen()) {
+                return;
+            }
             if (event.key === 'Escape') {
                 event.preventDefault();
                 onCloseRef.current();
@@ -64,6 +80,7 @@ export function Dialog({ title, variant, onClose, children, footer, role = 'dial
 
         return () => {
             document.removeEventListener('keydown', onKeyDown);
+            stack.splice(stack.indexOf(me), 1);
             returnTo?.focus();
         };
     }, []);
@@ -71,7 +88,7 @@ export function Dialog({ title, variant, onClose, children, footer, role = 'dial
     return (
         <>
             <div className="masilia-kit-overlay" onClick={() => onClose()} />
-            <div ref={ref} className={`masilia-kit-dialog masilia-kit-dialog--${variant}`} role={role} aria-modal="true" aria-labelledby={titleId}>
+            <div ref={ref} className={`masilia-kit-dialog masilia-kit-dialog--${variant}`} role={role} aria-modal="true" aria-labelledby={titleId} aria-describedby={describedBy}>
                 <header className="masilia-kit-dialog__header">
                     <h2 className="masilia-kit-dialog__title" id={titleId}>{title}</h2>
                     <Button type="tertiary" icon="discard" ariaLabel={closeLabel} title={closeLabel} onClick={onClose} />

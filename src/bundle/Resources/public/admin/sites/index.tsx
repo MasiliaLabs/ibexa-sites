@@ -30,7 +30,7 @@ function mount(): void {
 
     client.createRoot(container).render(
         <StrictMode>
-            <SitesApp udw={{ root: json(container.dataset.udwRoot), layout: json(container.dataset.udwLayout) }} />
+            <SitesApp udw={{ root: json(container.dataset.udwRoot), layout: json(container.dataset.udwLayout) }} dataUrl={container.dataset.api ?? '/api/masilia/sites/data'} />
         </StrictMode>,
     );
 }

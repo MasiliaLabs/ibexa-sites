@@ -4,7 +4,7 @@ import { iconPath } from '../shared/icons';
 import { AssetsProvider } from '../shared/ids';
 import { Spinner } from '../shared/Spinner';
 import { Tabs } from '../shared/Tabs';
-import { createApi } from './api';
+import { apiBase, createApi } from './api';
 import { DefaultCard } from './DefaultCard';
 import { t } from './messages';
 import { SiteEditor } from './SiteEditor';
@@ -15,13 +15,15 @@ import { useSites } from './useSites';
 interface SitesAppProps {
     /** The configuration of the Universal Discovery Widget for the root and for the layout of a site */
     udw: { root: Record<string, unknown>; layout: Record<string, unknown> };
+    /** The address of the `data` route of the API, as the page's siteaccess builds it */
+    dataUrl: string;
 }
 
 type Editing = { site: SiteDto | null } | null;
 
 /** The sites page: the list with its filters, the default siteaccess, and the panel that edits a site. */
-export function SitesApp({ udw }: SitesAppProps): React.ReactElement {
-    const api = useMemo(() => createApi((input, init) => window.fetch(input, init), t('ui.failed')), []);
+export function SitesApp({ udw, dataUrl }: SitesAppProps): React.ReactElement {
+    const api = useMemo(() => createApi((input, init) => window.fetch(input, init), t('ui.failed'), apiBase(dataUrl)), [dataUrl]);
     const { data, loading, failed, reload } = useSites(api);
     const [editing, setEditing] = useState<Editing>(null);
     const [tab, setTab] = useState('sites');
