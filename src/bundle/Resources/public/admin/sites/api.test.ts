@@ -7,7 +7,7 @@ import { draftFrom } from './payload';
 import type { SiteDto } from './types';
 
 const site: SiteDto = {
-    identifier: 'demo_group', name: 'Demo', status: 'draft', rootLocationId: 500, design: 'imal', base: null, sessionCookieDomain: null, adminSiteaccess: null, varDir: null, layoutRemoteId: null,
+    identifier: 'demo_group', name: 'Demo', status: 'draft', rootLocationId: 500, design: 'imal', base: null, sessionCookieDomain: null, adminSiteaccess: null, varDir: null, layoutRemoteId: null, email: null, address: null,
     siteaccesses: [{ name: 'demo', languages: ['eng-GB'], host: 'demo.example.org', uriPrefix: null }], adminSiteaccesses: [],
 };
 

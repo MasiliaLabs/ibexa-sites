@@ -9,6 +9,7 @@ const IDENTIFIER = /^[a-z][a-z0-9_]{1,29}$/;
 const SITEACCESS = /^[a-z][a-z0-9_]{1,39}$/;
 const PREFIX = /^[a-z0-9][a-z0-9-]{0,29}$/;
 const HOST = /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/;
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const COOKIE_DOMAIN = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/;
 const VAR_DIR = /^[a-z0-9][a-z0-9_-]*(\/[a-z0-9][a-z0-9_-]*)*$/;
 const REMOTE_ID = /^[A-Za-z0-9_-]{1,100}$/;
@@ -121,6 +122,12 @@ export function validateSite(draft: SiteDraft, ctx: ValidationContext, t: Transl
     }
     if (draft.layoutRemoteId.trim() !== '' && !REMOTE_ID.test(draft.layoutRemoteId.trim())) {
         out.push({ path: 'layoutRemoteId', message: t('validation.layout') });
+    }
+    if (draft.email.trim() !== '' && (draft.email.trim().length > 255 || !EMAIL.test(draft.email.trim()))) {
+        out.push({ path: 'email', message: t('validation.email') });
+    }
+    if (draft.address.trim().length > 255) {
+        out.push({ path: 'address', message: t('validation.address') });
     }
 
     if (draft.siteaccesses.length === 0) {

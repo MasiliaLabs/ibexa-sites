@@ -33,6 +33,8 @@ final class SiteInput
             self::text($data['varDir'] ?? null),
             self::text($data['layoutRemoteId'] ?? null),
             self::definitions($data['adminSiteaccesses'] ?? []),
+            self::text($data['email'] ?? null),
+            self::text($data['address'] ?? null),
         );
     }
 

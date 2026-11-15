@@ -261,6 +261,13 @@ readonly class SiteValidator
             }
         }
 
+        if ($site->email !== null && (strlen($site->email) > 255 || filter_var($site->email, FILTER_VALIDATE_EMAIL) === false)) {
+            $problems[] = new Problem('email', sprintf('"%s" is not a valid email address.', $site->email));
+        }
+        if ($site->address !== null && strlen($site->address) > 255) {
+            $problems[] = new Problem('address', 'The address is too long (255 characters at most).');
+        }
+
         return $problems;
     }
 }

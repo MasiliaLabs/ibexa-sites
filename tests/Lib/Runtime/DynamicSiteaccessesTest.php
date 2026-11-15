@@ -50,6 +50,20 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertSame(['ara-MA'], $resolver->getParameter('languages', null, 'blog_ar'));
     }
 
+    public function testTheResolverGivesTheNameTheUrlTheContactAndTheAdminOfASite(): void
+    {
+        $resolver = new RegistryConfigResolver($this->snapshot());
+
+        self::assertSame('Demo', $resolver->getParameter('site_name', 'masilia_ibexa_sites', 'demo_fr'));
+        self::assertSame('https://demo.example.org', $resolver->getParameter('site_url', 'masilia_ibexa_sites', 'demo_fr'), 'the host of the first siteaccess, without the prefix');
+        self::assertSame('contact@demo.example.org', $resolver->getParameter('site_email', 'masilia_ibexa_sites', 'demo'));
+        self::assertSame('1 rue Demo, Rabat', $resolver->getParameter('site_address', 'masilia_ibexa_sites', 'demo_group'));
+        self::assertFalse($resolver->hasParameter('site_email', 'masilia_ibexa_sites', 'blog'), 'no email set: the project\'s default');
+        self::assertSame('admin_demo', $resolver->getParameter('admin_siteaccess', 'masilia_editorial_toolbox', 'demo'));
+        self::assertFalse($resolver->hasParameter('admin_siteaccess', 'masilia_editorial_toolbox', 'blog'), 'no admin: the project\'s default');
+        self::assertFalse($resolver->hasParameter('site_url', 'masilia_ibexa_sites', 'admin_demo'), 'the siteaccess of the admin is not a front');
+    }
+
     public function testAnAdminSiteaccessGetsItsLanguagesTheDirectoryAndTheSessionButNeitherTheDesignNorTheRootNorTheLayout(): void
     {
         $resolver = new RegistryConfigResolver($this->snapshot());

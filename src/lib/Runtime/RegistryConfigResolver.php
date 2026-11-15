@@ -53,6 +53,18 @@ final class RegistryConfigResolver implements ConfigResolverInterface, SiteAcces
     /** What the registry sets for a site: null when it does not set it (the groups, then the project's defaults, answer). */
     private function answer(Site $site, ?SiteAccessDefinition $definition, bool $isAdmin, string $paramName, ?string $namespace): mixed
     {
+        if ($namespace === 'masilia_ibexa_sites') {
+            return match ($paramName) {
+                'site_name' => $site->name,
+                'site_url' => $isAdmin || $site->siteaccesses === [] ? null : 'https://' . $site->siteaccesses[0]->host,
+                'site_email' => $site->email,
+                'site_address' => $site->address,
+                default => null,
+            };
+        }
+        if ($namespace === 'masilia_editorial_toolbox') {
+            return $paramName === 'admin_siteaccess' && !$isAdmin ? ($site->adminSiteaccesses[0]->name ?? $site->adminSiteaccess) : null;
+        }
         if (($namespace ?? $this->defaultNamespace) !== $this->defaultNamespace) {
             return $namespace === 'masilia_ibexa_blocks' && $paramName === 'layout_remote_id' && !$isAdmin ? $site->layoutRemoteId : null;
         }

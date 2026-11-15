@@ -19,6 +19,8 @@ final readonly class Site
      * @param string|null               $layoutRemoteId The remote id of the content that holds the layout of the site (logo, footer), for masilia/ibexa-blocks
      * @param list<SiteAccessDefinition> $siteaccesses      The front ones: what visitors see
      * @param list<SiteAccessDefinition> $adminSiteaccesses The ones editors work in (members of the admin group), same rules of address
+     * @param string|null               $email   The contact address of the site (emails, footers), if any
+     * @param string|null               $address The postal address of the site, if any
      */
     public function __construct(
         public string $identifier,
@@ -33,6 +35,8 @@ final readonly class Site
         public ?string $varDir = null,
         public ?string $layoutRemoteId = null,
         public array $adminSiteaccesses = [],
+        public ?string $email = null,
+        public ?string $address = null,
     ) {
     }
 
@@ -92,7 +96,7 @@ final readonly class Site
 
     public function withStatus(SiteStatus $status): self
     {
-        return new self($this->identifier, $this->name, $status, $this->rootLocationId, $this->design, $this->siteaccesses, $this->base, $this->sessionCookieDomain, $this->adminSiteaccess, $this->varDir, $this->layoutRemoteId, $this->adminSiteaccesses);
+        return new self($this->identifier, $this->name, $status, $this->rootLocationId, $this->design, $this->siteaccesses, $this->base, $this->sessionCookieDomain, $this->adminSiteaccess, $this->varDir, $this->layoutRemoteId, $this->adminSiteaccesses, $this->email, $this->address);
     }
 
     /** @return array<string, mixed> */
@@ -101,7 +105,7 @@ final readonly class Site
         return [
             'identifier' => $this->identifier, 'name' => $this->name, 'status' => $this->status->value, 'rootLocationId' => $this->rootLocationId,
             'design' => $this->design, 'base' => $this->base, 'sessionCookieDomain' => $this->sessionCookieDomain, 'adminSiteaccess' => $this->adminSiteaccess,
-            'varDir' => $this->varDir, 'layoutRemoteId' => $this->layoutRemoteId,
+            'varDir' => $this->varDir, 'layoutRemoteId' => $this->layoutRemoteId, 'email' => $this->email, 'address' => $this->address,
             'siteaccesses' => array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $this->siteaccesses),
             'adminSiteaccesses' => array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $this->adminSiteaccesses),
         ];
@@ -125,6 +129,8 @@ final readonly class Site
             $optional('varDir'),
             $optional('layoutRemoteId'),
             array_map(static fn (array $row): SiteAccessDefinition => SiteAccessDefinition::fromArray($row), array_values((array) ($data['adminSiteaccesses'] ?? []))),
+            $optional('email'),
+            $optional('address'),
         );
     }
 }

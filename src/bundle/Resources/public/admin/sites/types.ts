@@ -19,6 +19,8 @@ export interface SiteDto {
     adminSiteaccess: string | null;
     varDir: string | null;
     layoutRemoteId: string | null;
+    email: string | null;
+    address: string | null;
     siteaccesses: SiteaccessDto[];
     adminSiteaccesses: SiteaccessDto[];
 }
@@ -61,6 +63,8 @@ export interface SiteDraft {
     adminSiteaccess: string;
     varDir: string;
     layoutRemoteId: string;
+    email: string;
+    address: string;
     siteaccesses: SiteaccessDraft[];
     adminSiteaccesses: SiteaccessDraft[];
 }

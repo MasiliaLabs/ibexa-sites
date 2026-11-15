@@ -67,9 +67,12 @@ readonly class StaticSites
             }
             $varDir = $this->value('var_dir', $members[0]);
             $layout = $this->value('layout_remote_id', $members[0], 'masilia_ibexa_blocks');
+            $email = $this->value('site_email', $group, 'app');
+            $address = $this->value('site_address', $group, 'app');
+            $name = $this->value('site_name', $group, 'app');
             $sites[] = new Site(
                 $group,
-                $group,
+                is_string($name) && $name !== '' ? $name : $group,
                 SiteStatus::Draft,
                 (int) $root,
                 $design,
@@ -79,6 +82,9 @@ readonly class StaticSites
                 null,
                 is_string($varDir) && $varDir !== $this->value('var_dir', 'default') ? $varDir : null,
                 is_string($layout) && $layout !== '' ? $layout : null,
+                [],
+                is_string($email) && $email !== '' ? $email : null,
+                is_string($address) && $address !== '' ? $address : null,
             );
         }
 

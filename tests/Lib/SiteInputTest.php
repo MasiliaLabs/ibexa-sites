@@ -22,6 +22,8 @@ final class SiteInputTest extends TestCase
             'sessionCookieDomain' => '   ',
             'varDir' => ' var/demo ',
             'layoutRemoteId' => null,
+            'email' => ' contact@demo.example.org ',
+            'address' => '  ',
             'siteaccesses' => [
                 ['name' => ' demo ', 'languages' => [' eng-GB ', ''], 'host' => ' Demo.Example.ORG ', 'uriPrefix' => ''],
                 ['name' => 'demo_fr', 'languages' => ['fre-FR', 'eng-GB'], 'host' => 'demo.example.org', 'uriPrefix' => ' /FR/ '],
@@ -37,6 +39,8 @@ final class SiteInputTest extends TestCase
         self::assertNull($site->base, 'an empty value is no value');
         self::assertNull($site->sessionCookieDomain);
         self::assertNull($site->layoutRemoteId);
+        self::assertSame('contact@demo.example.org', $site->email);
+        self::assertNull($site->address);
         self::assertSame('var/demo', $site->varDir);
         self::assertSame(['demo', 'demo_fr'], $site->siteaccessNames());
         self::assertSame(['eng-GB'], $site->siteaccess('demo')?->languages);

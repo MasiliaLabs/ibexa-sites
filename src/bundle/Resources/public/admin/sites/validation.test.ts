@@ -24,7 +24,7 @@ function valid(overrides: Partial<SiteDraft> = {}): SiteDraft {
 }
 
 const other: SiteDto = {
-    identifier: 'other_group', name: 'Other', status: 'active', rootLocationId: 600, design: 'imal', base: null, sessionCookieDomain: null, adminSiteaccess: null, varDir: null, layoutRemoteId: null,
+    identifier: 'other_group', name: 'Other', status: 'active', rootLocationId: 600, design: 'imal', base: null, sessionCookieDomain: null, adminSiteaccess: null, varDir: null, layoutRemoteId: null, email: null, address: null,
     siteaccesses: [{ name: 'other', languages: ['eng-GB'], host: 'other.example.org', uriPrefix: null }], adminSiteaccesses: [{ name: 'admin_other', languages: ['eng-GB'], host: 'admin.other.example.org', uriPrefix: null }],
 };
 
@@ -124,4 +124,9 @@ test('problems of the page and of the server are merged without repeats', () => 
     assert.deepEqual(merged.map((p) => `${p.path}:${p.message}`), ['name:A', 'name:B', 'design:A']);
     assert.equal(hasProblems(merged), true);
     assert.equal(hasProblems([]), false);
+});
+
+test('the contact email and the address are optional, but must be an email and short', () => {
+    assert.deepEqual(paths(valid({ email: 'contact@demo.example.org', address: '1 rue Demo, Rabat' })), []);
+    assert.deepEqual(paths(valid({ email: 'not-an-email', address: 'a'.repeat(256) })), ['email', 'address']);
 });

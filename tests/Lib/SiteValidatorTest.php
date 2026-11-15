@@ -28,6 +28,7 @@ final class SiteValidatorTest extends TestCase
     {
         self::assertSame([], $this->problems([]));
         self::assertSame([], $this->problems(['adminSiteaccess' => 'admin', 'status' => SiteStatus::Active]));
+        self::assertSame([], $this->problems(['email' => 'contact@demo.example.org', 'address' => '1 rue Demo, Rabat']));
     }
 
     private static function sa(string $name, array $languages = ['eng-GB'], string $host = 'demo.example.org', ?string $prefix = null): SiteAccessDefinition
@@ -40,6 +41,8 @@ final class SiteValidatorTest extends TestCase
     {
         yield 'an identifier with capitals' => [['identifier' => 'Demo'], 'identifier "Demo" is not valid'];
         yield 'no name' => [['name' => ' '], 'name is required'];
+        yield 'an email that is not one' => [['email' => 'not-an-email'], '"not-an-email" is not a valid email address'];
+        yield 'an address that is too long' => [['address' => str_repeat('a', 256)], 'address is too long'];
         yield 'no siteaccess' => [['siteaccesses' => []], 'at least one siteaccess'];
         yield 'a siteaccess name that is not valid' => [['siteaccesses' => [self::sa('Demo Fr')]], 'siteaccess name "Demo Fr" is not valid'];
         yield 'a siteaccess given twice' => [['siteaccesses' => [self::sa('demo'), self::sa('demo', host: 'other.example.org')]], 'given twice'];

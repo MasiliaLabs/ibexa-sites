@@ -182,6 +182,8 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                         disabled={!isNew}
                         onChange={(identifier) => { setIdentifierTouched(true); set({ identifier }, 'identifier'); }}
                     />
+                    <TextField label={t('field.email')} hint={t('field.email.hint')} value={draft.email} error={shown('email')} onChange={(email) => set({ email }, 'email')} />
+                    <TextField label={t('field.address')} hint={t('field.address.hint')} value={draft.address} error={shown('address')} onChange={(address) => set({ address }, 'address')} />
 
                 </Section>
 

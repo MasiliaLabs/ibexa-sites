@@ -7,6 +7,8 @@ export function sectionOf(path: string): SectionId {
     switch (field) {
         case 'identifier':
         case 'name':
+        case 'email':
+        case 'address':
             return 'identity';
         case 'siteaccesses':
             return 'addresses';

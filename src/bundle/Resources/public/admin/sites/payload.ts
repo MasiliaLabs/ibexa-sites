@@ -3,7 +3,7 @@ import type { SiteDraft, SiteDto, SiteaccessDraft, SiteaccessDto } from './types
 
 export function emptyDraft(): SiteDraft {
     return {
-        identifier: '', name: '', rootLocationId: null, design: '', base: '', sessionCookieDomain: '', adminSiteaccess: '', varDir: '', layoutRemoteId: '',
+        identifier: '', name: '', rootLocationId: null, design: '', base: '', sessionCookieDomain: '', adminSiteaccess: '', varDir: '', layoutRemoteId: '', email: '', address: '',
         siteaccesses: [], adminSiteaccesses: [],
     };
 }
@@ -24,6 +24,8 @@ export function draftFrom(site: SiteDto): SiteDraft {
         adminSiteaccess: site.adminSiteaccess ?? '',
         varDir: site.varDir ?? '',
         layoutRemoteId: site.layoutRemoteId ?? '',
+        email: site.email ?? '',
+        address: site.address ?? '',
         siteaccesses: site.siteaccesses.map(rowFrom),
         adminSiteaccesses: site.adminSiteaccesses.map(rowFrom),
     };
@@ -48,6 +50,8 @@ export function toPayload(draft: SiteDraft): Record<string, unknown> {
         adminSiteaccess: draft.adminSiteaccess,
         varDir: draft.varDir,
         layoutRemoteId: draft.layoutRemoteId,
+        email: draft.email,
+        address: draft.address,
         siteaccesses: draft.siteaccesses.map(rowPayload),
         adminSiteaccesses: draft.adminSiteaccesses.map(rowPayload),
     };

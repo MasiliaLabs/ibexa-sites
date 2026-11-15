@@ -574,6 +574,30 @@
         <source>ibexa.chip.delete-btn.label</source>
         <target>Remove</target>
       </trans-unit>
+      <trans-unit id="validation.email" resname="validation.email">
+        <source>validation.email</source>
+        <target>Not a valid email address.</target>
+      </trans-unit>
+      <trans-unit id="validation.address" resname="validation.address">
+        <source>validation.address</source>
+        <target>255 characters at most.</target>
+      </trans-unit>
+      <trans-unit id="field.email" resname="field.email">
+        <source>field.email</source>
+        <target>Contact email</target>
+      </trans-unit>
+      <trans-unit id="field.email.hint" resname="field.email.hint">
+        <source>field.email.hint</source>
+        <target>Shown in the emails and the pages of the site. The project’s own when empty.</target>
+      </trans-unit>
+      <trans-unit id="field.address" resname="field.address">
+        <source>field.address</source>
+        <target>Address</target>
+      </trans-unit>
+      <trans-unit id="field.address.hint" resname="field.address.hint">
+        <source>field.address.hint</source>
+        <target>The postal address of the site, shown in its emails. The project’s own when empty.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
