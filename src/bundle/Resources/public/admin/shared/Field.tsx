@@ -9,13 +9,15 @@ interface FieldFrameProps {
     error?: string;
     /** The control is several controls (buttons, a list): the label names the group instead of pointing at one of them */
     group?: boolean;
+    /** The label is for assistive technology only (the control says what it is by itself) */
+    labelHidden?: boolean;
     children: ReactNode;
 }
 
 /** A field as the admin forms draw it: a label, the control, what is wrong with it, then a hint. */
-export function FieldFrame({ id, label, required, hint, error, group, children }: FieldFrameProps): React.ReactElement {
+export function FieldFrame({ id, label, required, hint, error, group, labelHidden, children }: FieldFrameProps): React.ReactElement {
     return (
-        <div className="ibexa-field-edit masilia-kit-field">
+        <div className={`ibexa-field-edit masilia-kit-field${labelHidden === true ? ' masilia-kit-field--label-hidden' : ''}`}>
             {group === true ? (
                 <span className="ibexa-label" id={`${id}-label`}>
                     {label}
@@ -86,46 +88,6 @@ export function TextField({ label, value, onChange, type = 'text', required, hin
                     onBlur={onBlur}
                 />
             </div>
-        </FieldFrame>
-    );
-}
-
-export interface Option {
-    value: string;
-    label: string;
-}
-
-interface SelectFieldProps {
-    label: string;
-    value: string;
-    options: Option[];
-    onChange: (value: string) => void;
-    /** A first entry that stands for "nothing chosen" (its value is the empty string) */
-    placeholder?: string;
-    required?: boolean;
-    hint?: string;
-    error?: string;
-    disabled?: boolean;
-}
-
-export function SelectField({ label, value, options, onChange, placeholder, required, hint, error, disabled }: SelectFieldProps): React.ReactElement {
-    const id = useId();
-
-    return (
-        <FieldFrame id={id} label={label} required={required} hint={hint} error={error}>
-            <select
-                id={id}
-                className={`ibexa-input ibexa-input--text form-select masilia-kit-select${error !== undefined ? ' is-invalid' : ''}`}
-                value={value}
-                disabled={disabled}
-                aria-invalid={error !== undefined}
-                aria-required={required}
-                aria-describedby={describedBy(id, hint, error)}
-                onChange={(event) => onChange(event.target.value)}
-            >
-                {placeholder !== undefined ? <option value="">{placeholder}</option> : null}
-                {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
         </FieldFrame>
     );
 }

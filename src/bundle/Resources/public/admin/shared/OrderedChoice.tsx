@@ -1,8 +1,9 @@
 import React, { useId } from 'react';
 
-import { Button } from './ids';
+import type { Option } from './adapters';
+import { DropdownField } from './Dropdown';
 import { FieldFrame } from './Field';
-import type { Option } from './Field';
+import { Button, Chip, Tag } from './ids';
 
 interface OrderedChoiceProps {
     label: string;
@@ -21,7 +22,7 @@ interface OrderedChoiceProps {
     error?: string;
 }
 
-/** A short ordered list of choices: each can be moved up or down or taken out, and what is left is offered to add. */
+/** A short ordered list of choices as chips (each taken out with its cross, moved up or down with its arrows), and what is left to add. */
 export function OrderedChoice({ label, options, value, onChange, addPlaceholder, moveUpLabel, moveDownLabel, removeLabel, firstLabel, required, hint, error }: OrderedChoiceProps): React.ReactElement {
     const id = useId();
     const labelOf = (v: string): string => options.find((o) => o.value === v)?.label ?? v;
@@ -38,26 +39,19 @@ export function OrderedChoice({ label, options, value, onChange, addPlaceholder,
             <ol className="masilia-kit-ordered" id={id}>
                 {value.map((v, index) => (
                     <li className="masilia-kit-ordered__item" key={v}>
-                        <span className="masilia-kit-ordered__label">{labelOf(v)}</span>
-                        {index === 0 && firstLabel !== undefined ? <span className="masilia-kit-chip masilia-kit-chip--info">{firstLabel}</span> : null}
+                        <Chip isDeletable onDelete={() => onChange(value.filter((x) => x !== v))}>{labelOf(v)}</Chip>
+                        {index === 0 && firstLabel !== undefined ? <Tag type="info" size="small">{firstLabel}</Tag> : null}
                         <span className="masilia-kit-ordered__actions">
                             <Button type="tertiary" size="small" icon="caret-up" ariaLabel={`${moveUpLabel}: ${labelOf(v)}`} title={moveUpLabel} disabled={index === 0} onClick={() => move(index, -1)} />
                             <Button type="tertiary" size="small" icon="caret-down" ariaLabel={`${moveDownLabel}: ${labelOf(v)}`} title={moveDownLabel} disabled={index === value.length - 1} onClick={() => move(index, 1)} />
-                            <Button type="tertiary" size="small" icon="discard" ariaLabel={`${removeLabel}: ${labelOf(v)}`} title={removeLabel} onClick={() => onChange(value.filter((x) => x !== v))} />
                         </span>
                     </li>
                 ))}
             </ol>
             {remaining.length > 0 ? (
-                <select
-                    className="ibexa-input ibexa-input--text form-select masilia-kit-select masilia-kit-ordered__add"
-                    value=""
-                    aria-label={addPlaceholder}
-                    onChange={(event) => event.target.value !== '' && onChange([...value, event.target.value])}
-                >
-                    <option value="">{addPlaceholder}</option>
-                    {remaining.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-                </select>
+                <div className="masilia-kit-ordered__add">
+                    <DropdownField label={addPlaceholder} value="" options={remaining} placeholder={addPlaceholder} hideLabel onChange={(added) => added !== '' && onChange([...value, added])} />
+                </div>
             ) : null}
         </FieldFrame>
     );

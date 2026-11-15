@@ -7,6 +7,13 @@
 // Only the rules of the Design System components used here: its full stylesheet carries global rules.
 @use '@ids-assets/scss/buttons';
 @use '@ids-assets/scss/icons';
+@use '@ids-assets/scss/chips';
+@use '@ids-assets/scss/tags';
+@use '@ids-assets/scss/badge';
+@use '@ids-assets/scss/accordion';
+@use '@ids-assets/scss/expander';
+@use '@ids-assets/scss/input';
+@use '@ids-assets/scss/inputs/dropdown';
 
 $radius: ibexa.$ibexa-border-radius;
 $transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transition;
@@ -25,29 +32,6 @@ $line: 1px solid ibexa.$ibexa-color-light;
 
 .masilia-kit-required {
     color: ibexa.$ibexa-color-danger;
-}
-
-.masilia-kit-select {
-    transition: border-color $transition, box-shadow $transition;
-}
-
-// ----- Chips
-.masilia-kit-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: calculateRem(2px) calculateRem(10px);
-    border-radius: calculateRem(12px);
-    font-size: ibexa.$ibexa-text-font-size-medium;
-    font-weight: ibexa.$ibexa-font-weight-bold;
-    line-height: 1.5;
-    white-space: nowrap;
-    transition: background-color $transition, color $transition;
-
-    &--success { background: ibexa.$ibexa-color-success-100; color: ibexa.$ibexa-color-success-700; }
-    &--warning { background: ibexa.$ibexa-color-warning-100; color: ibexa.$ibexa-color-warning-700; }
-    &--danger { background: ibexa.$ibexa-color-danger-100; color: ibexa.$ibexa-color-danger-700; }
-    &--info { background: ibexa.$ibexa-color-info-100; color: ibexa.$ibexa-color-info-700; }
-    &--neutral { background: ibexa.$ibexa-color-light-300; color: ibexa.$ibexa-color-dark-400; }
 }
 
 // ----- Spinner
@@ -256,7 +240,7 @@ $line: 1px solid ibexa.$ibexa-color-light;
             margin-top: 0;
         }
 
-        .masilia-kit-select {
+        .ids-dropdown {
             min-width: calculateRem(216px);
         }
     }
@@ -279,4 +263,32 @@ $line: 1px solid ibexa.$ibexa-color-light;
     &__text {
         word-break: break-all;
     }
+}
+
+// ----- Design system pieces placed in the kit's fields
+.masilia-kit-field--label-hidden > .ibexa-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.masilia-kit-ordered__add {
+    max-width: calculateRem(320px);
+}
+
+.masilia-kit-section {
+    margin-bottom: calculateRem(8px);
+
+    &__body {
+        padding-top: calculateRem(16px);
+    }
+}
+
+// A dropdown opened inside a dialog or over the content browser must stay above them.
+.ids-dropdown__items,
+.ids-dropdown__items-container {
+    z-index: calc(#{ibexa.$ibexa-modal-zindex} + 20);
 }

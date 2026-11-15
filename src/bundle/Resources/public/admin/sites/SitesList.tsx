@@ -4,19 +4,16 @@ import { ConfirmDialog } from '../shared/ConfirmDialog';
 import { FilterCard, FilterSelect, FilterZone } from '../shared/FilterCard';
 import { ExternalLink } from '../shared/ExternalLink';
 import { IconButton } from '../shared/IconButton';
-import { Button } from '../shared/ids';
+import { Badge, Button } from '../shared/ids';
 import { notify } from '../shared/notify';
 import { SearchInput } from '../shared/SearchInput';
 import { DataTable, TableHeader } from '../shared/Table';
 import type { Column } from '../shared/Table';
-import { StatusChip } from '../shared/StatusChip';
-import type { ChipTone } from '../shared/StatusChip';
+import { StatusTag } from '../shared/StatusTag';
 import { addressOf } from './addresses';
 import type { Api } from './api';
 import { t } from './messages';
 import type { SiteDto, SiteStatus, SitesData } from './types';
-
-const TONES: Record<SiteStatus, ChipTone> = { draft: 'warning', active: 'success', disabled: 'neutral' };
 
 type Pending = { kind: 'activate' | 'disable' | 'delete'; site: SiteDto } | null;
 
@@ -79,7 +76,7 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
                 </>
             ),
         },
-        { key: 'status', header: t('column.status'), render: (site) => <StatusChip tone={TONES[site.status]}>{t(`status.${site.status}`)}</StatusChip> },
+        { key: 'status', header: t('column.status'), render: (site) => <StatusTag status={site.status}>{t(`status.${site.status}`)}</StatusTag> },
         {
             key: 'siteaccesses',
             header: t('column.addresses'),
@@ -96,7 +93,7 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
                             </div>
                         );
                     })}
-                    {site.adminSiteaccesses.length > 0 ? <div className="masilia-sites-muted">{t('list.admins', { count: site.adminSiteaccesses.length })}</div> : null}
+                    {site.adminSiteaccesses.length > 0 ? <div className="masilia-sites-muted"><Badge variant="number" size="small" value={site.adminSiteaccesses.length} /> {t('list.admins.label')}</div> : null}
                 </>
             ),
         },
@@ -125,7 +122,8 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
                         label={t('column.status')}
                         value={status}
                         onChange={(value) => setStatus(value as '' | SiteStatus)}
-                        options={[{ value: '', label: t('list.filter.all') }, ...(['draft', 'active', 'disabled'] as const).map((s) => ({ value: s, label: t(`status.${s}`) }))]}
+                        emptyLabel={t('list.filter.all')}
+                        options={(['draft', 'active', 'disabled'] as const).map((s) => ({ value: s, label: t(`status.${s}`) }))}
                     />
                 </FilterZone>
             </FilterCard>

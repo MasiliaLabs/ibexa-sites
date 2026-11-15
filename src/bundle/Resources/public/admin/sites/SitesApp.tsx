@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
 import { iconPath } from '../shared/icons';
-import { AssetsProvider } from '../shared/ids';
+import { AssetsProvider, TranslatorProvider } from '../shared/ids';
 import { Spinner } from '../shared/Spinner';
 import { Tabs } from '../shared/Tabs';
 import { apiBase, createApi } from './api';
@@ -60,6 +60,7 @@ export function SitesApp({ udw, dataUrl }: SitesAppProps): React.ReactElement {
     }
 
     return (
+        <TranslatorProvider value={{ trans: (id) => t(id) }}>
         <AssetsProvider value={{ getIconPath: iconPath }}>
             <div className="masilia-sites-react">
                 <p className="masilia-sites-muted">{t('ui.intro')}</p>
@@ -67,5 +68,6 @@ export function SitesApp({ udw, dataUrl }: SitesAppProps): React.ReactElement {
                 <div className="ibexa-alert ibexa-alert--info masilia-sites-limits" role="note">{t('ui.limits')}</div>
             </div>
         </AssetsProvider>
+        </TranslatorProvider>
     );
 }

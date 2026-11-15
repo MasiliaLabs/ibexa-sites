@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { SelectField } from '../shared/Field';
+import { DropdownField } from '../shared/Dropdown';
 import { Button } from '../shared/ids';
 import { notify } from '../shared/notify';
 import type { Api } from './api';
@@ -39,13 +39,13 @@ export function DefaultCard({ api, defaultSiteaccess, choices, canManage, onSave
 
     return (
         <section className="masilia-sites-default">
-            <SelectField
+            <DropdownField
                 label={t('default.label')}
                 hint={t('default.help')}
                 value={value}
                 error={error}
                 disabled={!canManage || saving}
-                placeholder={t('default.project')}
+                emptyLabel={t('default.project')}
                 options={choices.map((name) => ({ value: name, label: name }))}
                 onChange={setValue}
             />

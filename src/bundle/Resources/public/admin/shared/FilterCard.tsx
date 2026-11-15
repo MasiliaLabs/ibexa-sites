@@ -1,7 +1,8 @@
-import React, { useId } from 'react';
+import React from 'react';
 import type { ReactNode } from 'react';
 
-import type { Option } from './Field';
+import type { Option } from './adapters';
+import { DropdownField } from './Dropdown';
 
 /** A bordered card that holds the filters of a list: its zones are told apart by a thin rule, as on the admin's list screens. */
 export function FilterCard({ children }: { children: ReactNode }): React.ReactElement {
@@ -16,19 +17,16 @@ interface FilterSelectProps {
     label: string;
     value: string;
     options: Option[];
+    /** The entry that stands for "no filter" ("All") */
+    emptyLabel: string;
     onChange: (value: string) => void;
 }
 
-/** A filter that is a choice: its label above, the list below in the style of the admin's fields. */
-export function FilterSelect({ label, value, options, onChange }: FilterSelectProps): React.ReactElement {
-    const id = useId();
-
+/** A filter that is a choice: its label above, the design system's dropdown below. */
+export function FilterSelect({ label, value, options, emptyLabel, onChange }: FilterSelectProps): React.ReactElement {
     return (
         <div className="masilia-kit-filters__select">
-            <label className="ibexa-label" htmlFor={id}>{label}</label>
-            <select id={id} className="ibexa-input ibexa-input--text form-select masilia-kit-select" value={value} onChange={(event) => onChange(event.target.value)}>
-                {options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
-            </select>
+            <DropdownField label={label} value={value} options={options} emptyLabel={emptyLabel} onChange={onChange} />
         </div>
     );
 }

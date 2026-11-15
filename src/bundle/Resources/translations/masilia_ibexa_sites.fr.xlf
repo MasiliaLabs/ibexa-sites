@@ -554,9 +554,25 @@
         <source>column.addresses</source>
         <target>Adresses</target>
       </trans-unit>
-      <trans-unit id="list.admins" resname="list.admins">
-        <source>list.admins</source>
-        <target>%count% siteaccess d’admin</target>
+      <trans-unit id="section.advanced" resname="section.advanced">
+        <source>section.advanced</source>
+        <target>Avancé</target>
+      </trans-unit>
+      <trans-unit id="list.admins.label" resname="list.admins.label">
+        <source>list.admins.label</source>
+        <target>siteaccess d’admin</target>
+      </trans-unit>
+      <trans-unit id="ids.dropdown.placeholder" resname="ids.dropdown.placeholder">
+        <source>ids.dropdown.placeholder</source>
+        <target>Choisir un élément</target>
+      </trans-unit>
+      <trans-unit id="ids.dropdown.search.placeholder" resname="ids.dropdown.search.placeholder">
+        <source>ids.dropdown.search.placeholder</source>
+        <target>Rechercher…</target>
+      </trans-unit>
+      <trans-unit id="ids.clear_btn.label" resname="ids.clear_btn.label">
+        <source>ids.clear_btn.label</source>
+        <target>Effacer</target>
       </trans-unit>
     </body>
   </file>
