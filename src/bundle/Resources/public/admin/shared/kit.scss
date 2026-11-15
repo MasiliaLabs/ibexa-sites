@@ -153,9 +153,6 @@ $line: 1px solid ibexa.$ibexa-color-light;
         }
     }
 
-    &__label {
-        flex: 1 1 auto;
-    }
 
     &__actions {
         display: inline-flex;
@@ -291,4 +288,13 @@ $line: 1px solid ibexa.$ibexa-color-light;
 .ids-dropdown__items,
 .ids-dropdown__items-container {
     z-index: calc(#{ibexa.$ibexa-modal-zindex} + 20);
+}
+
+.masilia-kit-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
 }

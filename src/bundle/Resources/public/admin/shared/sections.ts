@@ -1,8 +1,6 @@
 /** The sections of the site editor, and which one a field belongs to: an error under a field opens its section. */
 export type SectionId = 'identity' | 'addresses' | 'settings' | 'admins' | 'advanced';
 
-export const SECTIONS: readonly SectionId[] = ['identity', 'addresses', 'settings', 'admins', 'advanced'];
-
 /** The section of a field, by the path the validation gives it ("siteaccesses[1].host" is in "addresses"). */
 export function sectionOf(path: string): SectionId {
     const field = path.split(/[.[]/)[0];

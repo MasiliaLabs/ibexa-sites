@@ -15,7 +15,6 @@ interface OrderedChoiceProps {
     addPlaceholder: string;
     moveUpLabel: string;
     moveDownLabel: string;
-    removeLabel: string;
     firstLabel?: string;
     required?: boolean;
     hint?: string;
@@ -23,7 +22,7 @@ interface OrderedChoiceProps {
 }
 
 /** A short ordered list of choices as chips (each taken out with its cross, moved up or down with its arrows), and what is left to add. */
-export function OrderedChoice({ label, options, value, onChange, addPlaceholder, moveUpLabel, moveDownLabel, removeLabel, firstLabel, required, hint, error }: OrderedChoiceProps): React.ReactElement {
+export function OrderedChoice({ label, options, value, onChange, addPlaceholder, moveUpLabel, moveDownLabel, firstLabel, required, hint, error }: OrderedChoiceProps): React.ReactElement {
     const id = useId();
     const labelOf = (v: string): string => options.find((o) => o.value === v)?.label ?? v;
     const remaining = options.filter((o) => !value.includes(o.value));

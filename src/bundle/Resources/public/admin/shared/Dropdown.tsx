@@ -2,7 +2,7 @@ import React, { useId } from 'react';
 
 import { fromId, toId, toItems } from './adapters';
 import type { Option } from './adapters';
-import { describedBy, FieldFrame } from './Field';
+import { FieldFrame } from './Field';
 import { DropdownSingleInput } from './ids';
 
 interface DropdownFieldProps {
@@ -27,7 +27,6 @@ export function DropdownField({ label, value, options, onChange, emptyLabel, pla
 
     return (
         <FieldFrame id={id} group labelHidden={hideLabel} label={label} required={required} hint={hint} error={error}>
-            <div aria-describedby={describedBy(id, hint, error)}>
                 <DropdownSingleInput
                     name={id}
                     items={toItems(options, emptyLabel)}
@@ -37,7 +36,6 @@ export function DropdownField({ label, value, options, onChange, emptyLabel, pla
                     error={error !== undefined}
                     renderEmptySelectionInfo={placeholder === undefined ? undefined : () => <div className="ids-dropdown__placeholder">{placeholder}</div>}
                 />
-            </div>
         </FieldFrame>
     );
 }

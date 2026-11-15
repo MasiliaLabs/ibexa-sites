@@ -195,7 +195,6 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                                 addPlaceholder={t('sa.languages.add')}
                                 moveUpLabel={t('sa.up')}
                                 moveDownLabel={t('sa.down')}
-                                removeLabel={t('sa.language.remove')}
                                 firstLabel={t('sa.languages.main')}
                                 onChange={setSuggestLanguages}
                             />

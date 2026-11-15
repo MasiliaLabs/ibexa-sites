@@ -44,18 +44,6 @@ $transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transitio
     }
 }
 
-.masilia-sites-section {
-    margin: calculateRem(24px) 0 calculateRem(12px);
-    padding-bottom: calculateRem(8px);
-    border-bottom: $line;
-    font-size: ibexa.$ibexa-text-font-size-large;
-    font-weight: ibexa.$ibexa-font-weight-bold;
-
-    &:first-of-type {
-        margin-top: 0;
-    }
-}
-
 .masilia-sites-rows {
     display: flex;
     flex-direction: column;

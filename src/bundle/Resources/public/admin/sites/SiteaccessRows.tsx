@@ -53,7 +53,6 @@ export function SiteaccessRows({ path, rows, onChange, languages, problems, disa
                             addPlaceholder={t('sa.languages.add')}
                             moveUpLabel={t('sa.up')}
                             moveDownLabel={t('sa.down')}
-                            removeLabel={t('sa.language.remove')}
                             firstLabel={t('sa.languages.main')}
                             onChange={(value) => onChange(updateRow(rows, row.key, { languages: value }))}
                             required

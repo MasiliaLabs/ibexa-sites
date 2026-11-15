@@ -49,8 +49,8 @@ export function Dialog({ title, variant, onClose, children, footer, role = 'dial
                 return;
             }
             if (event.key === 'Escape') {
-                // Escape belongs to an open dropdown first: it closes the list, not the dialog behind it.
-                if (document.activeElement instanceof Element && document.activeElement.closest('.ids-dropdown') !== null) {
+                // Escape belongs to an open dropdown first (its list is only drawn while open): it closes the list, not the dialog behind it.
+                if (document.activeElement instanceof Element && document.activeElement.closest('.ids-dropdown')?.querySelector('.ids-dropdown__items-container') != null) {
                     return;
                 }
                 event.preventDefault();

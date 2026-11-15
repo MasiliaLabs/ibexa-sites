@@ -32,19 +32,21 @@ interface DataTableProps<T> {
     rowKey: (row: T) => string;
     /** What the table says when there is nothing to show, and what could be done about it */
     empty: { info: string; action?: ReactNode };
+    /** The name of the table for assistive technology (the title above it) */
+    label?: string;
 }
 
 /** The admin's table: rows alternate in colour, the head is quiet, and an empty table shows its picture and says why. */
-export function DataTable<T>({ columns, rows, rowKey, empty }: DataTableProps<T>): React.ReactElement {
+export function DataTable<T>({ columns, rows, rowKey, empty, label }: DataTableProps<T>): React.ReactElement {
     const lastIsActions = columns.length > 0 && columns[columns.length - 1].actions === true;
 
     return (
         <div className="ibexa-scrollable-wrapper">
-            <table className={`ibexa-table table${lastIsActions ? ' ibexa-table--last-column-sticky' : ''}`}>
+            <table aria-label={label} className={`ibexa-table table${lastIsActions ? ' ibexa-table--last-column-sticky' : ''}`}>
                 <thead hidden={rows.length === 0}>
                     <tr className="ibexa-table__head-row">
                         {columns.map((column) => (
-                            <th className="ibexa-table__header-cell" key={column.key}>
+                            <th className="ibexa-table__header-cell" scope="col" key={column.key}>
                                 <span className="ibexa-table__header-cell-text-wrapper">{column.header}</span>
                             </th>
                         ))}

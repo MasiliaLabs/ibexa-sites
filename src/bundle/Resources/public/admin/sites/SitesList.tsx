@@ -99,7 +99,7 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
         },
         ...(data.canManage ? [{
             key: 'actions',
-            header: '',
+            header: <span className="masilia-kit-sr-only">{t('column.actions')}</span>,
             actions: true,
             render: (site: SiteDto) => (
                 <>
@@ -136,6 +136,7 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
             <DataTable
                 columns={columns}
                 rows={shown}
+                label={t('list.title')}
                 rowKey={(site) => site.identifier}
                 empty={data.sites.length === 0
                     ? { info: t('list.empty'), action: data.canManage ? <Button type="secondary" size="small" onClick={onNew}>{t('list.new')}</Button> : undefined }

@@ -29,7 +29,7 @@ export function FieldFrame({ id, label, required, hint, error, group, labelHidde
                     {required === true ? <span className="masilia-kit-required" aria-hidden="true"> *</span> : null}
                 </label>
             )}
-            {group === true ? <div role="group" aria-labelledby={`${id}-label`}>{children}</div> : children}
+            {group === true ? <div role="group" aria-labelledby={`${id}-label`} aria-describedby={describedBy(id, hint, error)}>{children}</div> : children}
             <div className="ibexa-form-error" aria-live="polite">
                 {error !== undefined ? <em className="ibexa-form-error__row" id={`${id}-error`}>{error}</em> : null}
             </div>

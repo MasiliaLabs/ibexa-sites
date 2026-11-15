@@ -70,10 +70,6 @@
         <source>status.draft</source>
         <target>Draft</target>
       </trans-unit>
-      <trans-unit id="column.siteaccesses" resname="column.siteaccesses">
-        <source>column.siteaccesses</source>
-        <target>Siteaccesses</target>
-      </trans-unit>
       <trans-unit id="default.label" resname="default.label">
         <source>default.label</source>
         <target>Default siteaccess</target>
@@ -450,10 +446,6 @@
         <source>rows.none</source>
         <target>No siteaccess yet.</target>
       </trans-unit>
-      <trans-unit id="rows.suggest.title" resname="rows.suggest.title">
-        <source>rows.suggest.title</source>
-        <target>Start from the languages</target>
-      </trans-unit>
       <trans-unit id="rows.suggest.hint" resname="rows.suggest.hint">
         <source>rows.suggest.hint</source>
         <target>Choose the languages and the host: one siteaccess per language is made, the first at the root of the host, the others under their prefix.</target>
@@ -497,10 +489,6 @@
       <trans-unit id="sa.down" resname="sa.down">
         <source>sa.down</source>
         <target>Move down</target>
-      </trans-unit>
-      <trans-unit id="sa.language.remove" resname="sa.language.remove">
-        <source>sa.language.remove</source>
-        <target>Remove</target>
       </trans-unit>
       <trans-unit id="sa.host" resname="sa.host">
         <source>sa.host</source>
@@ -581,6 +569,10 @@
       <trans-unit id="ibexa.expander.label.expand" resname="ibexa.expander.label.expand">
         <source>ibexa.expander.label.expand</source>
         <target>Show</target>
+      </trans-unit>
+      <trans-unit id="ibexa.chip.delete-btn.label" resname="ibexa.chip.delete-btn.label">
+        <source>ibexa.chip.delete-btn.label</source>
+        <target>Remove</target>
       </trans-unit>
     </body>
   </file>
