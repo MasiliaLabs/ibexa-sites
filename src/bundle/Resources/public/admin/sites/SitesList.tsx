@@ -68,11 +68,21 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
     };
 
     const columns: Column<SiteDto>[] = [
-        { key: 'site', header: t('column.site'), render: (site) => <><strong>{site.name}</strong><br /><code>{site.identifier}</code></> },
+        {
+            key: 'site',
+            header: t('column.site'),
+            render: (site) => (
+                <>
+                    <strong>{site.name}</strong>
+                    <br />
+                    <span className="masilia-sites-muted">{site.design}{site.identifier !== site.name ? ` · ${site.identifier}` : ''}</span>
+                </>
+            ),
+        },
         { key: 'status', header: t('column.status'), render: (site) => <StatusChip tone={TONES[site.status]}>{t(`status.${site.status}`)}</StatusChip> },
         {
             key: 'siteaccesses',
-            header: t('column.siteaccesses'),
+            header: t('column.addresses'),
             render: (site) => (
                 <>
                     {site.siteaccesses.map((sa) => {
@@ -81,20 +91,15 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
 
                         return (
                             <div className="masilia-sites-table__sa" key={sa.name}>
-                                <code>{sa.name}</code> <span className="masilia-sites-muted">{sa.languages.join(' → ')}</span>{' '}
                                 {site.status === 'active' ? <ExternalLink href={url} label={t('addresses.open')}>{shownUrl}</ExternalLink> : <span className="masilia-sites-muted">{shownUrl}</span>}
+                                {' '}<span className="masilia-sites-muted">{sa.languages[0]}</span>
                             </div>
                         );
                     })}
-                    {site.adminSiteaccesses.map((sa) => (
-                        <div className="masilia-sites-table__sa" key={sa.name}>
-                            <code>{sa.name}</code> <span className="masilia-sites-muted">admin · {sa.host}</span>
-                        </div>
-                    ))}
+                    {site.adminSiteaccesses.length > 0 ? <div className="masilia-sites-muted">{t('list.admins', { count: site.adminSiteaccesses.length })}</div> : null}
                 </>
             ),
         },
-        { key: 'design', header: t('column.design'), render: (site) => <>{site.design}{site.base !== null ? <><br /><span className="masilia-sites-muted">{site.base}</span></> : null}</> },
         ...(data.canManage ? [{
             key: 'actions',
             header: '',

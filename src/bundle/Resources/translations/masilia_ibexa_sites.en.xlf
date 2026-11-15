@@ -30,10 +30,6 @@
         <source>breadcrumb.admin</source>
         <target>Admin</target>
       </trans-unit>
-      <trans-unit id="column.design" resname="column.design">
-        <source>column.design</source>
-        <target>Design</target>
-      </trans-unit>
       <trans-unit id="column.site" resname="column.site">
         <source>column.site</source>
         <target>Site</target>
@@ -553,6 +549,14 @@
       <trans-unit id="tab.default" resname="tab.default">
         <source>tab.default</source>
         <target>Default siteaccess</target>
+      </trans-unit>
+      <trans-unit id="column.addresses" resname="column.addresses">
+        <source>column.addresses</source>
+        <target>Addresses</target>
+      </trans-unit>
+      <trans-unit id="list.admins" resname="list.admins">
+        <source>list.admins</source>
+        <target>%count% admin siteaccess(es)</target>
       </trans-unit>
     </body>
   </file>
