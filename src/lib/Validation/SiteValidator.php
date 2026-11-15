@@ -36,7 +36,7 @@ readonly class SiteValidator
      */
     public function validate(Site $site, array $others, bool $isNew): void
     {
-        $problems = $this->check($site, $others, $isNew);
+        $problems = array_values(array_filter($this->check($site, $others, $isNew), static fn (Problem $p): bool => !$p->warning));
         if ($problems !== []) {
             throw SiteInvalid::fromProblems($problems);
         }
@@ -172,7 +172,7 @@ readonly class SiteValidator
         }
         foreach (array_unique($foreign) as $host) {
             if ($covers($host)) {
-                $problems[] = new Problem('sessionCookieDomain', sprintf('The cookie domain "%s" would also be sent to "%s", which belongs to another site: a user logged in here would be known there. Use a narrower domain.', $domain, $host));
+                $problems[] = new Problem('sessionCookieDomain', sprintf('The cookie domain "%s" would also be sent to "%s", which belongs to another site: a user logged in here would be known there. Fine if both sites share their administrators; otherwise use a narrower domain.', $domain, $host), true);
             }
         }
 

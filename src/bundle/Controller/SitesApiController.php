@@ -206,7 +206,7 @@ final class SitesApiController extends Controller
      */
     private function items(array $problems): array
     {
-        return array_map(static fn (Problem $p): array => ['path' => $p->path, 'message' => $p->message], $problems);
+        return array_map(static fn (Problem $p): array => ['path' => $p->path, 'message' => $p->message, 'warning' => $p->warning], $problems);
     }
 
     private function invalid(SiteInvalid $invalid): JsonResponse

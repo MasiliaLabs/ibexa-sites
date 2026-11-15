@@ -47,7 +47,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
 
     public function problems(Site $site, bool $isNew): array
     {
-        return array_map(static fn (Problem $p): string => $p->message, $this->check($site, $isNew));
+        return array_map(static fn (Problem $p): string => $p->message, array_values(array_filter($this->check($site, $isNew), static fn (Problem $p): bool => !$p->warning)));
     }
 
     public function create(Site $site): Site

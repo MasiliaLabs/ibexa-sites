@@ -6,7 +6,7 @@ import { DropdownField } from '@masilia-admin-kit/Dropdown';
 import { TextField } from '@masilia-admin-kit/Field';
 import { Section } from '@masilia-admin-kit/Section';
 import { isOpen, sectionsWithProblems } from './sections';
-import { messageFor } from '@masilia-admin-kit/http';
+import { messageFor, warningFor } from '@masilia-admin-kit/http';
 import type { FieldProblem } from '@masilia-admin-kit/http';
 import { Button } from '@masilia-admin-kit/ids';
 import { notify } from '@masilia-admin-kit/notify';
@@ -70,6 +70,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
     const changed = isChanged(draft, site);
 
     const touch = (...fields: string[]): void => setTouched((current) => new Set([...current, ...fields]));
+    const warned = (path: string): string | undefined => (submitted || touched.has(topLevel(path)) ? warningFor(problems, path) : undefined);
     const shown = (path: string): string | undefined => (submitted || touched.has(topLevel(path)) ? messageFor(problems, path) : undefined);
     const set = (changes: Partial<SiteDraft>, field?: string): void => {
         setDraft((current) => ({ ...current, ...changes }));
@@ -135,7 +136,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
 
     // The optional sections open with what they hold, and any section opens on a problem that is shown under one of its fields.
     const filled = { admins: draft.adminSiteaccesses.length > 0, advanced: draft.varDir !== '' || draft.sessionCookieDomain !== '' || draft.adminSiteaccess !== '' };
-    const withProblems = sectionsWithProblems(problems.filter((p) => submitted || touched.has(topLevel(p.path))).map((p) => p.path));
+    const withProblems = sectionsWithProblems(problems.filter((p) => p.warning !== true && (submitted || touched.has(topLevel(p.path)))).map((p) => p.path));
     const unpathed = serverProblems.filter((p) => p.path === '');
     const title = site === null ? t('editor.new') : t('editor.edit', { name: site.name });
 
@@ -297,6 +298,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                 <Section title={t('section.advanced')} open={isOpen('advanced', filled, withProblems)}>
                     <TextField label={t('field.var_dir')} hint={t('field.var_dir.hint')} value={draft.varDir} error={shown('varDir')} onChange={(varDir) => set({ varDir }, 'varDir')} />
                     <TextField label={t('field.cookie')} hint={t('field.cookie.hint')} value={draft.sessionCookieDomain} error={shown('sessionCookieDomain')} onChange={(sessionCookieDomain) => set({ sessionCookieDomain }, 'sessionCookieDomain')} />
+                    {warned('sessionCookieDomain') !== undefined ? <Notice icon="warning" role="status">{warned('sessionCookieDomain')}</Notice> : null}
                     {cookieSuggestion !== null && draft.sessionCookieDomain !== cookieSuggestion ? (
                         <p><Button type="tertiary" size="small" onClick={() => set({ sessionCookieDomain: cookieSuggestion }, 'sessionCookieDomain')}>{t('field.cookie.use', { domain: cookieSuggestion })}</Button></p>
                     ) : null}

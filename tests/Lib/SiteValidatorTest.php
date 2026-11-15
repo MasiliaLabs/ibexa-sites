@@ -107,15 +107,20 @@ final class SiteValidatorTest extends TestCase
         self::assertSame([], $this->problems(['base' => 'main_group']), 'a base group with no session of its own is fine');
     }
 
-    public function testACookieDomainThatReachesAnotherSiteOrTheYamlIsRefused(): void
+    public function testACookieDomainThatReachesAnotherSiteOrTheYamlIsAWarningNotARefusal(): void
     {
-        $wide = ['sessionCookieDomain' => '.example.org', 'siteaccesses' => [self::sa('demo', host: 'demo.example.org')]];
+        $wide = SiteBuilder::site(['sessionCookieDomain' => '.example.org', 'siteaccesses' => [self::sa('demo', host: 'demo.example.org')]]);
         $other = SiteBuilder::site(['identifier' => 'other', 'rootLocationId' => 501, 'siteaccesses' => [self::sa('x', host: 'x.example.org')]]);
+        $validator = new SiteValidator(new FakeFacts());
 
-        $problems = implode("\n", $this->problems($wide, [$other]));
+        $warnings = array_filter($validator->check($wide, [$other], true), static fn ($p): bool => $p->warning);
+        $text = implode("\n", array_map(static fn ($p): string => $p->message, $warnings));
 
-        self::assertStringContainsString('would also be sent to "x.example.org", which belongs to another site', $problems);
-        self::assertStringContainsString('would also be sent to "main.example.org"', $problems, 'a host of the YAML is another site too');
+        self::assertStringContainsString('would also be sent to "x.example.org", which belongs to another site', $text);
+        self::assertStringContainsString('would also be sent to "main.example.org"', $text, 'a host of the YAML is another site too');
+        self::assertSame(['sessionCookieDomain'], array_values(array_unique(array_map(static fn ($p): string => $p->path, $warnings))));
+        $validator->validate($wide, [$other], true);
+        $this->addToAssertionCount(1);
     }
 
     public function testEachProblemIsRelatedToTheFieldItIsAbout(): void
