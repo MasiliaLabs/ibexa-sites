@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
 import { ConfirmDialog } from '@masilia-admin-kit/ConfirmDialog';
-import { FilterCard, FilterSelect, FilterZone } from '@masilia-admin-kit/FilterCard';
+import { FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
 import { ExternalLink } from '@masilia-admin-kit/ExternalLink';
 import { IconButton } from '@masilia-admin-kit/IconButton';
 import { Badge, Button } from '@masilia-admin-kit/ids';
@@ -115,17 +115,14 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
 
     return (
         <section className="masilia-sites-list">
-            <FilterCard>
-                <FilterZone><SearchInput value={query} onChange={setQuery} placeholder={t('list.search')} clearLabel={t('list.search.clear')} /></FilterZone>
-                <FilterZone>
-                    <FilterSelect
-                        label={t('column.status')}
-                        value={status}
-                        onChange={(value) => setStatus(value as '' | SiteStatus)}
-                        emptyLabel={t('list.filter.all')}
-                        options={(['draft', 'active', 'disabled'] as const).map((s) => ({ value: s, label: t(`status.${s}`) }))}
-                    />
-                </FilterZone>
+            <FilterCard search={<SearchInput value={query} onChange={setQuery} placeholder={t('list.search')} clearLabel={t('list.search.clear')} />}>
+                <FilterSelect
+                    label={t('column.status')}
+                    value={status}
+                    onChange={(value) => setStatus(value as '' | SiteStatus)}
+                    emptyLabel={t('list.filter.all')}
+                    options={(['draft', 'active', 'disabled'] as const).map((s) => ({ value: s, label: t(`status.${s}`) }))}
+                />
             </FilterCard>
 
             <TableHeader
