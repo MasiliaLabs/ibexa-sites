@@ -10,6 +10,8 @@ services:
     Masilia\IbexaSites\Ibexa\StaticSites: ~
     Masilia\Bundle\IbexaSites\Command\ImportStaticSitesCommand:
         tags: ['console.command']
+    Masilia\Bundle\IbexaSites\Command\SetSiteStatusCommand:
+        tags: ['console.command']
 
     Masilia\IbexaSites\Validation\SiteFacts:
         alias: Masilia\IbexaSites\Ibexa\IbexaSiteFacts
