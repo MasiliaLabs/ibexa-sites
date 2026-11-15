@@ -125,8 +125,9 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
         const result = site === null ? await api.create(draft) : await api.update(site.identifier, draft);
         setSaving(false);
         if (result.ok) {
-            notify('success', t(site === null ? 'flash.created' : 'flash.updated', { name: result.data.site.name }));
+            // The panel closes first, then Ibexa's toast: it would otherwise open behind the panel's backdrop.
             onSaved(result.data.site, site === null);
+            notify('success', t(site === null ? 'flash.created' : 'flash.updated', { name: result.data.site.name }));
         } else {
             // What the server tied to a field is shown under that field; the sentence on top is for what it did not.
             setSaveError(result.problems.length > 0 && result.problems.every((p) => p.path !== '') ? undefined : result.message);
