@@ -5,7 +5,7 @@
     "license": "proprietary",
     "require": {
         "doctrine/doctrine-bundle": "^2.13",
-        "doctrine/orm": "^3.0",
+        "doctrine/orm": "^2.20 || ^3.0",
         "ibexa/admin-ui": "^5.0",
         "ibexa/core": "^5.0",
         "masilia/ibexa-admin-kit": "^0.1",
