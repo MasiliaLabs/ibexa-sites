@@ -226,6 +226,22 @@
         <source>column.siteaccesses</source>
         <target>Siteaccess</target>
       </trans-unit>
+      <trans-unit id="form.var_dir" resname="form.var_dir">
+        <source>form.var_dir</source>
+        <target>Dossier des fichiers</target>
+      </trans-unit>
+      <trans-unit id="form.var_dir.help" resname="form.var_dir.help">
+        <source>form.var_dir.help</source>
+        <target>Facultatif, relatif au projet (« var/demo »). Vide : le dossier du projet. À choisir avant d&#x27;ajouter des images ou des fichiers : le changer ensuite rend les existants inaccessibles.</target>
+      </trans-unit>
+      <trans-unit id="form.layout" resname="form.layout">
+        <source>form.layout</source>
+        <target>Remote id du layout</target>
+      </trans-unit>
+      <trans-unit id="form.layout.help" resname="form.layout.help">
+        <source>form.layout.help</source>
+        <target>Facultatif : le remote id du contenu qui porte le layout du site (logo, pied de page). Repris du groupe de base si vide.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

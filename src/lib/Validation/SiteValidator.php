@@ -19,6 +19,8 @@ readonly class SiteValidator
     private const IDENTIFIER = '/^[a-z][a-z0-9_]{1,29}$/';
     private const SITEACCESS = '/^[a-z][a-z0-9_]{1,39}$/';
     private const PREFIX = '/^[a-z0-9][a-z0-9-]{0,29}$/';
+    private const VAR_DIR = '/^[a-z0-9][a-z0-9_-]*(\/[a-z0-9][a-z0-9_-]*)*$/';
+    private const REMOTE_ID = '/^[A-Za-z0-9_-]{1,100}$/';
     private const HOST = '/^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/';
 
     public function __construct(private SiteFacts $facts)
@@ -181,6 +183,17 @@ readonly class SiteValidator
         }
         if ($site->adminSiteaccess !== null && !in_array($site->adminSiteaccess, $this->facts->adminSiteaccesses(), true)) {
             $problems[] = sprintf('"%s" is not an admin siteaccess of the project. Available: %s.', $site->adminSiteaccess, implode(', ', $this->facts->adminSiteaccesses()));
+        }
+
+        if ($site->varDir !== null && preg_match(self::VAR_DIR, $site->varDir) !== 1) {
+            $problems[] = sprintf('The directory "%s" is not valid: a relative path of lower case letters, digits, "-" and "_" ("var/demo").', $site->varDir);
+        }
+        if ($site->layoutRemoteId !== null) {
+            if (preg_match(self::REMOTE_ID, $site->layoutRemoteId) !== 1) {
+                $problems[] = sprintf('The layout remote id "%s" is not valid.', $site->layoutRemoteId);
+            } elseif (!$this->facts->contentExists($site->layoutRemoteId)) {
+                $problems[] = sprintf('No content has the remote id "%s": create the layout of the site first.', $site->layoutRemoteId);
+            }
         }
 
         return $problems;

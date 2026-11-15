@@ -15,6 +15,8 @@ final readonly class Site
      * @param string                    $identifier  The name of the siteaccess group ("fossil_exit_group")
      * @param string|null               $base        A group the site takes the settings it does not set from (images, rich text, menus…), if any
      * @param string|null               $sessionCookieDomain
+     * @param string|null               $varDir         The directory the files of the site live in, relative to the project ("var/demo"); the project's own when empty
+     * @param string|null               $layoutRemoteId The remote id of the content that holds the layout of the site (logo, footer), for masilia/ibexa-blocks
      * @param list<SiteAccessDefinition> $siteaccesses
      */
     public function __construct(
@@ -27,6 +29,8 @@ final readonly class Site
         public ?string $base = null,
         public ?string $sessionCookieDomain = null,
         public ?string $adminSiteaccess = null,
+        public ?string $varDir = null,
+        public ?string $layoutRemoteId = null,
     ) {
     }
 
@@ -68,7 +72,7 @@ final readonly class Site
 
     public function withStatus(SiteStatus $status): self
     {
-        return new self($this->identifier, $this->name, $status, $this->rootLocationId, $this->design, $this->siteaccesses, $this->base, $this->sessionCookieDomain, $this->adminSiteaccess);
+        return new self($this->identifier, $this->name, $status, $this->rootLocationId, $this->design, $this->siteaccesses, $this->base, $this->sessionCookieDomain, $this->adminSiteaccess, $this->varDir, $this->layoutRemoteId);
     }
 
     /** @return array<string, mixed> */
@@ -77,6 +81,7 @@ final readonly class Site
         return [
             'identifier' => $this->identifier, 'name' => $this->name, 'status' => $this->status->value, 'rootLocationId' => $this->rootLocationId,
             'design' => $this->design, 'base' => $this->base, 'sessionCookieDomain' => $this->sessionCookieDomain, 'adminSiteaccess' => $this->adminSiteaccess,
+            'varDir' => $this->varDir, 'layoutRemoteId' => $this->layoutRemoteId,
             'siteaccesses' => array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $this->siteaccesses),
         ];
     }
@@ -96,6 +101,8 @@ final readonly class Site
             $optional('base'),
             $optional('sessionCookieDomain'),
             $optional('adminSiteaccess'),
+            $optional('varDir'),
+            $optional('layoutRemoteId'),
         );
     }
 }

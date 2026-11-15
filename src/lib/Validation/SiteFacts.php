@@ -9,6 +9,9 @@ interface SiteFacts
 {
     public function locationExists(int $locationId): bool;
 
+    /** Whether a content with this remote id exists (the layout of a site is one) */
+    public function contentExists(string $remoteId): bool;
+
     public function languageExists(string $code): bool;
 
     /** @return list<string> The language codes Ibexa has, enabled ones first */

@@ -26,7 +26,7 @@ trait SitesFixture
             new Site('demo_group', 'Demo', SiteStatus::Active, 500, 'mattcch', [
                 new SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org'),
                 new SiteAccessDefinition('demo_fr', ['fre-FR', 'eng-GB'], 'demo.example.org', 'fr'),
-            ], 'mattcch_group', '.demo.example.org'),
+            ], 'mattcch_group', '.demo.example.org', null, 'var/demo', 'demo_layout_config'),
             new Site('off_group', 'Off', SiteStatus::Disabled, 700, 'imal', [new SiteAccessDefinition('off', ['eng-GB'], 'off.example.org')], 'site_group'),
         ];
     }

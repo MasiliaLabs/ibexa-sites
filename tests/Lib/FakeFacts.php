@@ -14,6 +14,11 @@ final class FakeFacts implements SiteFacts
         return in_array($locationId, [2, 62, 500, 501], true);
     }
 
+    public function contentExists(string $remoteId): bool
+    {
+        return $remoteId === 'demo_layout_config';
+    }
+
     public function languageExists(string $code): bool
     {
         return in_array($code, ['eng-GB', 'fre-FR', 'ara-MA'], true);

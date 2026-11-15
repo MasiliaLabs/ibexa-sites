@@ -16,6 +16,7 @@ final class IbexaSiteFactsTest extends TestCase
     {
         $facts = new IbexaSiteFacts(
             $this->createMock(LocationService::class),
+            $this->createMock(\Ibexa\Contracts\Core\Repository\ContentService::class),
             $this->createMock(LanguageService::class),
             $this->createMock(ConfigResolverInterface::class),
             [],

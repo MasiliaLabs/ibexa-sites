@@ -32,6 +32,8 @@ final class SiteType extends AbstractType
             ->add('rootLocationId', IntegerType::class, ['label' => 'form.root', 'help' => 'form.root.help'])
             ->add('design', ChoiceType::class, ['label' => 'form.design', 'help' => 'form.design.help', 'choices' => $designs, 'placeholder' => false])
             ->add('base', ChoiceType::class, ['label' => 'form.base', 'help' => 'form.base.help', 'choices' => $bases, 'required' => false, 'placeholder' => 'form.base.none'])
+            ->add('varDir', TextType::class, ['label' => 'form.var_dir', 'help' => 'form.var_dir.help', 'required' => false])
+            ->add('layoutRemoteId', TextType::class, ['label' => 'form.layout', 'help' => 'form.layout.help', 'required' => false])
             ->add('sessionCookieDomain', TextType::class, ['label' => 'form.cookie_domain', 'help' => 'form.cookie_domain.help', 'required' => false])
             ->add('adminSiteaccess', ChoiceType::class, ['label' => 'form.admin', 'help' => 'form.admin.help', 'choices' => $admins, 'required' => false, 'placeholder' => 'form.admin.none'])
             ->add('siteaccesses', CollectionType::class, ['label' => 'form.siteaccesses', 'entry_type' => SiteAccessType::class, 'allow_add' => true, 'allow_delete' => true, 'by_reference' => false, 'prototype' => true, 'entry_options' => ['label' => false]]);

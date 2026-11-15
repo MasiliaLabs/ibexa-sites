@@ -17,7 +17,7 @@ final class DynamicSiteaccessesTest extends TestCase
 
     public function testTheProviderKnowsTheSiteaccessesOfTheServedSitesWithTheirGroups(): void
     {
-        $provider = new DynamicSiteAccessProvider($this->snapshot());
+        $provider = new DynamicSiteAccessProvider($this->snapshot(), 'admin_group');
 
         self::assertSame(['blog', 'blog_ar', 'demo', 'demo_fr'], array_map(static fn (SiteAccess $s): string => $s->name, iterator_to_array($provider->getSiteAccesses(), false)));
         self::assertTrue($provider->isDefined('demo_fr'));
@@ -29,7 +29,7 @@ final class DynamicSiteaccessesTest extends TestCase
     {
         $this->expectException(NotFoundException::class);
 
-        (new DynamicSiteAccessProvider($this->snapshot()))->getSiteAccess('fossil_exit');
+        (new DynamicSiteAccessProvider($this->snapshot(), 'admin_group'))->getSiteAccess('fossil_exit');
     }
 
     public function testTheResolverGivesTheLanguageTheRootTheDesignAndTheTranslations(): void
@@ -37,8 +37,12 @@ final class DynamicSiteaccessesTest extends TestCase
         $resolver = new RegistryConfigResolver($this->snapshot());
 
         self::assertSame(['fre-FR', 'eng-GB'], $resolver->getParameter('languages', null, 'demo_fr'), 'the languages of the siteaccess, with its fallback');
-        self::assertSame('.demo.example.org', $resolver->getParameter('session.cookie_domain', null, 'demo'));
-        self::assertFalse($resolver->hasParameter('session.cookie_domain', null, 'blog'), 'no cookie domain set: the groups answer');
+        self::assertSame(['name' => 'IBX_SESSION_ID_' . md5('demo_group'), 'cookie_domain' => '.demo.example.org'], $resolver->getParameter('session', null, 'demo'));
+        self::assertSame('var/demo', $resolver->getParameter('var_dir', null, 'demo_fr'));
+        self::assertSame('demo_layout_config', $resolver->getParameter('layout_remote_id', 'masilia_ibexa_blocks', 'demo'));
+        self::assertFalse($resolver->hasParameter('layout_remote_id', null, 'demo'), 'the layout is answered in the namespace of masilia/ibexa-blocks only');
+        self::assertFalse($resolver->hasParameter('session', null, 'blog'), 'no cookie domain set: the groups answer');
+        self::assertFalse($resolver->hasParameter('var_dir', null, 'blog'), 'no directory set: the project\'s own');
         self::assertSame(500, $resolver->getParameter('content.tree_root.location_id', null, 'demo'));
         self::assertSame('mattcch', $resolver->getParameter('design', null, 'demo_fr'));
         self::assertSame(['demo', 'demo_fr'], $resolver->getParameter('translation_siteaccesses', null, 'demo'));

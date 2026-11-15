@@ -30,6 +30,8 @@ final class Version20261115000000 extends AbstractMigration
                 session_cookie_domain VARCHAR(255) CHARACTER SET ascii DEFAULT NULL,
                 siteaccesses JSON NOT NULL,
                 admin_siteaccess VARCHAR(80) CHARACTER SET ascii DEFAULT NULL,
+                var_dir VARCHAR(255) CHARACTER SET ascii DEFAULT NULL,
+                layout_remote_id VARCHAR(100) CHARACTER SET ascii DEFAULT NULL,
                 updated_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL);

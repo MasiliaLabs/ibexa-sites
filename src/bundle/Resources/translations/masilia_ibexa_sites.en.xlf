@@ -226,6 +226,22 @@
         <source>column.siteaccesses</source>
         <target>Siteaccesses</target>
       </trans-unit>
+      <trans-unit id="form.var_dir" resname="form.var_dir">
+        <source>form.var_dir</source>
+        <target>Files directory</target>
+      </trans-unit>
+      <trans-unit id="form.var_dir.help" resname="form.var_dir.help">
+        <source>form.var_dir.help</source>
+        <target>Optional, relative to the project ("var/demo"). Empty: the project&#x27;s own directory. Choose it before adding images or files: changing it later makes the existing ones unreachable.</target>
+      </trans-unit>
+      <trans-unit id="form.layout" resname="form.layout">
+        <source>form.layout</source>
+        <target>Layout remote id</target>
+      </trans-unit>
+      <trans-unit id="form.layout.help" resname="form.layout.help">
+        <source>form.layout.help</source>
+        <target>Optional: the remote id of the content that holds the layout of the site (logo, footer). Taken from the base group when empty.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

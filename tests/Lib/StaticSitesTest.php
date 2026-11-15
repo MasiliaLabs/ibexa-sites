@@ -31,7 +31,7 @@ final class StaticSitesTest extends TestCase
 
     public function testEachFrontGroupBecomesADraftSiteWithWhatTheConfigurationResolves(): void
     {
-        $values = ['languages' => ['shop' => ['eng-GB'], 'shop_fr' => ['fre-FR', 'eng-GB'], 'blog' => ['eng-GB']], 'design' => ['shop' => 'imal'], 'content.tree_root.location_id' => ['shop' => 62], 'session.cookie_domain' => ['shop' => '.shop.example.org']];
+        $values = ['languages' => ['shop' => ['eng-GB'], 'shop_fr' => ['fre-FR', 'eng-GB'], 'blog' => ['eng-GB']], 'design' => ['shop' => 'imal'], 'content.tree_root.location_id' => ['shop' => 62], 'session.cookie_domain' => ['shop' => '.shop.example.org'], 'var_dir' => ['shop' => 'var/shop', 'default' => 'var/site'], 'layout_remote_id' => ['shop' => 'shop_layout']];
         $config = $this->createMock(ConfigResolverInterface::class);
         $config->method('hasParameter')->willReturnCallback(static fn (string $n, $ns, string $scope): bool => isset($values[$n][$scope]));
         $config->method('getParameter')->willReturnCallback(static fn (string $n, $ns, string $scope): mixed => $values[$n][$scope]);
@@ -44,6 +44,8 @@ final class StaticSitesTest extends TestCase
         self::assertSame('shop_group', $sites[0]->identifier);
         self::assertSame(62, $sites[0]->rootLocationId);
         self::assertSame('.shop.example.org', $sites[0]->sessionCookieDomain);
+        self::assertSame('var/shop', $sites[0]->varDir, 'a directory that is not the project\'s default is kept');
+        self::assertSame('shop_layout', $sites[0]->layoutRemoteId);
         self::assertSame(['shop', 'shop_fr'], $sites[0]->siteaccessNames(), 'a member listed twice counts once');
         self::assertSame(['fre-FR', 'eng-GB'], $sites[0]->siteaccess('shop_fr')?->languages);
         self::assertSame(['lost_group: the siteaccess "nowhere" has no host in siteaccess.match.'], $skipped);

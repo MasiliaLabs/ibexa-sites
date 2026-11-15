@@ -55,6 +55,9 @@ final class SiteValidatorTest extends TestCase
         yield 'a design that is not declared' => [['design' => 'nope'], 'design "nope" is not declared'];
         yield 'the admin design' => [['design' => 'admin'], 'design "admin" is not declared'];
         yield 'a base that is not a front group' => [['base' => 'admin_group'], 'not a group a site can take its settings from'];
+        yield 'a directory that goes up' => [['varDir' => 'var/../etc'], 'directory "var/../etc" is not valid'];
+        yield 'an absolute directory' => [['varDir' => '/var/demo'], 'is not valid'];
+        yield 'a layout that does not exist' => [['layoutRemoteId' => 'nope'], 'No content has the remote id "nope"'];
         yield 'an admin that does not exist' => [['adminSiteaccess' => 'admin_x'], 'not an admin siteaccess'];
     }
 
@@ -63,6 +66,11 @@ final class SiteValidatorTest extends TestCase
     public function testWhatIsWrongIsSaid(array $with, string $expected): void
     {
         self::assertStringContainsString($expected, implode("\n", $this->problems($with)));
+    }
+
+    public function testADirectoryAndAnExistingLayoutAreAccepted(): void
+    {
+        self::assertSame([], $this->problems(['varDir' => 'var/demo-2', 'layoutRemoteId' => 'demo_layout_config']));
     }
 
     public function testASiteWithoutABaseIsAccepted(): void

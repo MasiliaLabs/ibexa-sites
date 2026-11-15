@@ -45,6 +45,12 @@ class SiteRecord
     #[ORM\Column(name: 'admin_siteaccess', length: 80, nullable: true)]
     private ?string $adminSiteaccess;
 
+    #[ORM\Column(name: 'var_dir', length: 255, nullable: true)]
+    private ?string $varDir;
+
+    #[ORM\Column(name: 'layout_remote_id', length: 100, nullable: true)]
+    private ?string $layoutRemoteId;
+
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
     private \DateTimeImmutable $updatedAt;
 
@@ -64,6 +70,8 @@ class SiteRecord
         $this->sessionCookieDomain = $site->sessionCookieDomain;
         $this->siteaccesses = array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $site->siteaccesses);
         $this->adminSiteaccess = $site->adminSiteaccess;
+        $this->varDir = $site->varDir;
+        $this->layoutRemoteId = $site->layoutRemoteId;
         $this->updatedAt = new \DateTimeImmutable();
     }
 
@@ -84,6 +92,8 @@ class SiteRecord
             $this->base,
             $this->sessionCookieDomain,
             $this->adminSiteaccess,
+            $this->varDir,
+            $this->layoutRemoteId,
         );
     }
 }

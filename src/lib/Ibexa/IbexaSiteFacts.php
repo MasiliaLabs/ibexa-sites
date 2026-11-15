@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Masilia\IbexaSites\Ibexa;
 
 use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
+use Ibexa\Contracts\Core\Repository\ContentService;
 use Ibexa\Contracts\Core\Repository\LanguageService;
 use Ibexa\Contracts\Core\Repository\LocationService;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
@@ -23,6 +24,7 @@ readonly class IbexaSiteFacts implements SiteFacts
      */
     public function __construct(
         private LocationService $locations,
+        private ContentService $contents,
         private LanguageService $languages,
         private ConfigResolverInterface $config,
         #[Autowire('%ibexa.design.list%')]
@@ -42,6 +44,17 @@ readonly class IbexaSiteFacts implements SiteFacts
     {
         try {
             $this->locations->loadLocation($locationId);
+
+            return true;
+        } catch (NotFoundException) {
+            return false;
+        }
+    }
+
+    public function contentExists(string $remoteId): bool
+    {
+        try {
+            $this->contents->loadContentInfoByRemoteId($remoteId);
 
             return true;
         } catch (NotFoundException) {

@@ -66,16 +66,30 @@ readonly class StaticSites
                 continue;
             }
             $cookie = $this->value('session.cookie_domain', $members[0]);
-            $sites[] = new Site($group, $group, SiteStatus::Draft, (int) $root, $design, $definitions, null, is_string($cookie) && $cookie !== '' ? $cookie : null);
+            $varDir = $this->value('var_dir', $members[0]);
+            $layout = $this->value('layout_remote_id', $members[0], 'masilia_ibexa_blocks');
+            $sites[] = new Site(
+                $group,
+                $group,
+                SiteStatus::Draft,
+                (int) $root,
+                $design,
+                $definitions,
+                null,
+                is_string($cookie) && $cookie !== '' ? $cookie : null,
+                null,
+                is_string($varDir) && $varDir !== $this->value('var_dir', 'default') ? $varDir : null,
+                is_string($layout) && $layout !== '' ? $layout : null,
+            );
         }
 
         return $sites;
     }
 
-    private function value(string $name, string $scope): mixed
+    private function value(string $name, string $scope, ?string $namespace = null): mixed
     {
         try {
-            return $this->config->hasParameter($name, null, $scope) ? $this->config->getParameter($name, null, $scope) : null;
+            return $this->config->hasParameter($name, $namespace, $scope) ? $this->config->getParameter($name, $namespace, $scope) : null;
         } catch (Throwable) {
             return null;
         }

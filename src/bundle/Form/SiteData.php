@@ -17,6 +17,8 @@ final class SiteData
     public ?string $base = null;
     public ?string $sessionCookieDomain = null;
     public ?string $adminSiteaccess = null;
+    public ?string $varDir = null;
+    public ?string $layoutRemoteId = null;
     /** @var array<int, SiteAccessData> The form leaves gaps in the keys when a line is removed */
     public array $siteaccesses = [];
 
@@ -30,6 +32,8 @@ final class SiteData
         $data->base = $site->base;
         $data->sessionCookieDomain = $site->sessionCookieDomain;
         $data->adminSiteaccess = $site->adminSiteaccess;
+        $data->varDir = $site->varDir;
+        $data->layoutRemoteId = $site->layoutRemoteId;
         $data->siteaccesses = array_map(static fn ($s): SiteAccessData => SiteAccessData::fromDefinition($s), $site->siteaccesses);
 
         return $data;
@@ -50,6 +54,8 @@ final class SiteData
             $blank($this->base),
             $blank($this->sessionCookieDomain),
             $blank($this->adminSiteaccess),
+            $blank($this->varDir),
+            $blank($this->layoutRemoteId),
         );
     }
 }

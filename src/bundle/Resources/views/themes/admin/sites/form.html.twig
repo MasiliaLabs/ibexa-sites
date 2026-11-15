@@ -40,7 +40,7 @@
             {{ form_errors(form) }}
             <div class="card ibexa-card ibexa-card--light">
                 <div class="card-body ibexa-card__body ibexa-form-block">
-                    {% for name in ['identifier', 'name', 'rootLocationId', 'design', 'base', 'sessionCookieDomain', 'adminSiteaccess'] %}
+                    {% for name in ['identifier', 'name', 'rootLocationId', 'design', 'base', 'layoutRemoteId', 'varDir', 'sessionCookieDomain', 'adminSiteaccess'] %}
                         {{ form_row(attribute(form, name), { row_attr: { class: 'ibexa-form-field' } }) }}
                     {% endfor %}
                 </div>

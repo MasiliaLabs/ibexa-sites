@@ -16,7 +16,7 @@ use Traversable;
  */
 final readonly class DynamicSiteAccessProvider implements SiteAccessProviderInterface
 {
-    public function __construct(private SiteSnapshot $sites)
+    public function __construct(private SiteSnapshot $sites, #[\Symfony\Component\DependencyInjection\Attribute\Autowire('%admin_group_name%')] private string $adminGroup)
     {
     }
 
@@ -34,7 +34,7 @@ final readonly class DynamicSiteAccessProvider implements SiteAccessProviderInte
             SiteAccess::DEFAULT_MATCHING_TYPE,
             null,
             self::class,
-            array_map(static fn (string $group): SiteAccessGroup => new SiteAccessGroup($group), array_values(array_unique(array_filter(['front_group', $found[0]->identifier, $found[0]->base])))),
+            array_map(static fn (string $group): SiteAccessGroup => new SiteAccessGroup($group), SiteGroups::of($found[0], $name, $this->adminGroup)),
         );
     }
 
