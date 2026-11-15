@@ -61,6 +61,9 @@
                                 {% for sa in site.siteaccesses %}
                                     <code>{{ sa.name }}</code> {{ sa.languages|join(' → ') }} <span class="ibexa-text-muted">{{ sa.host }}{{ sa.uriPrefix is null ? '' : '/' ~ sa.uriPrefix }}</span>{% if not loop.last %}<br>{% endif %}
                                 {% endfor %}
+                                {% for sa in site.adminSiteaccesses %}
+                                    <br><code>{{ sa.name }}</code> <span class="ibexa-text-muted">admin · {{ sa.languages|join(' → ') }} · {{ sa.host }}{{ sa.uriPrefix is null ? '' : '/' ~ sa.uriPrefix }}</span>
+                                {% endfor %}
                             </td>
                             <td>{{ site.rootLocationId }}</td>
                             <td>{{ site.design }}{% if site.base is not null %}<br><span class="ibexa-text-muted">{{ site.base }}</span>{% endif %}</td>

@@ -41,7 +41,7 @@ final readonly class DynamicSiteAccessProvider implements SiteAccessProviderInte
     public function getSiteAccesses(): Traversable
     {
         foreach ($this->sites->active() as $site) {
-            foreach ($site->siteaccessNames() as $name) {
+            foreach ($site->allSiteaccessNames() as $name) {
                 yield $this->getSiteAccess($name);
             }
         }

@@ -172,7 +172,7 @@
       </trans-unit>
       <trans-unit id="form.cookie_domain.help" resname="form.cookie_domain.help">
         <source>form.cookie_domain.help</source>
-        <target>Facultatif : le domaine du cookie de session du site (.example.org).</target>
+        <target>Facultatif : le domaine du cookie de session du site et de ses admins (.example.org). Il doit couvrir tous leurs hôtes et aucun hôte d&#x27;un autre site. Un nom de session propre au site en est dérivé.</target>
       </trans-unit>
       <trans-unit id="form.siteaccesses" resname="form.siteaccesses">
         <source>form.siteaccesses</source>
@@ -257,6 +257,14 @@
       <trans-unit id="flash.default" resname="flash.default">
         <source>flash.default</source>
         <target>Le siteaccess par défaut est enregistré.</target>
+      </trans-unit>
+      <trans-unit id="form.admin_siteaccesses" resname="form.admin_siteaccesses">
+        <source>form.admin_siteaccesses</source>
+        <target>Siteaccess d&#x27;admin</target>
+      </trans-unit>
+      <trans-unit id="form.admin_siteaccesses.help" resname="form.admin_siteaccesses.help">
+        <source>form.admin_siteaccesses.help</source>
+        <target>Là où les éditeurs travaillent sur ce site (l&#x27;admin du projet, sur un hôte propre). Ils partagent la session du site quand le domaine du cookie couvre leur hôte. Activer le site leur permet de se connecter (le rôle Anonymous est mis à jour).</target>
       </trans-unit>
     </body>
   </file>

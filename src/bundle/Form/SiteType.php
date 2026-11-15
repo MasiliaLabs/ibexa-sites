@@ -36,7 +36,8 @@ final class SiteType extends AbstractType
             ->add('layoutRemoteId', TextType::class, ['label' => 'form.layout', 'help' => 'form.layout.help', 'required' => false])
             ->add('sessionCookieDomain', TextType::class, ['label' => 'form.cookie_domain', 'help' => 'form.cookie_domain.help', 'required' => false])
             ->add('adminSiteaccess', ChoiceType::class, ['label' => 'form.admin', 'help' => 'form.admin.help', 'choices' => $admins, 'required' => false, 'placeholder' => 'form.admin.none'])
-            ->add('siteaccesses', CollectionType::class, ['label' => 'form.siteaccesses', 'entry_type' => SiteAccessType::class, 'allow_add' => true, 'allow_delete' => true, 'by_reference' => false, 'prototype' => true, 'entry_options' => ['label' => false]]);
+            ->add('siteaccesses', CollectionType::class, ['label' => 'form.siteaccesses', 'entry_type' => SiteAccessType::class, 'allow_add' => true, 'allow_delete' => true, 'by_reference' => false, 'prototype' => true, 'entry_options' => ['label' => false]])
+            ->add('adminSiteaccesses', CollectionType::class, ['label' => 'form.admin_siteaccesses', 'help' => 'form.admin_siteaccesses.help', 'required' => false, 'entry_type' => SiteAccessType::class, 'allow_add' => true, 'allow_delete' => true, 'by_reference' => false, 'prototype' => true, 'entry_options' => ['label' => false]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

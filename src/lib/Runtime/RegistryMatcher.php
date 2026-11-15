@@ -59,7 +59,7 @@ final class RegistryMatcher implements VersatileMatcher, URILexer
         $first = explode('/', ltrim((string) $this->request->getPathInfo(), '/'))[0];
         $bare = null;
         foreach ($this->sites()->active() as $site) {
-            foreach ($site->siteaccesses as $siteaccess) {
+            foreach ($site->allSiteaccesses() as $siteaccess) {
                 if ($siteaccess->host !== $host) {
                     continue;
                 }

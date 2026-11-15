@@ -15,16 +15,10 @@ use Masilia\Contracts\IbexaSites\Site;
  */
 final class SiteGroups
 {
-    /** SPIKE: an admin siteaccess is told by its name until the model has them. */
-    public static function isAdmin(string $siteaccess): bool
-    {
-        return str_starts_with($siteaccess, 'admin_');
-    }
-
     /** @return list<string> */
     public static function of(Site $site, string $siteaccess, string $adminGroup): array
     {
-        if (self::isAdmin($siteaccess)) {
+        if ($site->isAdmin($siteaccess)) {
             return [$adminGroup];
         }
 
@@ -68,7 +62,7 @@ final class SiteGroups
     {
         $all = [];
         foreach ($sites->active() as $site) {
-            foreach ($site->siteaccessNames() as $name) {
+            foreach ($site->allSiteaccessNames() as $name) {
                 $all[$name] = self::of($site, $name, $adminGroup);
             }
         }

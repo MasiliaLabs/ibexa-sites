@@ -65,7 +65,6 @@ readonly class StaticSites
                 $skipped[] = sprintf('%s: no root location or no design.', $group);
                 continue;
             }
-            $cookie = $this->value('session.cookie_domain', $members[0]);
             $varDir = $this->value('var_dir', $members[0]);
             $layout = $this->value('layout_remote_id', $members[0], 'masilia_ibexa_blocks');
             $sites[] = new Site(
@@ -76,7 +75,7 @@ readonly class StaticSites
                 $design,
                 $definitions,
                 null,
-                is_string($cookie) && $cookie !== '' ? $cookie : null,
+                null, // the session stays the one of the YAML: a site taken over keeps its cookie and its name
                 null,
                 is_string($varDir) && $varDir !== $this->value('var_dir', 'default') ? $varDir : null,
                 is_string($layout) && $layout !== '' ? $layout : null,

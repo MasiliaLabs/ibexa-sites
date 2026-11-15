@@ -24,6 +24,13 @@ final class AnonymousLoginAccessTest extends TestCase
         self::assertSame(['111', '222', $this->crc('demo'), $this->crc('demo_fr')], $values);
     }
 
+    public function testTheAdminSiteaccessesOfAServedSiteMayLogInToo(): void
+    {
+        $site = SiteBuilder::site(['status' => SiteStatus::Active, 'adminSiteaccesses' => [new SiteAccessDefinition('admin_demo', ['eng-GB'], 'admin.demo.example.org')]]);
+
+        self::assertSame(['111', $this->crc('demo'), $this->crc('demo_fr'), $this->crc('admin_demo')], AnonymousLoginAccess::values(['111'], null, $site));
+    }
+
     public function testADraftIsNotAdded(): void
     {
         self::assertSame(['111'], AnonymousLoginAccess::values(['111'], null, SiteBuilder::site()));

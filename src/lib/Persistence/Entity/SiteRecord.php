@@ -42,6 +42,10 @@ class SiteRecord
     #[ORM\Column(type: Types::JSON)]
     private array $siteaccesses;
 
+    /** @var list<array<string, mixed>> */
+    #[ORM\Column(name: 'admin_siteaccesses', type: Types::JSON)]
+    private array $adminSiteaccesses;
+
     #[ORM\Column(name: 'admin_siteaccess', length: 80, nullable: true)]
     private ?string $adminSiteaccess;
 
@@ -70,6 +74,7 @@ class SiteRecord
         $this->sessionCookieDomain = $site->sessionCookieDomain;
         $this->siteaccesses = array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $site->siteaccesses);
         $this->adminSiteaccess = $site->adminSiteaccess;
+        $this->adminSiteaccesses = array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $site->adminSiteaccesses);
         $this->varDir = $site->varDir;
         $this->layoutRemoteId = $site->layoutRemoteId;
         $this->updatedAt = new \DateTimeImmutable();
@@ -94,6 +99,7 @@ class SiteRecord
             $this->adminSiteaccess,
             $this->varDir,
             $this->layoutRemoteId,
+            array_map(static fn (array $row): SiteAccessDefinition => SiteAccessDefinition::fromArray($row), $this->adminSiteaccesses),
         );
     }
 }

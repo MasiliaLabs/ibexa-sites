@@ -40,7 +40,7 @@ readonly class AnonymousLoginAccess
     /** @return list<string> */
     private static function codes(Site $site): array
     {
-        return array_map(static fn (string $name): string => sprintf('%u', crc32($name)), $site->siteaccessNames());
+        return array_map(static fn (string $name): string => sprintf('%u', crc32($name)), $site->allSiteaccessNames());
     }
 
     public function sync(?Site $before, ?Site $after): void

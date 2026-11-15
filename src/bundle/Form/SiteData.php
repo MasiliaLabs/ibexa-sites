@@ -21,6 +21,8 @@ final class SiteData
     public ?string $layoutRemoteId = null;
     /** @var array<int, SiteAccessData> The form leaves gaps in the keys when a line is removed */
     public array $siteaccesses = [];
+    /** @var array<int, SiteAccessData> */
+    public array $adminSiteaccesses = [];
 
     public static function fromSite(Site $site): self
     {
@@ -35,6 +37,7 @@ final class SiteData
         $data->varDir = $site->varDir;
         $data->layoutRemoteId = $site->layoutRemoteId;
         $data->siteaccesses = array_map(static fn ($s): SiteAccessData => SiteAccessData::fromDefinition($s), $site->siteaccesses);
+        $data->adminSiteaccesses = array_map(static fn ($s): SiteAccessData => SiteAccessData::fromDefinition($s), $site->adminSiteaccesses);
 
         return $data;
     }
@@ -56,6 +59,7 @@ final class SiteData
             $blank($this->adminSiteaccess),
             $blank($this->varDir),
             $blank($this->layoutRemoteId),
+            array_values(array_map(static fn (SiteAccessData $s) => $s->toDefinition(), $this->adminSiteaccesses)),
         );
     }
 }

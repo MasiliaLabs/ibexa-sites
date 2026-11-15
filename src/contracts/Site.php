@@ -17,7 +17,8 @@ final readonly class Site
      * @param string|null               $sessionCookieDomain
      * @param string|null               $varDir         The directory the files of the site live in, relative to the project ("var/demo"); the project's own when empty
      * @param string|null               $layoutRemoteId The remote id of the content that holds the layout of the site (logo, footer), for masilia/ibexa-blocks
-     * @param list<SiteAccessDefinition> $siteaccesses
+     * @param list<SiteAccessDefinition> $siteaccesses      The front ones: what visitors see
+     * @param list<SiteAccessDefinition> $adminSiteaccesses The ones editors work in (members of the admin group), same rules of address
      */
     public function __construct(
         public string $identifier,
@@ -31,6 +32,7 @@ final readonly class Site
         public ?string $adminSiteaccess = null,
         public ?string $varDir = null,
         public ?string $layoutRemoteId = null,
+        public array $adminSiteaccesses = [],
     ) {
     }
 
@@ -40,9 +42,27 @@ final readonly class Site
         return array_map(static fn (SiteAccessDefinition $s): string => $s->name, $this->siteaccesses);
     }
 
+    /** @return list<SiteAccessDefinition> The front siteaccesses, then the admin ones */
+    public function allSiteaccesses(): array
+    {
+        return [...$this->siteaccesses, ...$this->adminSiteaccesses];
+    }
+
+    /** @return list<string> */
+    public function allSiteaccessNames(): array
+    {
+        return array_map(static fn (SiteAccessDefinition $s): string => $s->name, $this->allSiteaccesses());
+    }
+
+    public function isAdmin(string $siteaccess): bool
+    {
+        return in_array($siteaccess, array_map(static fn (SiteAccessDefinition $s): string => $s->name, $this->adminSiteaccesses), true);
+    }
+
+    /** A front or an admin siteaccess of the site */
     public function siteaccess(string $name): ?SiteAccessDefinition
     {
-        foreach ($this->siteaccesses as $siteaccess) {
+        foreach ($this->allSiteaccesses() as $siteaccess) {
             if ($siteaccess->name === $name) {
                 return $siteaccess;
             }
@@ -51,10 +71,10 @@ final readonly class Site
         return null;
     }
 
-    /** @return list<string> The distinct hosts of its siteaccesses */
+    /** @return list<string> The distinct hosts of its siteaccesses, fronts and admins */
     public function hosts(): array
     {
-        return array_values(array_unique(array_map(static fn (SiteAccessDefinition $s): string => $s->host, $this->siteaccesses)));
+        return array_values(array_unique(array_map(static fn (SiteAccessDefinition $s): string => $s->host, $this->allSiteaccesses())));
     }
 
     /** @return list<string> The distinct languages of its siteaccesses, in order */
@@ -72,7 +92,7 @@ final readonly class Site
 
     public function withStatus(SiteStatus $status): self
     {
-        return new self($this->identifier, $this->name, $status, $this->rootLocationId, $this->design, $this->siteaccesses, $this->base, $this->sessionCookieDomain, $this->adminSiteaccess, $this->varDir, $this->layoutRemoteId);
+        return new self($this->identifier, $this->name, $status, $this->rootLocationId, $this->design, $this->siteaccesses, $this->base, $this->sessionCookieDomain, $this->adminSiteaccess, $this->varDir, $this->layoutRemoteId, $this->adminSiteaccesses);
     }
 
     /** @return array<string, mixed> */
@@ -83,6 +103,7 @@ final readonly class Site
             'design' => $this->design, 'base' => $this->base, 'sessionCookieDomain' => $this->sessionCookieDomain, 'adminSiteaccess' => $this->adminSiteaccess,
             'varDir' => $this->varDir, 'layoutRemoteId' => $this->layoutRemoteId,
             'siteaccesses' => array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $this->siteaccesses),
+            'adminSiteaccesses' => array_map(static fn (SiteAccessDefinition $s): array => $s->toArray(), $this->adminSiteaccesses),
         ];
     }
 
@@ -103,6 +124,7 @@ final readonly class Site
             $optional('adminSiteaccess'),
             $optional('varDir'),
             $optional('layoutRemoteId'),
+            array_map(static fn (array $row): SiteAccessDefinition => SiteAccessDefinition::fromArray($row), array_values((array) ($data['adminSiteaccesses'] ?? []))),
         );
     }
 }

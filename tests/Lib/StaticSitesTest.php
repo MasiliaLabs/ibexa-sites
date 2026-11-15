@@ -43,7 +43,7 @@ final class StaticSitesTest extends TestCase
         self::assertCount(1, $sites);
         self::assertSame('shop_group', $sites[0]->identifier);
         self::assertSame(62, $sites[0]->rootLocationId);
-        self::assertSame('.shop.example.org', $sites[0]->sessionCookieDomain);
+        self::assertNull($sites[0]->sessionCookieDomain, 'the session of a site taken over stays the one of the YAML');
         self::assertSame('var/shop', $sites[0]->varDir, 'a directory that is not the project\'s default is kept');
         self::assertSame('shop_layout', $sites[0]->layoutRemoteId);
         self::assertSame(['shop', 'shop_fr'], $sites[0]->siteaccessNames(), 'a member listed twice counts once');

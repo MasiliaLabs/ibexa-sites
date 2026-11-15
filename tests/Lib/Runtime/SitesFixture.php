@@ -12,7 +12,7 @@ use Masilia\IbexaSites\Runtime\RegistryMatcher;
 use Masilia\IbexaSites\Runtime\SiteSnapshot;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-/** Three sites (a trait of the tests that need them): "demo" (en at the root, fr under /fr with an english fallback), "blog" (a host per language, en/ar), "off" (disabled). */
+/** Three sites (a trait of the tests that need them): "demo" (with an admin siteaccess; en at the root, fr under /fr with an english fallback), "blog" (a host per language, en/ar), "off" (disabled). */
 trait SitesFixture
 {
     /** @return list<Site> */
@@ -26,7 +26,9 @@ trait SitesFixture
             new Site('demo_group', 'Demo', SiteStatus::Active, 500, 'mattcch', [
                 new SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org'),
                 new SiteAccessDefinition('demo_fr', ['fre-FR', 'eng-GB'], 'demo.example.org', 'fr'),
-            ], 'mattcch_group', '.demo.example.org', null, 'var/demo', 'demo_layout_config'),
+            ], 'mattcch_group', '.demo.example.org', null, 'var/demo', 'demo_layout_config', [
+                new SiteAccessDefinition('admin_demo', ['eng-GB', 'fre-FR'], 'admin.demo.example.org'),
+            ]),
             new Site('off_group', 'Off', SiteStatus::Disabled, 700, 'imal', [new SiteAccessDefinition('off', ['eng-GB'], 'off.example.org')], 'site_group'),
         ];
     }

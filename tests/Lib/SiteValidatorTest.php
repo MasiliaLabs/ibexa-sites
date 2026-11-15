@@ -73,6 +73,41 @@ final class SiteValidatorTest extends TestCase
         self::assertSame([], $this->problems(['varDir' => 'var/demo-2', 'layoutRemoteId' => 'demo_layout_config']));
     }
 
+    private static function admin(string $name = 'admin_demo', string $host = 'admin.demo.example.org'): SiteAccessDefinition
+    {
+        return new SiteAccessDefinition($name, ['eng-GB', 'fre-FR'], $host);
+    }
+
+    public function testAdminSiteaccessesFollowTheRulesOfAddressAndNamesOfTheOthers(): void
+    {
+        self::assertSame([], $this->problems(['adminSiteaccesses' => [self::admin()]]));
+        self::assertStringContainsString('given twice', implode("\n", $this->problems(['adminSiteaccesses' => [self::admin('demo')]])));
+        self::assertStringContainsString('Two siteaccesses answer on the same address', implode("\n", $this->problems(['adminSiteaccesses' => [self::admin('admin_demo', 'demo.example.org')]])));
+        self::assertStringContainsString('is not a host name', implode("\n", $this->problems(['adminSiteaccesses' => [self::admin('admin_demo', 'Admin Demo')]])));
+        self::assertStringContainsString('already used by another site', implode("\n", $this->problems(['adminSiteaccesses' => [self::admin('admin_other')]], [SiteBuilder::site(['identifier' => 'other', 'rootLocationId' => 501, 'siteaccesses' => [self::sa('x', host: 'x.example.org')], 'adminSiteaccesses' => [self::admin('admin_x')]])])));
+    }
+
+    public function testTheCookieDomainMustCoverTheHostsOfTheSiteAndNoOneElses(): void
+    {
+        $with = ['sessionCookieDomain' => '.demo.example.org', 'adminSiteaccesses' => [self::admin()]];
+
+        self::assertSame([], $this->problems($with), 'the front and the admin are under the domain');
+        self::assertStringContainsString('does not cover the host "admin.other.org"', implode("\n", $this->problems(['adminSiteaccesses' => [self::admin('admin_demo', 'admin.other.org')]] + ['sessionCookieDomain' => '.demo.example.org'])));
+        self::assertStringContainsString('is not a cookie domain', implode("\n", $this->problems(['sessionCookieDomain' => '.org'])));
+        self::assertStringContainsString('is not a cookie domain', implode("\n", $this->problems(['sessionCookieDomain' => '.Demo.example.org'])));
+    }
+
+    public function testACookieDomainThatReachesAnotherSiteOrTheYamlIsRefused(): void
+    {
+        $wide = ['sessionCookieDomain' => '.example.org', 'siteaccesses' => [self::sa('demo', host: 'demo.example.org')]];
+        $other = SiteBuilder::site(['identifier' => 'other', 'rootLocationId' => 501, 'siteaccesses' => [self::sa('x', host: 'x.example.org')]]);
+
+        $problems = implode("\n", $this->problems($wide, [$other]));
+
+        self::assertStringContainsString('would also be sent to "x.example.org", which belongs to another site', $problems);
+        self::assertStringContainsString('would also be sent to "main.example.org"', $problems, 'a host of the YAML is another site too');
+    }
+
     public function testASiteWithoutABaseIsAccepted(): void
     {
         self::assertSame([], $this->problems(['base' => null]));
@@ -130,5 +165,12 @@ final class SiteValidatorTest extends TestCase
         self::assertSame(['demo.example.org'], $site->hosts());
         self::assertSame(['eng-GB', 'fre-FR'], $site->languages());
         self::assertSame($site->toArray(), \Masilia\Contracts\IbexaSites\Site::fromArray($site->toArray())->toArray());
+        $withAdmin = SiteBuilder::site(['adminSiteaccesses' => [self::admin()]]);
+        self::assertSame(['demo', 'demo_fr', 'admin_demo'], $withAdmin->allSiteaccessNames());
+        self::assertSame(['demo', 'demo_fr'], $withAdmin->siteaccessNames(), 'the fronts are what visitors see');
+        self::assertTrue($withAdmin->isAdmin('admin_demo'));
+        self::assertFalse($withAdmin->isAdmin('demo'));
+        self::assertSame(['demo.example.org', 'admin.demo.example.org'], $withAdmin->hosts());
+        self::assertSame($withAdmin->toArray(), \Masilia\Contracts\IbexaSites\Site::fromArray($withAdmin->toArray())->toArray());
     }
 }

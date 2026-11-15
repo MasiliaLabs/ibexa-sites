@@ -19,9 +19,10 @@ final class DynamicSiteaccessesTest extends TestCase
     {
         $provider = new DynamicSiteAccessProvider($this->snapshot(), 'admin_group');
 
-        self::assertSame(['blog', 'blog_ar', 'demo', 'demo_fr'], array_map(static fn (SiteAccess $s): string => $s->name, iterator_to_array($provider->getSiteAccesses(), false)));
+        self::assertSame(['blog', 'blog_ar', 'demo', 'demo_fr', 'admin_demo'], array_map(static fn (SiteAccess $s): string => $s->name, iterator_to_array($provider->getSiteAccesses(), false)));
         self::assertTrue($provider->isDefined('demo_fr'));
         self::assertFalse($provider->isDefined('off'));
+        self::assertSame(['admin_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('admin_demo')->groups), 'an admin siteaccess is in the admin group and nowhere else');
         self::assertSame(['front_group', 'demo_group', 'mattcch_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('demo')->groups), 'the group of the site, then the base group the rest comes from');
     }
 
@@ -47,6 +48,19 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertSame('mattcch', $resolver->getParameter('design', null, 'demo_fr'));
         self::assertSame(['demo', 'demo_fr'], $resolver->getParameter('translation_siteaccesses', null, 'demo'));
         self::assertSame(['ara-MA'], $resolver->getParameter('languages', null, 'blog_ar'));
+    }
+
+    public function testAnAdminSiteaccessGetsItsLanguagesTheDirectoryAndTheSessionButNeitherTheDesignNorTheRootNorTheLayout(): void
+    {
+        $resolver = new RegistryConfigResolver($this->snapshot());
+
+        self::assertSame(['eng-GB', 'fre-FR'], $resolver->getParameter('languages', null, 'admin_demo'));
+        self::assertSame('var/demo', $resolver->getParameter('var_dir', null, 'admin_demo'));
+        self::assertSame('.demo.example.org', $resolver->getParameter('session', null, 'admin_demo')['cookie_domain']);
+        foreach (['design', 'content.tree_root.location_id', 'translation_siteaccesses'] as $front) {
+            self::assertFalse($resolver->hasParameter($front, null, 'admin_demo'), $front . ' is the admin group\'s business');
+        }
+        self::assertFalse($resolver->hasParameter('layout_remote_id', 'masilia_ibexa_blocks', 'admin_demo'));
     }
 
     public function testTheResolverUsesTheCurrentSiteaccessWithoutAScope(): void

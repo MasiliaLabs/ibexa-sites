@@ -21,6 +21,7 @@ readonly class SiteValidator
     private const PREFIX = '/^[a-z0-9][a-z0-9-]{0,29}$/';
     private const VAR_DIR = '/^[a-z0-9][a-z0-9_-]*(\/[a-z0-9][a-z0-9_-]*)*$/';
     private const REMOTE_ID = '/^[A-Za-z0-9_-]{1,100}$/';
+    private const COOKIE_DOMAIN = '/^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$/';
     private const HOST = '/^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/';
 
     public function __construct(private SiteFacts $facts)
@@ -37,6 +38,7 @@ readonly class SiteValidator
         $problems = [
             ...$this->identity($site, $others, $isNew),
             ...$this->siteaccesses($site, $others),
+            ...$this->session($site, $others),
             ...$this->settings($site, $others),
         ];
         if ($problems !== []) {
@@ -82,7 +84,7 @@ readonly class SiteValidator
         $takenNames = [];
         $takenAddresses = [];
         foreach ($others as $other) {
-            foreach ($other->siteaccesses as $s) {
+            foreach ($other->allSiteaccesses() as $s) {
                 $takenNames[] = $s->name;
                 $takenAddresses[] = $s->host . '/' . ($s->uriPrefix ?? '');
             }
@@ -91,7 +93,7 @@ readonly class SiteValidator
         $seenNames = [];
         $seenAddresses = [];
         $bareHosts = [];
-        foreach ($site->siteaccesses as $s) {
+        foreach ($site->allSiteaccesses() as $s) {
             $problems = [...$problems, ...$this->siteaccess($site, $s, $takenNames)];
             $address = $s->host . '/' . ($s->uriPrefix ?? '');
             if (in_array($s->name, $seenNames, true)) {
@@ -110,6 +112,44 @@ readonly class SiteValidator
             }
             $seenNames[] = $s->name;
             $seenAddresses[] = $address;
+        }
+
+        return $problems;
+    }
+
+    /**
+     * The cookie of the session of a site: one for the site, its siteaccesses and its admins (the editor is known on the site he
+     * works on), and for nobody else.
+     *
+     * @param list<Site> $others
+     *
+     * @return list<string>
+     */
+    private function session(Site $site, array $others): array
+    {
+        if ($site->sessionCookieDomain === null) {
+            return [];
+        }
+        $domain = $site->sessionCookieDomain;
+        $bare = ltrim($domain, '.');
+        if ($domain !== strtolower($domain) || preg_match(self::COOKIE_DOMAIN, $bare) !== 1) {
+            return [sprintf('"%s" is not a cookie domain (lower case, at least two labels, like ".example.org").', $domain)];
+        }
+        $covers = static fn (string $host): bool => $host === $bare || str_ends_with($host, '.' . $bare);
+        $problems = [];
+        foreach ($site->hosts() as $host) {
+            if (!$covers($host)) {
+                $problems[] = sprintf('The cookie domain "%s" does not cover the host "%s" of the site: the session would not be shared by its siteaccesses.', $domain, $host);
+            }
+        }
+        $foreign = $this->facts->staticHosts();
+        foreach ($others as $other) {
+            $foreign = [...$foreign, ...$other->hosts()];
+        }
+        foreach (array_unique($foreign) as $host) {
+            if ($covers($host)) {
+                $problems[] = sprintf('The cookie domain "%s" would also be sent to "%s", which belongs to another site: a user logged in here would be known there. Use a narrower domain.', $domain, $host);
+            }
         }
 
         return $problems;

@@ -59,6 +59,12 @@ final class RegistryMatcherTest extends TestCase
         self::assertSame('/page', $this->matcher('blog-ar.example.org', '/')->analyseLink('/page'), 'no prefix with one host per language');
     }
 
+    public function testTheHostOfAnAdminSiteaccessIsMatchedLikeAnyOther(): void
+    {
+        self::assertSame('admin_demo', $this->matcher('admin.demo.example.org', '/login')->match());
+        self::assertSame('admin.demo.example.org', $this->matcher('demo.example.org', '/')->reverseMatch('admin_demo')?->getRequest()->getHost());
+    }
+
     public function testAHostOfNoSiteOrOfADisabledOneIsNotMatched(): void
     {
         self::assertFalse($this->matcher('www.example.org', '/')->match());
