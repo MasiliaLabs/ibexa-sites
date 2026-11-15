@@ -39,6 +39,17 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         return $this->record($identifier)?->toSite();
     }
 
+    public function problems(Site $site, bool $isNew): array
+    {
+        try {
+            $this->validator->validate($site, $isNew ? $this->list() : $this->others($site->identifier), $isNew);
+        } catch (SiteInvalid $invalid) {
+            return $invalid->problems;
+        }
+
+        return [];
+    }
+
     public function create(Site $site): Site
     {
         $this->validator->validate($site, $this->list(), true);

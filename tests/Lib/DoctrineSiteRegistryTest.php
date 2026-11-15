@@ -169,4 +169,15 @@ final class DoctrineSiteRegistryTest extends TestCase
         $this->registry->setStatus('demo_group', SiteStatus::Disabled);
         self::assertSame(SiteStatus::Disabled, $this->registry->find('demo_group')?->status);
     }
+
+    public function testTheProblemsOfASiteAreToldWithoutWritingAnything(): void
+    {
+        self::assertSame([], $this->registry->problems(SiteBuilder::site(), true));
+        self::assertNotSame([], $this->registry->problems(SiteBuilder::site(['design' => 'nope']), true));
+        self::assertSame([], $this->registry->list(), 'nothing was written');
+
+        $this->registry->create(SiteBuilder::site());
+        self::assertNotSame([], $this->registry->problems(SiteBuilder::site(), true), 'as a new one it is already there');
+        self::assertSame([], $this->registry->problems(SiteBuilder::site(['name' => 'Renamed']), false), 'as a change it is acceptable');
+    }
 }

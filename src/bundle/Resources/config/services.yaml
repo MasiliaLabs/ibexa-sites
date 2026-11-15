@@ -14,6 +14,11 @@ services:
     Masilia\IbexaSites\Validation\SiteFacts:
         alias: Masilia\IbexaSites\Ibexa\IbexaSiteFacts
 
+    Masilia\IbexaSites\Ibexa\FactsSiteOptions: ~
+    Masilia\Contracts\IbexaSites\SiteOptions:
+        alias: Masilia\IbexaSites\Ibexa\FactsSiteOptions
+        public: true
+
     Masilia\IbexaSites\DoctrineSiteRegistry:
         arguments:
             $events: '@event_dispatcher'

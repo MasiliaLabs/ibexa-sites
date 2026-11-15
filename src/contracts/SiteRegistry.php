@@ -15,6 +15,14 @@ interface SiteRegistry
 
     public function find(string $identifier): ?Site;
 
+    /**
+     * What is wrong with a site, without writing anything: the problems a {@see create()} (or an {@see update()} when $isNew is
+     * false) would refuse it with, empty when it is acceptable. For checking before a person approves a change.
+     *
+     * @return list<string>
+     */
+    public function problems(Site $site, bool $isNew): array;
+
     /** @throws SiteInvalid */
     public function create(Site $site): Site;
 
