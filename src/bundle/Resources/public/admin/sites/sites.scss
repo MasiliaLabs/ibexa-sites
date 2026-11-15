@@ -10,7 +10,6 @@ $transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transitio
     display: flex;
     flex-direction: column;
     gap: calculateRem(16px);
-    max-width: calculateRem(1200px);
     padding: calculateRem(8px) 0 calculateRem(32px);
     color: ibexa.$ibexa-color-dark;
     font-size: ibexa.$ibexa-text-font-size;

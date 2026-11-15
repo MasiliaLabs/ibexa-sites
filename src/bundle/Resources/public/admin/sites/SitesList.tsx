@@ -10,6 +10,7 @@ import { SearchInput } from '@masilia-admin-kit/SearchInput';
 import { DataTable, TableHeader } from '@masilia-admin-kit/Table';
 import type { Column } from '@masilia-admin-kit/Table';
 import { StatusTag } from '@masilia-admin-kit/StatusTag';
+import { addressOf } from './addresses';
 import type { Api } from './api';
 import { t } from './messages';
 import type { SiteDto, SiteStatus, SitesData } from './types';
@@ -91,7 +92,21 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
         },
         { key: 'design', header: t('column.design'), render: (site) => site.design },
         { key: 'status', header: t('column.status'), render: (site) => <StatusTag status={site.status}>{t(`status.${site.status}`)}</StatusTag> },
-        { key: 'domain', header: t('column.domain'), render: (site) => hostLinks(site, site.siteaccesses) },
+        {
+            key: 'siteaccesses',
+            header: t('column.addresses'),
+            render: (site) => site.siteaccesses.map((sa) => {
+                const url = addressOf({ host: sa.host, uriPrefix: sa.uriPrefix ?? '' });
+                const shownUrl = url.replace(/^https?:\/\//, '');
+
+                return (
+                    <div className="masilia-sites-table__sa" key={sa.name}>
+                        {site.status === 'active' ? <ExternalLink href={url} label={t('addresses.open')}>{shownUrl}</ExternalLink> : <span className="masilia-sites-muted">{shownUrl}</span>}
+                        {' '}<span className="masilia-sites-muted">{sa.languages[0]}</span>
+                    </div>
+                );
+            }),
+        },
         { key: 'admin', header: t('column.admin'), render: (site) => hostLinks(site, site.adminSiteaccesses) },
         ...(data.canManage ? [{
             key: 'actions',

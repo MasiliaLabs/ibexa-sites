@@ -50,7 +50,7 @@ export const DEFAULTS: Readonly<Record<string, string>> = {
     'column.site': 'Site',
     'column.status': 'Status',
     'column.design': 'Design',
-    'column.domain': 'Domain',
+    'column.addresses': 'Addresses',
     'column.admin': 'Admin',
     'ids.dropdown.placeholder': 'Select an item',
     'ids.dropdown.search.placeholder': 'Search…',

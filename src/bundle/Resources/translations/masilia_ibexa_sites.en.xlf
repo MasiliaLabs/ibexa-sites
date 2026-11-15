@@ -594,9 +594,9 @@
         <source>column.design</source>
         <target>Design</target>
       </trans-unit>
-      <trans-unit id="column.domain" resname="column.domain">
-        <source>column.domain</source>
-        <target>Domain</target>
+      <trans-unit id="column.addresses" resname="column.addresses">
+        <source>column.addresses</source>
+        <target>Addresses</target>
       </trans-unit>
       <trans-unit id="column.admin" resname="column.admin">
         <source>column.admin</source>
