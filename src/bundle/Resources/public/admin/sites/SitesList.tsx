@@ -4,13 +4,12 @@ import { ConfirmDialog } from '@masilia-admin-kit/ConfirmDialog';
 import { FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
 import { ExternalLink } from '@masilia-admin-kit/ExternalLink';
 import { IconButton } from '@masilia-admin-kit/IconButton';
-import { Badge, Button } from '@masilia-admin-kit/ids';
+import { Button } from '@masilia-admin-kit/ids';
 import { notify } from '@masilia-admin-kit/notify';
 import { SearchInput } from '@masilia-admin-kit/SearchInput';
 import { DataTable, TableHeader } from '@masilia-admin-kit/Table';
 import type { Column } from '@masilia-admin-kit/Table';
 import { StatusTag } from '@masilia-admin-kit/StatusTag';
-import { addressOf } from './addresses';
 import type { Api } from './api';
 import { t } from './messages';
 import type { SiteDto, SiteStatus, SitesData } from './types';
@@ -64,6 +63,20 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
         }
     };
 
+    /** The hosts of some siteaccesses, once each, as links when the site is served. */
+    const hostLinks = (site: SiteDto, siteaccesses: SiteDto['siteaccesses']): React.ReactNode => {
+        const hosts = [...new Set(siteaccesses.map((sa) => sa.host))];
+        if (hosts.length === 0) {
+            return <span className="masilia-sites-muted">—</span>;
+        }
+
+        return hosts.map((host) => (
+            <div className="masilia-sites-table__sa" key={host}>
+                {site.status === 'active' ? <ExternalLink href={`https://${host}/`} label={t('addresses.open')}>{host}</ExternalLink> : <span className="masilia-sites-muted">{host}</span>}
+            </div>
+        ));
+    };
+
     const columns: Column<SiteDto>[] = [
         {
             key: 'site',
@@ -72,31 +85,14 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
                 <>
                     <strong>{site.name}</strong>
                     <br />
-                    <span className="masilia-sites-muted">{site.design}{site.identifier !== site.name ? ` · ${site.identifier}` : ''}</span>
+                    <span className="masilia-sites-muted">{site.identifier}</span>
                 </>
             ),
         },
+        { key: 'design', header: t('column.design'), render: (site) => site.design },
         { key: 'status', header: t('column.status'), render: (site) => <StatusTag status={site.status}>{t(`status.${site.status}`)}</StatusTag> },
-        {
-            key: 'siteaccesses',
-            header: t('column.addresses'),
-            render: (site) => (
-                <>
-                    {site.siteaccesses.map((sa) => {
-                        const url = addressOf({ host: sa.host, uriPrefix: sa.uriPrefix ?? '' });
-                        const shownUrl = url.replace(/^https?:\/\//, '');
-
-                        return (
-                            <div className="masilia-sites-table__sa" key={sa.name}>
-                                {site.status === 'active' ? <ExternalLink href={url} label={t('addresses.open')}>{shownUrl}</ExternalLink> : <span className="masilia-sites-muted">{shownUrl}</span>}
-                                {' '}<span className="masilia-sites-muted">{sa.languages[0]}</span>
-                            </div>
-                        );
-                    })}
-                    {site.adminSiteaccesses.length > 0 ? <div className="masilia-sites-muted"><Badge variant="number" size="small" value={site.adminSiteaccesses.length} /> {t('list.admins.label')}</div> : null}
-                </>
-            ),
-        },
+        { key: 'domain', header: t('column.domain'), render: (site) => hostLinks(site, site.siteaccesses) },
+        { key: 'admin', header: t('column.admin'), render: (site) => hostLinks(site, site.adminSiteaccesses) },
         ...(data.canManage ? [{
             key: 'actions',
             header: <span className="masilia-kit-sr-only">{t('column.actions')}</span>,

@@ -538,17 +538,9 @@
         <source>tab.default</source>
         <target>Default siteaccess</target>
       </trans-unit>
-      <trans-unit id="column.addresses" resname="column.addresses">
-        <source>column.addresses</source>
-        <target>Addresses</target>
-      </trans-unit>
       <trans-unit id="section.advanced" resname="section.advanced">
         <source>section.advanced</source>
         <target>Advanced</target>
-      </trans-unit>
-      <trans-unit id="list.admins.label" resname="list.admins.label">
-        <source>list.admins.label</source>
-        <target>admin siteaccess(es)</target>
       </trans-unit>
       <trans-unit id="ids.dropdown.placeholder" resname="ids.dropdown.placeholder">
         <source>ids.dropdown.placeholder</source>
@@ -597,6 +589,18 @@
       <trans-unit id="field.address.hint" resname="field.address.hint">
         <source>field.address.hint</source>
         <target>The postal address of the site, shown in its emails. The project’s own when empty.</target>
+      </trans-unit>
+      <trans-unit id="column.design" resname="column.design">
+        <source>column.design</source>
+        <target>Design</target>
+      </trans-unit>
+      <trans-unit id="column.domain" resname="column.domain">
+        <source>column.domain</source>
+        <target>Domain</target>
+      </trans-unit>
+      <trans-unit id="column.admin" resname="column.admin">
+        <source>column.admin</source>
+        <target>Admin</target>
       </trans-unit>
     </body>
   </file>
