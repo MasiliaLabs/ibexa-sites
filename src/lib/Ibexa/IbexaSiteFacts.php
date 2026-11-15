@@ -107,6 +107,11 @@ readonly class IbexaSiteFacts implements SiteFacts
         return array_map('strval', $this->groups[$this->adminGroup] ?? []);
     }
 
+    public function staticFrontSiteaccesses(): array
+    {
+        return array_values(array_diff(array_map('strval', $this->siteaccesses), $this->adminSiteaccesses()));
+    }
+
     /** A group the project declares empty is only kept for its settings (a site taken over from the YAML): its name is free for that site. */
     public function reservedNames(): array
     {

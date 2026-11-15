@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Masilia\Bundle\IbexaSites;
 
-use Masilia\Bundle\IbexaSites\DependencyInjection\Compiler\SiteaccessGroupsPass;
+use Masilia\Bundle\IbexaSites\DependencyInjection\Compiler\CompiledSiteaccessPass;
 use Masilia\Bundle\IbexaSites\DependencyInjection\Compiler\TranslationHelperPass;
 use Masilia\Bundle\IbexaSites\Security\SitesPolicyProvider;
 use Masilia\IbexaSites\Runtime\RegistryMatcher;
@@ -24,7 +24,7 @@ final class MasiliaIbexaSitesBundle extends Bundle
         $core = $container->getExtension('ibexa');
         $core->addPolicyProvider(new SitesPolicyProvider());
         $container->addCompilerPass(new TranslationHelperPass());
-        $container->addCompilerPass(new SiteaccessGroupsPass());
+        $container->addCompilerPass(new CompiledSiteaccessPass());
     }
 
     public function boot(): void

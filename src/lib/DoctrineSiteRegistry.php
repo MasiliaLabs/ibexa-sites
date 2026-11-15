@@ -10,6 +10,7 @@ use Masilia\Contracts\IbexaSites\Site;
 use Masilia\Contracts\IbexaSites\SiteInvalid;
 use Masilia\Contracts\IbexaSites\SiteNotFound;
 use Masilia\Contracts\IbexaSites\SiteRegistry;
+use Masilia\Contracts\IbexaSites\SiteSettings;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\Persistence\Entity\SiteRecord;
 use Masilia\IbexaSites\Persistence\SiteReader;
@@ -24,6 +25,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         private SiteReader $reader,
         private SiteValidator $validator,
         private EventDispatcherInterface $events,
+        private SiteSettings $settings,
     ) {
     }
 
@@ -53,6 +55,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         $record = $this->record($site->identifier) ?? throw new SiteNotFound($site->identifier);
         $before = $record->toSite();
         $this->validator->validate($site, $this->others($site->identifier), false);
+        $this->keepsDefault($before, $site);
 
         $record->apply($site);
         $this->entities->flush();
@@ -71,6 +74,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         $after = $before->withStatus($status);
         // A site is only served once it is valid: the same rules as a write.
         $this->validator->validate($after, $this->others($identifier), false);
+        $this->keepsDefault($before, $after);
 
         $record->apply($after);
         $this->entities->flush();
@@ -83,10 +87,27 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
     {
         $record = $this->record($identifier) ?? throw new SiteNotFound($identifier);
         $before = $record->toSite();
+        $this->keepsDefault($before, null);
 
         $this->entities->remove($record);
         $this->entities->flush();
         $this->events->dispatch(new SiteChanged($before, null));
+    }
+
+    /**
+     * The siteaccess that answers when no host matches must stay served: a site that holds it cannot be disabled, deleted or lose it.
+     *
+     * @throws SiteInvalid
+     */
+    private function keepsDefault(Site $before, ?Site $after): void
+    {
+        $default = $this->settings->defaultSiteaccess();
+        if ($default === null || !$before->status->isServed() || !in_array($default, $before->siteaccessNames(), true)) {
+            return;
+        }
+        if ($after === null || !$after->status->isServed() || !in_array($default, $after->siteaccessNames(), true)) {
+            throw new SiteInvalid([sprintf('The siteaccess "%s" of this site is the default one (it answers when no host matches): choose another default first.', $default)]);
+        }
     }
 
     private function record(string $identifier): ?SiteRecord

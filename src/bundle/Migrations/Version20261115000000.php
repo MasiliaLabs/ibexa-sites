@@ -12,7 +12,7 @@ final class Version20261115000000 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Create masilia_site.';
+        return 'Create masilia_site and masilia_setting.';
     }
 
     public function up(Schema $schema): void
@@ -35,10 +35,17 @@ final class Version20261115000000 extends AbstractMigration
                 updated_at DATETIME NOT NULL COMMENT '(DC2Type:datetime_immutable)'
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE IF NOT EXISTS masilia_setting (
+                name VARCHAR(60) CHARACTER SET ascii NOT NULL PRIMARY KEY,
+                value VARCHAR(255) NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+            SQL);
     }
 
     public function down(Schema $schema): void
     {
+        $this->addSql('DROP TABLE IF EXISTS masilia_setting');
         $this->addSql('DROP TABLE IF EXISTS masilia_site');
     }
 }

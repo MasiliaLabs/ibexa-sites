@@ -17,13 +17,24 @@ services:
     Masilia\IbexaSites\DoctrineSiteRegistry:
         arguments:
             $events: '@event_dispatcher'
+    Masilia\IbexaSites\DoctrineSiteSettings: ~
+    Masilia\Contracts\IbexaSites\SiteSettings:
+        alias: Masilia\IbexaSites\DoctrineSiteSettings
+        public: true
     Masilia\Contracts\IbexaSites\SiteRegistry:
         alias: Masilia\IbexaSites\DoctrineSiteRegistry
         public: true
 
     Masilia\IbexaSites\Persistence\SiteReader: ~
+    Masilia\IbexaSites\Persistence\SettingReader: ~
 
     Masilia\IbexaSites\Runtime\SiteSnapshot:
+        arguments:
+            $cache: '@cache.app'
+        public: true
+
+    # The siteaccess that answers when no host matches (see DefaultSiteaccessPass: Ibexa's router and listeners ask it).
+    Masilia\IbexaSites\Runtime\DefaultSiteaccess:
         arguments:
             $cache: '@cache.app'
         public: true

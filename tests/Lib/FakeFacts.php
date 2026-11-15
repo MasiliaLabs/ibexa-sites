@@ -44,6 +44,11 @@ final class FakeFacts implements SiteFacts
         return ['admin'];
     }
 
+    public function staticFrontSiteaccesses(): array
+    {
+        return ['main', 'main_fr'];
+    }
+
     public function reservedNames(): array
     {
         return ['main', 'main_fr', 'admin', 'front_group', 'main_group'];

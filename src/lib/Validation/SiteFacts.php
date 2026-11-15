@@ -23,6 +23,9 @@ interface SiteFacts
     /** @return list<string> The siteaccess groups a site can take its settings from (the front ones, not the admin) */
     public function baseGroups(): array;
 
+    /** @return list<string> The front siteaccesses the project declares in its YAML (not the admin ones) */
+    public function staticFrontSiteaccesses(): array;
+
     /** @return list<string> The admin siteaccesses that exist */
     public function adminSiteaccesses(): array;
 

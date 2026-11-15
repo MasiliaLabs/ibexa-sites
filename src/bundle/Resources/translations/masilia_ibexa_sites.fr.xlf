@@ -242,6 +242,22 @@
         <source>form.layout.help</source>
         <target>Facultatif : le remote id du contenu qui porte le layout du site (logo, pied de page). Repris du groupe de base si vide.</target>
       </trans-unit>
+      <trans-unit id="default.label" resname="default.label">
+        <source>default.label</source>
+        <target>Siteaccess par défaut</target>
+      </trans-unit>
+      <trans-unit id="default.project" resname="default.project">
+        <source>default.project</source>
+        <target>Celui du projet (YAML)</target>
+      </trans-unit>
+      <trans-unit id="default.help" resname="default.help">
+        <source>default.help</source>
+        <target>Répond quand aucun hôte ne correspond. Un site qui le porte ne peut être ni désactivé ni supprimé.</target>
+      </trans-unit>
+      <trans-unit id="flash.default" resname="flash.default">
+        <source>flash.default</source>
+        <target>Le siteaccess par défaut est enregistré.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

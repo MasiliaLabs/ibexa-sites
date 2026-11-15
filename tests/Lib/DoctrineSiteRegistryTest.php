@@ -11,6 +11,7 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Masilia\Contracts\IbexaSites\Event\SiteChanged;
 use Masilia\Contracts\IbexaSites\SiteInvalid;
 use Masilia\Contracts\IbexaSites\SiteNotFound;
+use Masilia\Contracts\IbexaSites\SiteSettings;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Masilia\IbexaSites\DoctrineSiteRegistry;
 use Masilia\IbexaSites\Persistence\Entity\SiteRecord;
@@ -25,6 +26,8 @@ final class DoctrineSiteRegistryTest extends TestCase
     /** @var list<SiteChanged> */
     private array $events = [];
     private DoctrineSiteRegistry $registry;
+    private string|null $default = null;
+    private SiteSettings $settings;
 
     protected function setUp(): void
     {
@@ -40,7 +43,28 @@ final class DoctrineSiteRegistryTest extends TestCase
 
             return $event;
         });
-        $this->registry = new DoctrineSiteRegistry($entities, new SiteReader($entities), new SiteValidator(new FakeFacts()), $dispatcher);
+        $this->default = null;
+        $self = $this;
+        $this->settings = new class($self) implements SiteSettings {
+            public function __construct(private readonly DoctrineSiteRegistryTest $test)
+            {
+            }
+
+            public function defaultSiteaccess(): ?string
+            {
+                return $this->test->defaultName();
+            }
+
+            public function defaultSiteaccessChoices(): array
+            {
+                return [];
+            }
+
+            public function setDefaultSiteaccess(?string $siteaccess): void
+            {
+            }
+        };
+        $this->registry = new DoctrineSiteRegistry($entities, new SiteReader($entities), new SiteValidator(new FakeFacts()), $dispatcher, $this->settings);
     }
 
     public function testASiteIsReadBackAsItWasWritten(): void
@@ -115,5 +139,34 @@ final class DoctrineSiteRegistryTest extends TestCase
 
         self::assertSame('Renamed', $this->registry->find('demo_group')?->name);
         self::assertSame('Renamed', $changed->name);
+    }
+
+    public function defaultName(): ?string
+    {
+        return $this->default;
+    }
+
+    public function testTheSiteThatHoldsTheDefaultSiteaccessCannotBeDisabledNorDeletedNorLoseIt(): void
+    {
+        $this->registry->create(SiteBuilder::site(['status' => SiteStatus::Active]));
+        $this->default = 'demo_fr';
+
+        foreach ([
+            fn () => $this->registry->setStatus('demo_group', SiteStatus::Disabled),
+            fn () => $this->registry->delete('demo_group'),
+            fn () => $this->registry->update(SiteBuilder::site(['status' => SiteStatus::Active, 'siteaccesses' => [new \Masilia\Contracts\IbexaSites\SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org')]])),
+        ] as $change) {
+            try {
+                $change();
+                self::fail('The default siteaccess was let go.');
+            } catch (SiteInvalid $invalid) {
+                self::assertStringContainsString('is the default one', implode(' ', $invalid->problems));
+            }
+        }
+        self::assertSame(SiteStatus::Active, $this->registry->find('demo_group')?->status);
+
+        $this->default = null;
+        $this->registry->setStatus('demo_group', SiteStatus::Disabled);
+        self::assertSame(SiteStatus::Disabled, $this->registry->find('demo_group')?->status);
     }
 }

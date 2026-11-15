@@ -242,6 +242,22 @@
         <source>form.layout.help</source>
         <target>Optional: the remote id of the content that holds the layout of the site (logo, footer). Taken from the base group when empty.</target>
       </trans-unit>
+      <trans-unit id="default.label" resname="default.label">
+        <source>default.label</source>
+        <target>Default siteaccess</target>
+      </trans-unit>
+      <trans-unit id="default.project" resname="default.project">
+        <source>default.project</source>
+        <target>The project&#x27;s (YAML)</target>
+      </trans-unit>
+      <trans-unit id="default.help" resname="default.help">
+        <source>default.help</source>
+        <target>Answers when no host matches. A site that holds it cannot be disabled or deleted.</target>
+      </trans-unit>
+      <trans-unit id="flash.default" resname="flash.default">
+        <source>flash.default</source>
+        <target>The default siteaccess was saved.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -11,6 +11,7 @@ use Masilia\Bundle\IbexaSites\Form\SiteType;
 use Masilia\Contracts\IbexaSites\SiteInvalid;
 use Masilia\Contracts\IbexaSites\SiteNotFound;
 use Masilia\Contracts\IbexaSites\SiteRegistry;
+use Masilia\Contracts\IbexaSites\SiteSettings;
 use Masilia\Contracts\IbexaSites\SiteStatus;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,7 @@ final class SitesController extends Controller
 {
     public function __construct(
         private readonly SiteRegistry $registry,
+        private readonly SiteSettings $settings,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -38,8 +40,26 @@ final class SitesController extends Controller
     {
         return $this->render('@ibexadesign/sites/list.html.twig', [
             'sites' => $this->registry->list(),
+            'defaultSiteaccess' => $this->settings->defaultSiteaccess(),
+            'defaultChoices' => $this->settings->defaultSiteaccessChoices(),
             'canManage' => $this->isGranted(new Attribute('masilia_site', 'manage')),
         ]);
+    }
+
+    #[Route('/sites/default', name: 'masilia.ibexa_sites.default', methods: ['POST'])]
+    public function default(Request $request): RedirectResponse
+    {
+        $this->denyAccessUnlessGranted(new Attribute('masilia_site', 'manage'));
+        $this->checkToken($request, 'masilia_site_default');
+        $chosen = trim((string) $request->request->get('siteaccess'));
+        try {
+            $this->settings->setDefaultSiteaccess($chosen === '' ? null : $chosen);
+            $this->addFlash('success', $this->translator->trans('flash.default', [], 'masilia_ibexa_sites'));
+        } catch (SiteInvalid $invalid) {
+            $this->addFlash('warning', implode(' ', $invalid->problems));
+        }
+
+        return $this->redirectToRoute('masilia.ibexa_sites.list');
     }
 
     #[Route('/sites/new', name: 'masilia.ibexa_sites.new', methods: ['GET', 'POST'])]

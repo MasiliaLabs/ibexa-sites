@@ -21,6 +21,19 @@
     <div class="masilia-sites">
         <p class="ibexa-text-muted">{{ 'sites.intro'|trans }}</p>
 
+        <form method="post" action="{{ path('masilia.ibexa_sites.default') }}" class="masilia-default-siteaccess" style="margin-bottom:1rem">
+            <input type="hidden" name="_token" value="{{ csrf_token('masilia_site_default') }}">
+            <label for="masilia-default">{{ 'default.label'|trans }}</label>
+            <select id="masilia-default" name="siteaccess" {% if not canManage %}disabled{% endif %}>
+                <option value="">{{ 'default.project'|trans }}</option>
+                {% for name in defaultChoices %}
+                    <option value="{{ name }}" {% if name == defaultSiteaccess %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            {% if canManage %}<button class="btn ibexa-btn ibexa-btn--secondary" type="submit">{{ 'action.save'|trans }}</button>{% endif %}
+            <span class="ibexa-text-muted">{{ 'default.help'|trans }}</span>
+        </form>
+
         {% if canManage %}
             <p><a class="btn ibexa-btn ibexa-btn--primary" href="{{ path('masilia.ibexa_sites.new') }}">{{ 'sites.new'|trans }}</a></p>
         {% endif %}
