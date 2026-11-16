@@ -1,8 +1,30 @@
 {
     "name": "masilia/ibexa-sites",
     "description": "Sites created at run time: a registry of sites (hosts, languages, root, design) that Ibexa serves without a deploy",
+    "keywords": [
+        "ibexa",
+        "ibexa-dxp",
+        "ibexa-5",
+        "symfony-bundle",
+        "multisite",
+        "siteaccess",
+        "sites",
+        "admin-ui"
+    ],
+    "homepage": "https://github.com/MasiliaLabs/ibexa-sites",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "MasiliaLabs",
+            "homepage": "https://github.com/MasiliaLabs"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/MasiliaLabs/ibexa-sites/issues",
+        "source": "https://github.com/MasiliaLabs/ibexa-sites",
+        "security": "https://github.com/MasiliaLabs/ibexa-sites/security/policy"
+    },
     "type": "ibexa-bundle",
-    "license": "proprietary",
     "require": {
         "php": ">=8.3",
         "doctrine/doctrine-bundle": "^2.13",

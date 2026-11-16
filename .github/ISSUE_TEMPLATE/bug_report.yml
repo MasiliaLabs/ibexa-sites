@@ -1,0 +1,32 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected and what you got. Paste the error message or the log if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: The smallest set of steps that shows the problem.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: "e.g. 1.2.0"
+    validations:
+      required: true
+  - type: input
+    id: ibexa
+    attributes:
+      label: Ibexa, Symfony and PHP versions
+      placeholder: "e.g. Ibexa 5.0.9, Symfony 7.4, PHP 8.4"
+    validations:
+      required: true

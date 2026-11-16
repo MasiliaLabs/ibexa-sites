@@ -1,0 +1,16 @@
+name: Feature request
+description: An idea for the package
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem to solve
+      description: What you are trying to do and why the package does not let you do it today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What you have in mind
+      description: How you would like it to work. Alternatives you considered are welcome.

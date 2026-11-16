@@ -1,0 +1,39 @@
+# Changelog
+
+All notable changes to `masilia/ibexa-sites` are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/) (before 1.0, a minor version may contain breaking changes).
+
+## [Unreleased]
+
+### Added
+- A site has a contact email and an address (`masilia_site` migration `Version20261116000000`). The registry answers `site_name`, `site_url`, `site_email` and `site_address` in the `masilia_ibexa_sites` namespace of the configuration resolver, and the admin siteaccess of a site in the `masilia_editorial_toolbox` namespace.
+- A validation problem can be a **warning**: a cookie domain that also reaches another site no longer prevents saving.
+- The list shows Site, Design, Status, Addresses and Admin, and takes the whole width.
+
+### Fixed
+- Services that ask for the siteaccess groups with `#[Autowire]` now get the groups of the registry too (the compiled groups are replaced after autowiring).
+- Notifications go through Ibexa's notification helper, and the panel closes before the toast.
+
+### Changed
+- Requires `masilia/ibexa-admin-kit` `^0.1.1`, and declares the dependencies the code uses directly.
+- Examples and test fixtures are neutral (no project names).
+
+## [0.1.1] - 2026-11-15
+
+### Fixed
+- Accepts `doctrine/orm` `^2.20 || ^3.0` (Ibexa 5 runs ORM 2.20).
+
+## [0.1.0] - 2026-11-15
+
+First release.
+
+### Added
+- The registry of sites (`masilia_site`, `masilia_setting`), served at run time: host and prefix matcher, siteaccess provider, groups, default siteaccess, session and per-siteaccess settings.
+- Draft, active and disabled sites; activating a site lets visitors in through the Anonymous role.
+- Field-by-field validation of names, hosts, prefixes, languages, addresses and the cookie domain.
+- The admin page `/sites` (React and the Universal Discovery Widget), the JSON API under `/api/masilia/sites`, and the policies `masilia_site/view` and `masilia_site/manage`.
+- Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
+- The contracts in `Masilia\Contracts\IbexaSites`.
+
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.0...0.1.1
+[0.1.0]: https://github.com/MasiliaLabs/ibexa-sites/releases/tag/0.1.0
