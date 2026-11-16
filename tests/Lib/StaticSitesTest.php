@@ -31,7 +31,7 @@ final class StaticSitesTest extends TestCase
 
     public function testEachFrontGroupBecomesADraftSiteWithWhatTheConfigurationResolves(): void
     {
-        $values = ['languages' => ['shop' => ['eng-GB'], 'shop_fr' => ['fre-FR', 'eng-GB'], 'blog' => ['eng-GB']], 'design' => ['shop' => 'imal'], 'content.tree_root.location_id' => ['shop' => 62], 'session.cookie_domain' => ['shop' => '.shop.example.org'], 'var_dir' => ['shop' => 'var/shop', 'default' => 'var/site'], 'layout_remote_id' => ['shop' => 'shop_layout'], 'site_name' => ['shop_group' => 'The Shop'], 'site_email' => ['shop_group' => 'hi@shop.example.org'], 'site_address' => ['shop_group' => '1 Shop Street']];
+        $values = ['languages' => ['shop' => ['eng-GB'], 'shop_fr' => ['fre-FR', 'eng-GB'], 'blog' => ['eng-GB']], 'design' => ['shop' => 'brand'], 'content.tree_root.location_id' => ['shop' => 62], 'session.cookie_domain' => ['shop' => '.shop.example.org'], 'var_dir' => ['shop' => 'var/shop', 'default' => 'var/site'], 'layout_remote_id' => ['shop' => 'shop_layout'], 'site_name' => ['shop_group' => 'The Shop'], 'site_email' => ['shop_group' => 'hi@shop.example.org'], 'site_address' => ['shop_group' => '1 Shop Street']];
         $config = $this->createMock(ConfigResolverInterface::class);
         $config->method('hasParameter')->willReturnCallback(static fn (string $n, $ns, string $scope): bool => isset($values[$n][$scope]));
         $config->method('getParameter')->willReturnCallback(static fn (string $n, $ns, string $scope): mixed => $values[$n][$scope]);

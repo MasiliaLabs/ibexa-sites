@@ -19,7 +19,7 @@ final class SiteBuilder
             'name' => 'Demo',
             'status' => SiteStatus::Draft,
             'rootLocationId' => 500,
-            'design' => 'imal',
+            'design' => 'brand',
             'siteaccesses' => [
                 new SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org'),
                 new SiteAccessDefinition('demo_fr', ['fre-FR', 'eng-GB'], 'demo.example.org', 'fr'),

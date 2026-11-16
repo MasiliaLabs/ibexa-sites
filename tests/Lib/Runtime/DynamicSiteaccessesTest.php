@@ -23,14 +23,14 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertTrue($provider->isDefined('demo_fr'));
         self::assertFalse($provider->isDefined('off'));
         self::assertSame(['admin_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('admin_demo')->groups), 'an admin siteaccess is in the admin group and nowhere else');
-        self::assertSame(['front_group', 'demo_group', 'mattcch_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('demo')->groups), 'the group of the site, then the base group the rest comes from');
+        self::assertSame(['front_group', 'demo_group', 'partner_group'], array_map(static fn ($g): string => $g->getName(), $provider->getSiteAccess('demo')->groups), 'the group of the site, then the base group the rest comes from');
     }
 
     public function testTheProviderRefusesASiteaccessItDoesNotHave(): void
     {
         $this->expectException(NotFoundException::class);
 
-        (new DynamicSiteAccessProvider($this->snapshot(), 'admin_group'))->getSiteAccess('fossil_exit');
+        (new DynamicSiteAccessProvider($this->snapshot(), 'admin_group'))->getSiteAccess('acme');
     }
 
     public function testTheResolverGivesTheLanguageTheRootTheDesignAndTheTranslations(): void
@@ -45,7 +45,7 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertFalse($resolver->hasParameter('session', null, 'blog'), 'no cookie domain set: the groups answer');
         self::assertFalse($resolver->hasParameter('var_dir', null, 'blog'), 'no directory set: the project\'s own');
         self::assertSame(500, $resolver->getParameter('content.tree_root.location_id', null, 'demo'));
-        self::assertSame('mattcch', $resolver->getParameter('design', null, 'demo_fr'));
+        self::assertSame('partner', $resolver->getParameter('design', null, 'demo_fr'));
         self::assertSame(['demo', 'demo_fr'], $resolver->getParameter('translation_siteaccesses', null, 'demo'));
         self::assertSame(['ara-MA'], $resolver->getParameter('languages', null, 'blog_ar'));
     }
@@ -82,7 +82,7 @@ final class DynamicSiteaccessesTest extends TestCase
         $resolver = new RegistryConfigResolver($this->snapshot());
 
         self::assertSame(500, $resolver->getParameter('content.tree_root.location_id', null, 'demo_group'));
-        self::assertSame('mattcch', $resolver->getParameter('design', null, 'demo_group'));
+        self::assertSame('partner', $resolver->getParameter('design', null, 'demo_group'));
         self::assertSame(['demo', 'demo_fr'], $resolver->getParameter('translation_siteaccesses', null, 'demo_group'));
         self::assertSame('var/demo', $resolver->getParameter('var_dir', null, 'demo_group'));
         self::assertSame('.demo.example.org', $resolver->getParameter('session', null, 'demo_group')['cookie_domain']);
@@ -107,6 +107,6 @@ final class DynamicSiteaccessesTest extends TestCase
         self::assertFalse($resolver->hasParameter('languages', null, 'site_fr'), 'a siteaccess of the project is not its business');
         self::assertFalse($resolver->hasParameter('languages', null, 'off'));
         $this->expectException(ParameterNotFoundException::class);
-        $resolver->getParameter('design', null, 'fossil_exit');
+        $resolver->getParameter('design', null, 'acme');
     }
 }

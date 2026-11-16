@@ -17,7 +17,7 @@ final class SiteInputTest extends TestCase
             'status' => 'active',
             'name' => '  Demo  ',
             'rootLocationId' => '500',
-            'design' => ' imal ',
+            'design' => ' brand ',
             'base' => '',
             'sessionCookieDomain' => '   ',
             'varDir' => ' var/demo ',

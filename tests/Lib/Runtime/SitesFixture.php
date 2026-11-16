@@ -19,17 +19,17 @@ trait SitesFixture
     private static function sites(): array
     {
         return [
-            new Site('blog_group', 'Blog', SiteStatus::Active, 600, 'imal', [
+            new Site('blog_group', 'Blog', SiteStatus::Active, 600, 'brand', [
                 new SiteAccessDefinition('blog', ['eng-GB'], 'blog.example.org'),
                 new SiteAccessDefinition('blog_ar', ['ara-MA'], 'blog-ar.example.org'),
             ], 'site_group'),
-            new Site('demo_group', 'Demo', SiteStatus::Active, 500, 'mattcch', [
+            new Site('demo_group', 'Demo', SiteStatus::Active, 500, 'partner', [
                 new SiteAccessDefinition('demo', ['eng-GB'], 'demo.example.org'),
                 new SiteAccessDefinition('demo_fr', ['fre-FR', 'eng-GB'], 'demo.example.org', 'fr'),
-            ], 'mattcch_group', '.demo.example.org', null, 'var/demo', 'demo_layout_config', [
+            ], 'partner_group', '.demo.example.org', null, 'var/demo', 'demo_layout_config', [
                 new SiteAccessDefinition('admin_demo', ['eng-GB', 'fre-FR'], 'admin.demo.example.org'),
             ], 'contact@demo.example.org', '1 rue Demo, Rabat'),
-            new Site('off_group', 'Off', SiteStatus::Disabled, 700, 'imal', [new SiteAccessDefinition('off', ['eng-GB'], 'off.example.org')], 'site_group'),
+            new Site('off_group', 'Off', SiteStatus::Disabled, 700, 'brand', [new SiteAccessDefinition('off', ['eng-GB'], 'off.example.org')], 'site_group'),
         ];
     }
 

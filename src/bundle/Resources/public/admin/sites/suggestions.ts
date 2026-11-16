@@ -2,7 +2,7 @@ import { shortCode } from './addresses';
 import { emptyRow } from './rows';
 import type { SiteaccessDraft } from './types';
 
-/** An identifier from a name: lower case letters, digits and "_", ending in "_group", at most 30 characters ("Fossil Exit" → "fossil_exit_group"). */
+/** An identifier from a name: lower case letters, digits and "_", ending in "_group", at most 30 characters ("Acme Shop" → "acme_group"). */
 export function suggestIdentifier(name: string): string {
     const slug = name
         .normalize('NFD')

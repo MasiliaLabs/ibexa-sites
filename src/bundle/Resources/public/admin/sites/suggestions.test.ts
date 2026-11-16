@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import { commonCookieDomain, initialLanguages, stem, suggestIdentifier, suggestSiteaccessName, suggestSiteaccesses } from './suggestions';
 
 test('an identifier is made from a name', () => {
-    assert.equal(suggestIdentifier('Fossil Exit'), 'fossil_exit_group');
+    assert.equal(suggestIdentifier('Acme Shop'), 'acme_shop_group');
     assert.equal(suggestIdentifier('  Énergies renouvelables !  '), 'energies_renouvelables_group');
     assert.equal(suggestIdentifier('2040 Pathway'), 'pathway_group', 'it starts with a letter');
     assert.equal(suggestIdentifier('!!!'), '');

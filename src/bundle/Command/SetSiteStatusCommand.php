@@ -32,7 +32,7 @@ final class SetSiteStatusCommand extends Command
     {
         $this
             ->addArgument('status', InputArgument::REQUIRED, '"active" or "disabled"')
-            ->addArgument('identifiers', InputArgument::IS_ARRAY, 'The sites (their group name: "fossil_exit_group")')
+            ->addArgument('identifiers', InputArgument::IS_ARRAY, 'The sites (their group name: "acme_group")')
             ->addOption('all', null, InputOption::VALUE_NONE, 'Every site of the registry that is not in that status yet');
     }
 

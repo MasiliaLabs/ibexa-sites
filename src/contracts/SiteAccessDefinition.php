@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Masilia\Contracts\IbexaSites;
 
 /**
- * One siteaccess of a site, as the project's own YAML has them ("fossil_exit_fr"): the languages it serves (the first one is its
+ * One siteaccess of a site, as the project's own YAML has them ("acme_fr"): the languages it serves (the first one is its
  * language, the others the ones content falls back to) and the address it answers on, a host and, when the host holds several
  * siteaccesses, the prefix of the path that tells them apart ("fr" for /fr). Without a prefix it is the one at the root of the host.
  */

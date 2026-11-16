@@ -9,7 +9,7 @@ import { hasProblems, mergeProblems, normalizedHost, normalizedPrefix, validateS
 import { emptyDraft } from './payload';
 
 const t = createTranslator(DEFAULTS, 'test', { trans: (id) => id });
-const options = { languages: ['eng-GB', 'fre-FR', 'ara-MA'], designs: ['imal', 'fossil_exit'], baseGroups: ['front_group'], adminSiteaccesses: ['admin'] };
+const options = { languages: ['eng-GB', 'fre-FR', 'ara-MA'], designs: ['brand', 'acme'], baseGroups: ['front_group'], adminSiteaccesses: ['admin'] };
 
 function valid(overrides: Partial<SiteDraft> = {}): SiteDraft {
     return {
@@ -17,14 +17,14 @@ function valid(overrides: Partial<SiteDraft> = {}): SiteDraft {
         identifier: 'demo_group',
         name: 'Demo',
         rootLocationId: 500,
-        design: 'imal',
+        design: 'brand',
         siteaccesses: [emptyRow({ name: 'demo', languages: ['eng-GB'], host: 'demo.example.org' }), emptyRow({ name: 'demo_fr', languages: ['fre-FR', 'eng-GB'], host: 'demo.example.org', uriPrefix: 'fr' })],
         ...overrides,
     };
 }
 
 const other: SiteDto = {
-    identifier: 'other_group', name: 'Other', status: 'active', rootLocationId: 600, design: 'imal', base: null, sessionCookieDomain: null, adminSiteaccess: null, varDir: null, layoutRemoteId: null, email: null, address: null,
+    identifier: 'other_group', name: 'Other', status: 'active', rootLocationId: 600, design: 'brand', base: null, sessionCookieDomain: null, adminSiteaccess: null, varDir: null, layoutRemoteId: null, email: null, address: null,
     siteaccesses: [{ name: 'other', languages: ['eng-GB'], host: 'other.example.org', uriPrefix: null }], adminSiteaccesses: [{ name: 'admin_other', languages: ['eng-GB'], host: 'admin.other.example.org', uriPrefix: null }],
 };
 

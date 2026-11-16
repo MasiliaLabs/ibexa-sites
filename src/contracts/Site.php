@@ -12,7 +12,7 @@ namespace Masilia\Contracts\IbexaSites;
 final readonly class Site
 {
     /**
-     * @param string                    $identifier  The name of the siteaccess group ("fossil_exit_group")
+     * @param string                    $identifier  The name of the siteaccess group ("acme_group")
      * @param string|null               $base        A group the site takes the settings it does not set from (images, rich text, menus…), if any
      * @param string|null               $sessionCookieDomain
      * @param string|null               $varDir         The directory the files of the site live in, relative to the project ("var/demo"); the project's own when empty

@@ -31,7 +31,7 @@ final class FakeFacts implements SiteFacts
 
     public function designs(): array
     {
-        return ['imal', 'mattcch'];
+        return ['brand', 'partner'];
     }
 
     public function baseGroups(): array
