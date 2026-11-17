@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-17
+
 ### Added
 - A site has a contact email and an address (`masilia_site` migration `Version20261116000000`). The registry answers `site_name`, `site_url`, `site_email` and `site_address` in the `masilia_ibexa_sites` namespace of the configuration resolver, and the admin siteaccess of a site in the `masilia_editorial_toolbox` namespace.
 - A validation problem can be a **warning**: a cookie domain that also reaches another site no longer prevents saving.
@@ -34,6 +36,7 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/MasiliaLabs/ibexa-sites/releases/tag/0.1.0
