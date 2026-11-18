@@ -80,12 +80,6 @@
             "dev-main": "0.2.x-dev"
         }
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/MasiliaLabs/ibexa-admin-kit.git"
-        }
-    ],
     "suggest": {
         "masilia/editorial-toolbox": "Gives the in-context editing toolbox the admin siteaccess of each site",
         "masilia/ibexa-ai-craft": "The assistant creates and changes sites (site.* capabilities)",
