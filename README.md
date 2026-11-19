@@ -67,8 +67,10 @@ composer require masilia/ibexa-sites
    php bin/console doctrine:migrations:migrate
    php bin/console cache:clear
    yarn ibexa-generate-tsconfig
-   yarn encore dev   # or: yarn encore production
+   php bin/console ibexa:encore:compile
    ```
+
+   Inside DDEV, prefix each command with `ddev exec`. The admin build is `ibexa:encore:compile`: `yarn encore dev --config-name ibexa` does not work ("Configuration with the name ibexa was not found"), and a plain `yarn encore dev` does not build the admin on a project that has not merged the Ibexa configuration into its `webpack.config.js`.
 
 4. Give a role the policies `masilia_site / view` (see the sites) and `masilia_site / manage` (create, change, activate, delete). *Manage* also decides who may let visitors into a siteaccess, so give it with the care of a role change. The entry **Sites** appears in the **Admin** menu.
 
