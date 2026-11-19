@@ -4,6 +4,14 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-19
+
+### Added
+- An agent skill, `skills/masilia-ibexa-sites`, for AI coding agents that work with the package; the README says how to install it.
+
+### Changed
+- The Masilia dependencies come from Packagist: the `repositories` entries of `composer.json` are gone.
+
 ## [0.2.0] - 2026-11-17
 
 ### Added
@@ -36,7 +44,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.1...HEAD
+[0.2.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/MasiliaLabs/ibexa-sites/releases/tag/0.1.0
