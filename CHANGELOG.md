@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.4] - 2026-11-19
+
 ### Added
 - Docs: a *With Symfony Flex* section in the README and in the skill: the Masilia recipes (`MasiliaLabs/recipes`) enable the bundle and write its route and config files on `composer require`.
 
@@ -57,7 +59,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.3...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.4...HEAD
+[0.2.4]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.0...0.2.1
