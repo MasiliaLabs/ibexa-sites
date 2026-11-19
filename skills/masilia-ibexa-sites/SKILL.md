@@ -10,6 +10,8 @@ A site is normally a siteaccess group in YAML (edit, deploy). This package keeps
 ## Install
 `composer require masilia/ibexa-sites`; enable `MasiliaIbexaAdminKitBundle` and `MasiliaIbexaSitesBundle`; import `@MasiliaIbexaSitesBundle/Resources/config/routes.yaml`; `doctrine:migrations:migrate`; `cache:clear`; `yarn ibexa-generate-tsconfig`; `php bin/console ibexa:encore:compile` (not `yarn encore dev --config-name ibexa`: that config does not exist on a blank project); give a role `masilia_site/view` and `masilia_site/manage` (manage lets someone open a siteaccess to visitors: treat it like a role change). The project must keep a minimal technical siteaccess in YAML (`list: [technical]`, `default_siteaccess: technical`, groups `technical_group`, and `front_group`/`admin_group` declared even when empty).
 
+With the Masilia recipes endpoint in the `composer.json` (`https://api.github.com/repos/MasiliaLabs/recipes/contents/index.json?ref=flex/main` in `extra.symfony.endpoint`, after Ibexa's), `composer require` already enables the bundle and writes the route and config files (see the README, section *With Symfony Flex*); then do what is left. Without the endpoint, do everything by hand.
+
 ## Everyday work
 - Admin: **Sites** > New site (name, languages, host, root via the content browser, design) > save > Activate. Confirmation dialogs say what changes.
 - Console: `masilia:sites:import-static [--dry-run]` imports YAML site groups as drafts; `masilia:sites:set-status active|disabled <group>|--all`.

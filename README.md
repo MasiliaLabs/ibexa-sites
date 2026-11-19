@@ -93,6 +93,24 @@ ibexa:
 
 The siteaccesses of the registry join the groups `front_group` (declare it, even empty, wherever your configuration reads it) and `admin_group`, plus the group of their site and its base group.
 
+### With Symfony Flex
+
+The Masilia recipes do the first steps for you. Add their endpoint once to the `composer.json` of your project, after the one of Ibexa:
+
+```json
+"extra": {
+    "symfony": {
+        "endpoint": [
+            "https://api.github.com/repos/ibexa/recipes/contents/index.json?ref=flex/main",
+            "https://api.github.com/repos/MasiliaLabs/recipes/contents/index.json?ref=flex/main",
+            "flex://defaults"
+        ]
+    }
+}
+```
+
+Then `composer require masilia/ibexa-sites` enables the bundle and writes `config/routes/masilia_ibexa_sites.yaml`. What is left is yours: the migrations, the admin build, the policies `masilia_site / view` and `manage`, and the minimal technical siteaccess. The manual steps above and below stay valid.
+
 ## Usage
 
 Open **Sites** in the admin: **New site**, give a name, the languages and the host, choose the root location in the content browser, pick a design, save, then **Activate**. The hosts must also answer at the server (DNS, web server, certificate, cache): nothing here changes that.
