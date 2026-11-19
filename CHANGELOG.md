@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-11-19
+
 ### Fixed
 - Install docs: the admin is built with `php bin/console ibexa:encore:compile` (`yarn encore dev --config-name ibexa` does not exist on a blank project); README and skill corrected.
 
@@ -47,7 +49,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.1...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.2...HEAD
+[0.2.2]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.0...0.1.1
