@@ -35,3 +35,11 @@ The components of the admin come from [`masilia/ibexa-admin-kit`](https://github
 - Commit messages start with `feat:`, `fix:`, `refactor:`, `docs:` or `chore:`.
 
 By contributing you agree that your contribution is released under the [MIT license](LICENSE) of the project.
+
+## Versioning and maintenance
+
+- **Semantic Versioning.** Releases are `MAJOR.MINOR.PATCH`. While the version is `0.x`, a minor version may contain breaking changes; they are always listed under *Changed* with the word **Breaking** in the [CHANGELOG](CHANGELOG.md).
+- **What the promise covers.** The contracts (`Masilia\Contracts\…`, `src/contracts`), the configuration of the bundle, the console commands, the routes and the Twig functions are public: they change only in a major version (a minor one before 1.0), after a deprecation when that is possible. Everything else (`src/lib`, `src/bundle` classes, the TypeScript sources) is internal and may change in any release.
+- **Deprecations** are announced in the CHANGELOG (*Deprecated*) and in the code (`@deprecated` with the version), and kept for at least one minor version before they are removed.
+- **Supported versions.** Fixes go to the latest minor version only (see [SECURITY.md](SECURITY.md)); upgrade to it before reporting a problem.
+- **Releasing** (maintainers): the `Unreleased` section of the CHANGELOG becomes the new version with its date, `composer.json` gets the matching `branch-alias`, then an annotated tag is pushed; the *Release* workflow publishes the GitHub release from the CHANGELOG, and Packagist picks the tag up by itself.
