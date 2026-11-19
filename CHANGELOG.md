@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.3] - 2026-11-19
+
 ### Fixed
 - `doctrine:schema:update --dump-sql` no longer wants to convert the columns of `masilia_site` and `masilia_setting`: they were created with the `ascii` character set, which the mapping does not declare. A migration gives them the character set of their table (utf8mb4); the data is ascii text and does not change. Additive and idempotent.
 
@@ -52,7 +54,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.2...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.3...HEAD
+[0.2.3]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.1...0.2.2
 [0.2.1]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.1.1...0.2.0
