@@ -4,6 +4,9 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+### Fixed
+- `doctrine:schema:update --dump-sql` no longer wants to convert the columns of `masilia_site` and `masilia_setting`: they were created with the `ascii` character set, which the mapping does not declare. A migration gives them the character set of their table (utf8mb4); the data is ascii text and does not change. Additive and idempotent.
+
 ## [0.2.2] - 2026-11-19
 
 ### Fixed
