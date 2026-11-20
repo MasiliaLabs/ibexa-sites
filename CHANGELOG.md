@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.5] - 2026-11-20
+
 ### Fixed
 - The page of the sites is wrapped in the `container ibexa-container` section that every Ibexa admin list uses, so that it has the margins of the other pages.
 
@@ -62,7 +64,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.4...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.5...HEAD
+[0.2.5]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.4...0.2.5
 [0.2.4]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.3...0.2.4
 [0.2.3]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.1...0.2.2
