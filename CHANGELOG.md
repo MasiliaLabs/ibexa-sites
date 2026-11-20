@@ -4,6 +4,9 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+### Fixed
+- The page of the sites is wrapped in the `container ibexa-container` section that every Ibexa admin list uses, so that it has the margins of the other pages.
+
 ## [0.2.4] - 2026-11-19
 
 ### Added
