@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Masilia\IbexaSites\Tests\Bundle;
 
 use Masilia\Bundle\IbexaSites\DependencyInjection\Compiler\CompiledSiteaccessPass;
+use Masilia\IbexaSites\Ibexa\IbexaSiteFacts;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -45,6 +46,18 @@ final class CompiledSiteaccessPassTest extends TestCase
 
         self::assertSame('masilia_ibexa_sites.groups_by_siteaccess', (string) $container->getDefinition('b')->getArgument(0));
         self::assertSame('admin_group', $container->getDefinition('b')->getArgument(1), 'the other arguments stay as they are');
+    }
+
+    public function testTheFactsOfTheValidationKeepWhatTheYamlDeclaresAndNothingMore(): void
+    {
+        // An active site of the registry is in the completed groups: if the validation saw them, the site could not be changed.
+        $container = $this->container();
+        $container->setDefinition(IbexaSiteFacts::class, new Definition('stdClass', [['technical_group' => ['technical']], self::GROUPS_BY_SITEACCESS]));
+
+        (new CompiledSiteaccessPass())->process($container);
+
+        self::assertSame(['technical_group' => ['technical']], $container->getDefinition(IbexaSiteFacts::class)->getArgument(0));
+        self::assertSame(self::GROUPS_BY_SITEACCESS, $container->getDefinition(IbexaSiteFacts::class)->getArgument(1));
     }
 
     public function testAnotherArrayIsLeftAlone(): void

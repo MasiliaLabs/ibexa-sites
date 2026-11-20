@@ -68,9 +68,7 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         $this->validator->validate($site, $this->others($site->identifier), false);
         $this->keepsDefault($before, $site);
 
-        $record->apply($site);
-        $this->entities->flush();
-        $this->events->dispatch(new SiteChanged($before, $site));
+        $this->write($record, $before, $site);
 
         return $site;
     }
@@ -87,11 +85,27 @@ readonly class DoctrineSiteRegistry implements SiteRegistry
         $this->validator->validate($after, $this->others($identifier), false);
         $this->keepsDefault($before, $after);
 
-        $record->apply($after);
-        $this->entities->flush();
-        $this->events->dispatch(new SiteChanged($before, $after));
+        $this->write($record, $before, $after);
 
         return $after;
+    }
+
+    /**
+     * Writes the change and announces it. What reacts to the announcement (the Anonymous role, say) can fail: the site must not stay
+     * half changed, with its new state stored and the rest of the platform in the old one. The old state is written back and the failure goes on.
+     */
+    private function write(SiteRecord $record, Site $before, Site $after): void
+    {
+        $record->apply($after);
+        $this->entities->flush();
+        try {
+            $this->events->dispatch(new SiteChanged($before, $after));
+        } catch (\Throwable $e) {
+            $record->apply($before);
+            $this->entities->flush();
+
+            throw new \RuntimeException(sprintf('The site "%s" was not changed: %s', $after->identifier, $e->getMessage()), 0, $e);
+        }
     }
 
     public function delete(string $identifier): void

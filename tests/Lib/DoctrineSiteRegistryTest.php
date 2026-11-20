@@ -28,6 +28,7 @@ final class DoctrineSiteRegistryTest extends TestCase
     private DoctrineSiteRegistry $registry;
     private string|null $default = null;
     private SiteSettings $settings;
+    private bool $failOnEvents = false;
 
     protected function setUp(): void
     {
@@ -37,8 +38,12 @@ final class DoctrineSiteRegistryTest extends TestCase
         );
         (new SchemaTool($entities))->createSchema([$entities->getClassMetadata(SiteRecord::class)]);
         $this->events = [];
+        $this->failOnEvents = false;
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
         $dispatcher->method('dispatch')->willReturnCallback(function (object $event): object {
+            if ($this->failOnEvents) {
+                throw new \RuntimeException('the role refused');
+            }
             $this->events[] = $event;
 
             return $event;
@@ -65,6 +70,22 @@ final class DoctrineSiteRegistryTest extends TestCase
             }
         };
         $this->registry = new DoctrineSiteRegistry($entities, new SiteReader($entities), new SiteValidator(new FakeFacts()), $dispatcher, $this->settings);
+    }
+
+    public function testAFailureOfWhatReactsToAChangeLeavesTheSiteAsItWas(): void
+    {
+        $site = SiteBuilder::site(['adminSiteaccess' => 'admin']);
+        $this->registry->create($site);
+        $this->failOnEvents = true;
+
+        try {
+            $this->registry->update(SiteBuilder::site(['adminSiteaccess' => 'admin', 'name' => 'Renamed']));
+            self::fail('the failure goes on');
+        } catch (\RuntimeException $e) {
+            self::assertStringContainsString('was not changed: the role refused', $e->getMessage());
+        }
+
+        self::assertEquals($site, $this->registry->find('demo_group'), 'the stored site is the one it was');
     }
 
     public function testASiteIsReadBackAsItWasWritten(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Masilia\Bundle\IbexaSites\DependencyInjection\Compiler;
 
+use Masilia\IbexaSites\Ibexa\IbexaSiteFacts;
 use Masilia\IbexaSites\Runtime\DefaultSiteaccess;
 use Masilia\IbexaSites\Runtime\SiteGroups;
 use Masilia\IbexaSites\Runtime\SiteSnapshot;
@@ -52,7 +53,9 @@ final class CompiledSiteaccessPass implements CompilerPassInterface
         }
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            if (in_array($id, self::SERVICES, true)) {
+            // The facts of the validation must see what the YAML declares, and only that: with the groups completed by the registry, an active
+            // site would find its own name, siteaccesses and root "still declared by the project" and could never be changed.
+            if (in_array($id, self::SERVICES, true) || $id === IbexaSiteFacts::class) {
                 continue;
             }
             $definition->setArguments($this->replace($definition->getArguments()));

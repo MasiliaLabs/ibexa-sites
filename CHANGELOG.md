@@ -4,6 +4,10 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+### Fixed
+- An **active** site of the registry can be changed again. The validation saw the groups completed by the registry as if the project's YAML declared them, so an active site found its own name, siteaccesses, admin siteaccess and root "still declared by the project" and `update()` (and the Save button of Admin > Sites) was refused with HTTP 400; only a draft or a disabled site could be changed. The validation now reads the YAML alone.
+- A change that fails after it was stored (the Anonymous role refuses an update, for instance: "Limitations did not validate") no longer leaves the site half changed: the stored site goes back to what it was and the error says the site was not changed.
+
 ## [0.2.7] - 2026-11-20
 
 ### Added
