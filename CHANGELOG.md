@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.8] - 2026-11-20
+
 ### Fixed
 - An **active** site of the registry can be changed again. The validation saw the groups completed by the registry as if the project's YAML declared them, so an active site found its own name, siteaccesses, admin siteaccess and root "still declared by the project" and `update()` (and the Save button of Admin > Sites) was refused with HTTP 400; only a draft or a disabled site could be changed. The validation now reads the YAML alone.
 - A change that fails after it was stored (the Anonymous role refuses an update, for instance: "Limitations did not validate") no longer leaves the site half changed: the stored site goes back to what it was and the error says the site was not changed.
@@ -78,7 +80,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.7...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.8...HEAD
+[0.2.8]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.7...0.2.8
 [0.2.7]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.6...0.2.7
 [0.2.6]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.5...0.2.6
 [0.2.5]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.4...0.2.5
