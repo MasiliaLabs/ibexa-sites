@@ -4,6 +4,9 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+### Changed
+- The page of the sites is no longer wrapped in the `container ibexa-container` section (0.2.5 added it): it is back to the root of the React application in the content block.
+
 ## [0.2.5] - 2026-11-20
 
 ### Fixed
