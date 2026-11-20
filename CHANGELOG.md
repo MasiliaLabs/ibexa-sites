@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.7] - 2026-11-20
+
 ### Added
 - Docs: a *Stay informed* section in the README: how to be told of new releases (GitHub Watch, the releases feed, `composer outdated`, Dependabot) and where to read what changes.
 
@@ -72,7 +74,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.6...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.7...HEAD
+[0.2.7]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.6...0.2.7
 [0.2.6]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.5...0.2.6
 [0.2.5]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.4...0.2.5
 [0.2.4]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.3...0.2.4
