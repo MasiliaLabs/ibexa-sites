@@ -20,7 +20,7 @@ With the Masilia recipes endpoint in the `composer.json` (`https://api.github.co
 - The design of a site must be a key of `ibexa_design_engine.design_list` (that list stays in YAML).
 
 ## After any change made outside the registry (SQL, restore)
-Clear `cache:clear` and `cache:pool:clear cache.redis cache.app` (the registry snapshot lives in `cache.app`), and reload PHP-FPM if you changed PHP files (opcache). Without it a site "does not change".
+Clear `cache:clear` and `cache:pool:clear --all` (the registry snapshot lives in `cache.app`), and reload PHP-FPM if you changed PHP files (opcache). Without it a site "does not change".
 
 ## Troubleshooting
 - Host answers 404: the site is not `active`, the host or prefix differs from the request, or DNS/server does not reach Ibexa. `masilia:sites:set-status` and `debug:router`/`debug:config` help; check `masilia_site` in the database.
