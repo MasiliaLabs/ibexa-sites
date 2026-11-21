@@ -61,6 +61,7 @@ services:
     Masilia\IbexaSites\Access\AnonymousLoginAccess:
         arguments:
             $repository: '@ibexa.api.repository'
+            $siteAccesses: '@Ibexa\Core\MVC\Symfony\SiteAccess\SiteAccessServiceInterface'
 
     Masilia\IbexaSites\Ibexa\LocationLookup: ~
 

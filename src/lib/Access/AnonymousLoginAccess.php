@@ -8,6 +8,7 @@ use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
 use Ibexa\Contracts\Core\Repository\Repository;
 use Ibexa\Contracts\Core\Repository\Values\User\Limitation\SiteAccessLimitation;
 use Ibexa\Contracts\Core\Repository\Values\User\PolicyDraft;
+use Ibexa\Core\MVC\Symfony\SiteAccess\SiteAccessServiceInterface;
 use Masilia\Contracts\IbexaSites\Site;
 use Psr\Log\LoggerInterface;
 
@@ -19,8 +20,29 @@ use Psr\Log\LoggerInterface;
  */
 readonly class AnonymousLoginAccess
 {
-    public function __construct(private Repository $repository, private string $role = 'Anonymous', private ?LoggerInterface $logger = null)
+    public function __construct(
+        private Repository $repository,
+        private string $role = 'Anonymous',
+        private ?LoggerInterface $logger = null,
+        private ?SiteAccessServiceInterface $siteAccesses = null,
+    ) {
+    }
+
+    /**
+     * Without the values that are not a siteaccess Ibexa knows: it refuses a list with one ("Limitations did not validate"), and a project
+     * that is brought to the registry has such values (the siteaccesses of its old configuration, or of sites that are still drafts). They come
+     * back when their site is activated.
+     *
+     * @param list<string> $values
+     * @param list<string> $knownNames
+     *
+     * @return list<string>
+     */
+    public static function onlyKnown(array $values, array $knownNames): array
     {
+        $known = array_map(static fn (string $name): string => sprintf('%u', crc32($name)), $knownNames);
+
+        return array_values(array_filter($values, static fn (string $value): bool => in_array($value, $known, true)));
     }
 
     /**
@@ -63,6 +85,9 @@ readonly class AnonymousLoginAccess
                     }
                     $existing = array_map('strval', $limitation->limitationValues);
                     $values = self::values($existing, $before, $after);
+                    if ($this->siteAccesses !== null) {
+                        $values = self::onlyKnown($values, array_map(static fn ($siteAccess): string => $siteAccess->name, iterator_to_array($this->siteAccesses->getAll(), false)));
+                    }
                     if ($values === $existing || (count($values) === count($existing) && array_diff($values, $existing) === [])) {
                         return;
                     }

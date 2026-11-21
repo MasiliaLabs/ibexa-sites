@@ -55,6 +55,14 @@ final class AnonymousLoginAccessTest extends TestCase
         self::assertSame(['111', $this->crc('demo'), $this->crc('demo_ar')], $values);
     }
 
+    public function testValuesThatAreNotASiteaccessIbexaKnowsAreLeftOut(): void
+    {
+        $values = ['111', $this->crc('demo'), $this->crc('old_site'), $this->crc('demo_fr')];
+
+        self::assertSame([$this->crc('demo'), $this->crc('demo_fr')], AnonymousLoginAccess::onlyKnown($values, ['demo', 'demo_fr', 'other']));
+        self::assertSame([], AnonymousLoginAccess::onlyKnown($values, []));
+    }
+
     public function testNothingChangesForASiteThatStaysADraft(): void
     {
         self::assertSame(['111'], AnonymousLoginAccess::values(['111'], SiteBuilder::site(), SiteBuilder::site(['name' => 'Renamed'])));

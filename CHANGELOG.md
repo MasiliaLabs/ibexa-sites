@@ -4,6 +4,11 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.9] - 2026-11-21
+
+### Fixed
+- Activating a site no longer fails with "Limitations did not validate" in a project that already has an Anonymous role with a `user/login` list of siteaccesses, which is what a project brought to the registry has (the siteaccesses of its old configuration, or of sites that are still drafts). Ibexa refuses a list with a siteaccess it does not know; the list is now written without such values (they come back when their site is activated).
+
 ## [0.2.8] - 2026-11-20
 
 ### Fixed
@@ -80,7 +85,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.8...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.9...HEAD
+[0.2.9]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.8...0.2.9
 [0.2.8]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.7...0.2.8
 [0.2.7]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.6...0.2.7
 [0.2.6]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.5...0.2.6
