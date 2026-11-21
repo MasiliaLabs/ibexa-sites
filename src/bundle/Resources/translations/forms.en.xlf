@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="role.policy.masilia_site" resname="role.policy.masilia_site">
+        <source>Sites</source>
+        <target>Sites</target>
+        <note>key: role.policy.masilia_site</note>
+      </trans-unit>
+      <trans-unit id="role.policy.masilia_site.all_functions" resname="role.policy.masilia_site.all_functions">
+        <source>Sites / All functions</source>
+        <target>Sites / All functions</target>
+        <note>key: role.policy.masilia_site.all_functions</note>
+      </trans-unit>
+      <trans-unit id="role.policy.masilia_site.view" resname="role.policy.masilia_site.view">
+        <source>Sites / View</source>
+        <target>Sites / View</target>
+        <note>key: role.policy.masilia_site.view</note>
+      </trans-unit>
+      <trans-unit id="role.policy.masilia_site.manage" resname="role.policy.masilia_site.manage">
+        <source>Sites / Manage</source>
+        <target>Sites / Manage</target>
+        <note>key: role.policy.masilia_site.manage</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

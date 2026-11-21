@@ -4,6 +4,9 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+### Added
+- Labels (English and French, domain `forms`) for the policies of the module `masilia_site` in Admin > Roles: `role.policy.masilia_site` and its functions. Before, the role editor showed the raw keys.
+
 ## [0.2.9] - 2026-11-21
 
 ### Fixed
