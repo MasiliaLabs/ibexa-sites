@@ -4,6 +4,8 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.2.10] - 2026-11-22
+
 ### Added
 - Labels (English and French, domain `forms`) for the policies of the module `masilia_site` in Admin > Roles: `role.policy.masilia_site` and its functions. Before, the role editor showed the raw keys.
 
@@ -88,7 +90,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.9...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.10...HEAD
+[0.2.10]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.9...0.2.10
 [0.2.9]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.8...0.2.9
 [0.2.8]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.7...0.2.8
 [0.2.7]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.6...0.2.7
