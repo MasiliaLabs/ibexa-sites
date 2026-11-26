@@ -48,7 +48,7 @@
       </trans-unit>
       <trans-unit id="menu.sites" resname="menu.sites">
         <source>menu.sites</source>
-        <target>Sites</target>
+        <target>Gestionnaire de sites</target>
       </trans-unit>
       <trans-unit id="sites.title" resname="sites.title">
         <source>sites.title</source>

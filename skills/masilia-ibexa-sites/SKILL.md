@@ -13,7 +13,7 @@ A site is normally a siteaccess group in YAML (edit, deploy). This package keeps
 With the Masilia recipes endpoint in the `composer.json` (`https://api.github.com/repos/MasiliaLabs/recipes/contents/index.json?ref=flex/main` in `extra.symfony.endpoint`, after Ibexa's), `composer require` already enables the bundle and writes the route and config files (see the README, section *With Symfony Flex*); then do what is left. Without the endpoint, do everything by hand.
 
 ## Everyday work
-- Admin: **Sites** > New site (name, languages, host, root via the content browser, design) > save > Activate. Confirmation dialogs say what changes.
+- Admin: **Sites manager** > New site (name, languages, host, root via the content browser, design) > save > Activate. Confirmation dialogs say what changes.
 - Console: `masilia:sites:import-static [--dry-run]` imports YAML site groups as drafts; `masilia:sites:set-status active|disabled <group>|--all`.
 - Code: read/write through `Masilia\Contracts\IbexaSites\SiteRegistry` (`check()` returns problems by field, `create()`, `update()`, `setStatus()`); react with the `SiteChanged` event. Never write the table directly.
 - Moving a site from YAML: import as draft, remove its siteaccesses from YAML (the registry refuses addresses the YAML still declares), clear caches, activate.

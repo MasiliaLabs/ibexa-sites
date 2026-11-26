@@ -10,7 +10,7 @@ use Knp\Menu\ItemInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/** "Sites" under the Admin group of the Ibexa sidebar, for those who may see the sites. */
+/** "Sites manager" under the Admin group of the Ibexa sidebar, for those who may see the sites. */
 final readonly class MainMenuBuilderListener implements EventSubscriberInterface
 {
     public function __construct(private AuthorizationCheckerInterface $authorization)
