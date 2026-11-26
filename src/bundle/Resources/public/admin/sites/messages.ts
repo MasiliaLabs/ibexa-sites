@@ -29,7 +29,7 @@ export const DEFAULTS: Readonly<Record<string, string>> = {
     'validation.sa.address.taken': 'This address is already used by another site.',
     'validation.sa.bare': 'Only one siteaccess can be at the root of this host: give the others a prefix.',
     // The page
-    'ui.title': 'Sites',
+    'ui.title': 'Sites manager',
     'ui.intro': 'Sites created at run time: a site is served on its hosts as soon as it is active. The sites the project declares in its configuration are not listed here.',
     'ui.limits': 'The hosts must also answer at the server: DNS, web server, certificate and cache are not set from here.',
     'ui.loading': 'Loading the sites…',

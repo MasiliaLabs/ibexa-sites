@@ -52,7 +52,7 @@
       </trans-unit>
       <trans-unit id="sites.title" resname="sites.title">
         <source>sites.title</source>
-        <target>Sites</target>
+        <target>Gestionnaire de sites</target>
       </trans-unit>
       <trans-unit id="status.active" resname="status.active">
         <source>status.active</source>
@@ -176,7 +176,7 @@
       </trans-unit>
       <trans-unit id="ui.title" resname="ui.title">
         <source>ui.title</source>
-        <target>Sites</target>
+        <target>Gestionnaire de sites</target>
       </trans-unit>
       <trans-unit id="ui.intro" resname="ui.intro">
         <source>ui.intro</source>
