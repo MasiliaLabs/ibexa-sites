@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
 
-import { iconPath } from '@masilia-admin-kit/icons';
-import { AssetsProvider, TranslatorProvider } from '@masilia-admin-kit/ids';
+import { AdminProviders } from '@masilia-admin-kit/AdminProviders';
+import { Alert } from '@masilia-admin-kit/Alert';
+import { Muted } from '@masilia-admin-kit/Layout';
 import { Notice } from '@masilia-admin-kit/Notice';
 import { Spinner } from '@masilia-admin-kit/Spinner';
 import { Tabs } from '@masilia-admin-kit/Tabs';
@@ -31,9 +32,9 @@ export function SitesApp({ udw, dataUrl }: SitesAppProps): React.ReactElement {
 
     let body: React.ReactElement;
     if (loading) {
-        body = <p className="masilia-sites-muted" role="status"><Spinner label={t('ui.loading')} /> {t('ui.loading')}</p>;
+        body = <p role="status"><Muted><Spinner label={t('ui.loading')} /> {t('ui.loading')}</Muted></p>;
     } else if (failed || data === null) {
-        body = <p className="ibexa-alert ibexa-alert--error" role="alert">{t('ui.load_failed')}</p>;
+        body = <Alert type="error" title={t('ui.load_failed')} />;
     } else {
         body = (
             <>
@@ -61,14 +62,10 @@ export function SitesApp({ udw, dataUrl }: SitesAppProps): React.ReactElement {
     }
 
     return (
-        <TranslatorProvider value={{ trans: (id) => t(id) }}>
-        <AssetsProvider value={{ getIconPath: iconPath }}>
-            <div className="masilia-sites-react">
-                <Notice>{t('ui.intro')}</Notice>
-                {body}
-                <Notice>{t('ui.limits')}</Notice>
-            </div>
-        </AssetsProvider>
-        </TranslatorProvider>
+        <AdminProviders t={t} className="masilia-sites-react">
+            <Notice>{t('ui.intro')}</Notice>
+            {body}
+            <Notice>{t('ui.limits')}</Notice>
+        </AdminProviders>
     );
 }

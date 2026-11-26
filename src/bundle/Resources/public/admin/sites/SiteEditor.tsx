@@ -16,6 +16,9 @@ import { Spinner } from '@masilia-admin-kit/Spinner';
 import { UdwPicker } from '@masilia-admin-kit/UdwPicker';
 import type { PickedView } from '@masilia-admin-kit/UdwPicker';
 import { useDebounced } from '@masilia-admin-kit/useDebounced';
+import { Alert } from '@masilia-admin-kit/Alert';
+import { FormError } from '@masilia-admin-kit/FormError';
+import { Muted } from '@masilia-admin-kit/Layout';
 import { addressLines } from './addresses';
 import type { Api, LocationDto } from './api';
 import { t } from './messages';
@@ -159,10 +162,9 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                 )}
             >
                 {saveError !== undefined || unpathed.length > 0 ? (
-                    <div className="ibexa-alert ibexa-alert--error" role="alert">
-                        <strong>{t('editor.server_problems')}</strong>
+                    <Alert type="error" title={<strong>{t('editor.server_problems')}</strong>}>
                         <ul>{(unpathed.length > 0 ? unpathed.map((p) => p.message) : [saveError ?? '']).map((m) => <li key={m}>{m}</li>)}</ul>
-                    </div>
+                    </Alert>
                 ) : null}
 
                 <Section title={t('section.identity')} open={isOpen('identity', filled, withProblems)}>
@@ -212,7 +214,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                             >{t('rows.suggest.apply')}</Button>
                         </div>
                     ) : null}
-                    {shown('siteaccesses') !== undefined ? <p className="ibexa-form-error__row" role="alert">{shown('siteaccesses')}</p> : null}
+                    {shown('siteaccesses') !== undefined ? <FormError>{shown('siteaccesses')}</FormError> : null}
                     <SiteaccessRows
                         path="siteaccesses"
                         rows={draft.siteaccesses}
@@ -224,7 +226,7 @@ export function SiteEditor({ api, data, site, udw, onClose, onSaved }: SiteEdito
                     {lines.length > 0 ? (
                         <div className="masilia-sites-addresses">
                             <h4>{t('addresses.title')}</h4>
-                            <ul>{lines.map((line) => <li key={line.key}><code>{line.url}</code> <span className="masilia-sites-muted">{line.name} · {line.languages.join(' → ')}</span></li>)}</ul>
+                            <ul>{lines.map((line) => <li key={line.key}><code>{line.url}</code> <Muted>{line.name} · {line.languages.join(' → ')}</Muted></li>)}</ul>
                         </div>
                     ) : null}
 

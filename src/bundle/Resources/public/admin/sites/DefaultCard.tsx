@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
+import { Alert } from '@masilia-admin-kit/Alert';
+import { FilterButton, FilterCard, FilterSelect } from '@masilia-admin-kit/FilterCard';
 import { Notice } from '@masilia-admin-kit/Notice';
 import { notify } from '@masilia-admin-kit/notify';
 import type { Api } from './api';
@@ -40,7 +41,7 @@ export function DefaultCard({ api, defaultSiteaccess, choices, canManage, onSave
     return (
         <section>
             <FilterCard
-                actions={canManage ? <button type="button" className="btn ibexa-btn ibexa-btn--secondary ibexa-adaptive-filters__submit-btn" disabled={saving || value === (defaultSiteaccess ?? '')} onClick={() => void save()}>{t('action.save')}</button> : undefined}
+                actions={canManage ? <FilterButton disabled={saving || value === (defaultSiteaccess ?? '')} onClick={() => void save()}>{t('action.save')}</FilterButton> : undefined}
             >
                 <FilterSelect
                     label={t('default.label')}
@@ -52,7 +53,7 @@ export function DefaultCard({ api, defaultSiteaccess, choices, canManage, onSave
                 />
             </FilterCard>
             <Notice>{t('default.help')}</Notice>
-            {error !== undefined ? <p className="ibexa-alert ibexa-alert--error" role="alert">{error}</p> : null}
+            {error !== undefined ? <Alert type="error" title={error} /> : null}
         </section>
     );
 }

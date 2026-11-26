@@ -5,6 +5,7 @@ import { messageFor } from '@masilia-admin-kit/http';
 import type { FieldProblem } from '@masilia-admin-kit/http';
 import { Button } from '@masilia-admin-kit/ids';
 import { OrderedChoice } from '@masilia-admin-kit/OrderedChoice';
+import { Muted } from '@masilia-admin-kit/Layout';
 import { addressOf } from './addresses';
 import { t } from './messages';
 import { emptyRow, moveRow, removeRow, updateRow } from './rows';
@@ -28,7 +29,7 @@ export function SiteaccessRows({ path, rows, onChange, languages, problems, disa
 
     return (
         <div className="masilia-sites-rows">
-            {rows.length === 0 ? <p className="masilia-sites-muted">{t('rows.none')}</p> : null}
+            {rows.length === 0 ? <p><Muted>{t('rows.none')}</Muted></p> : null}
             {rows.map((row, index) => {
                 const base = `${path}[${index}]`;
                 const address = addressOf(row);
@@ -62,8 +63,8 @@ export function SiteaccessRows({ path, rows, onChange, languages, problems, disa
                             <TextField label={t('sa.prefix')} hint={t('sa.prefix.hint')} value={row.uriPrefix} error={messageFor(problems, `${base}.uriPrefix`)} onChange={(uriPrefix) => onChange(updateRow(rows, row.key, { uriPrefix }))} />
                         </div>
                         <p className="masilia-sites-row__url" aria-live="polite">
-                            <span className="masilia-sites-muted">{t('sa.address')}: </span>
-                            {address === '' ? <span className="masilia-sites-muted">{t('addresses.empty')}</span> : <code>{address}</code>}
+                            <Muted>{t('sa.address')}: </Muted>
+                            {address === '' ? <Muted>{t('addresses.empty')}</Muted> : <code>{address}</code>}
                         </p>
                     </fieldset>
                 );

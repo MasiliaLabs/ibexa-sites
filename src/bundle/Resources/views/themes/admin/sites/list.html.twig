@@ -1,36 +1,16 @@
-{% extends "@ibexadesign/ui/layout.html.twig" %}
+{# The sites page is a React application: it loads its data from the JSON API, and gets the configuration of the content browser here. #}
+{% extends '@ibexadesign/masilia_kit/page.html.twig' %}
 
 {% trans_default_domain 'masilia_ibexa_sites' %}
 
-{% block body_class %}masilia-sites-view{% endblock %}
-
-{% block stylesheets %}
-    {{ encore_entry_link_tags('ibexa-admin-ui-masilia-sites-react-css', null, 'ibexa') }}
-{% endblock %}
-
-{% block breadcrumbs %}
-    {% include '@ibexadesign/ui/breadcrumbs.html.twig' with { items: [
-        { value: 'breadcrumb.admin'|trans },
-        { value: 'sites.title'|trans }
-    ]} %}
-{% endblock %}
-
-{% block title %}{{ 'sites.title'|trans }}{% endblock %}
-
-{% block header %}
-    {% include '@ibexadesign/ui/page_title.html.twig' with { title: 'sites.title'|trans } %}
-{% endblock %}
-
-{% block content %}
-    {# The page is a React application: it loads its data from the JSON API, and gets the configuration of the content browser here. #}
-    <div
-        id="masilia-sites-root"
-        data-api="{{ path('masilia.ibexa_sites.api.data') }}"
-        data-udw-root="{{ ibexa_udw_config('masilia_site_root', {})|e('html_attr') }}"
-        data-udw-layout="{{ ibexa_udw_config('masilia_site_layout', {})|e('html_attr') }}"
-    ></div>
-{% endblock %}
-
-{% block javascripts %}
-    {{ encore_entry_script_tags('ibexa-admin-ui-masilia-sites-react-js', null, 'ibexa') }}
-{% endblock %}
+{% set kit_title = 'sites.title'|trans %}
+{% set kit_entry = 'masilia-sites-react' %}
+{% set kit_body_class = 'masilia-sites-view' %}
+{% set kit_root = {
+    id: 'masilia-sites-root',
+    data: {
+        api: path('masilia.ibexa_sites.api.data'),
+        'udw-root': ibexa_udw_config('masilia_site_root', {}),
+        'udw-layout': ibexa_udw_config('masilia_site_layout', {}),
+    },
+} %}

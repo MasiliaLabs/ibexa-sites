@@ -10,6 +10,8 @@ import { SearchInput } from '@masilia-admin-kit/SearchInput';
 import { DataTable, TableHeader } from '@masilia-admin-kit/Table';
 import type { Column } from '@masilia-admin-kit/Table';
 import { StatusTag } from '@masilia-admin-kit/StatusTag';
+import { FormError } from '@masilia-admin-kit/FormError';
+import { Muted } from '@masilia-admin-kit/Layout';
 import { addressOf } from './addresses';
 import type { Api } from './api';
 import { t } from './messages';
@@ -68,12 +70,12 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
     const hostLinks = (site: SiteDto, siteaccesses: SiteDto['siteaccesses']): React.ReactNode => {
         const hosts = [...new Set(siteaccesses.map((sa) => sa.host))];
         if (hosts.length === 0) {
-            return <span className="masilia-sites-muted">—</span>;
+            return <Muted>—</Muted>;
         }
 
         return hosts.map((host) => (
             <div className="masilia-sites-table__sa" key={host}>
-                {site.status === 'active' ? <ExternalLink href={`https://${host}/`} label={t('addresses.open')}>{host}</ExternalLink> : <span className="masilia-sites-muted">{host}</span>}
+                {site.status === 'active' ? <ExternalLink href={`https://${host}/`} label={t('addresses.open')}>{host}</ExternalLink> : <Muted>{host}</Muted>}
             </div>
         ));
     };
@@ -86,7 +88,7 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
                 <>
                     <strong>{site.name}</strong>
                     <br />
-                    <span className="masilia-sites-muted">{site.identifier}</span>
+                    <Muted>{site.identifier}</Muted>
                 </>
             ),
         },
@@ -101,8 +103,8 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
 
                 return (
                     <div className="masilia-sites-table__sa" key={sa.name}>
-                        {site.status === 'active' ? <ExternalLink href={url} label={t('addresses.open')}>{shownUrl}</ExternalLink> : <span className="masilia-sites-muted">{shownUrl}</span>}
-                        {' '}<span className="masilia-sites-muted">{sa.languages[0]}</span>
+                        {site.status === 'active' ? <ExternalLink href={url} label={t('addresses.open')}>{shownUrl}</ExternalLink> : <Muted>{shownUrl}</Muted>}
+                        {' '}<Muted>{sa.languages[0]}</Muted>
                     </div>
                 );
             }),
@@ -162,7 +164,7 @@ export function SitesList({ api, data, onEdit, onNew, onChanged }: SitesListProp
                     onCancel={() => setPending(null)}
                 >
                     <p>{t(`confirm.${pending.kind}.text`)}</p>
-                    {error !== undefined ? <p className="ibexa-form-error__row" role="alert">{error}</p> : null}
+                    {error !== undefined ? <FormError>{error}</FormError> : null}
                 </ConfirmDialog>
             ) : null}
         </section>

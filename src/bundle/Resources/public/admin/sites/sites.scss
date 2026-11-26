@@ -19,11 +19,6 @@ $transition: ibexa.$ibexa-admin-transition-duration ibexa.$ibexa-admin-transitio
     }
 }
 
-.masilia-sites-muted {
-    margin: 0;
-    color: ibexa.$ibexa-color-dark-400;
-}
-
 .masilia-sites-table {
     &__sa {
         margin: calculateRem(2px) 0;
