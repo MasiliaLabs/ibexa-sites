@@ -26,10 +26,6 @@
         <source>action.save</source>
         <target>Enregistrer</target>
       </trans-unit>
-      <trans-unit id="breadcrumb.admin" resname="breadcrumb.admin">
-        <source>breadcrumb.admin</source>
-        <target>Administration</target>
-      </trans-unit>
       <trans-unit id="column.site" resname="column.site">
         <source>column.site</source>
         <target>Site</target>
