@@ -4,9 +4,12 @@ All notable changes to `masilia/ibexa-sites` are documented here. The format fol
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-26
+
 ### Changed
+- **Breaking:** requires `masilia/ibexa-admin-kit` `^0.2` (it was `^0.1`); update the two together, see [UPGRADE.md](UPGRADE.md).
 - The entry of the **Admin** menu is **Sites manager** (was "Sites"); in French, "Gestionnaire de sites". The title of the page (heading, breadcrumb and browser tab) is the same; the heading of the table stays "Sites".
-- Admin: the page is built on the components and the page template of `masilia/ibexa-admin-kit` (alerts, the error row, the button of the filter bar, the providers, the grey text, the page skeleton): no `ibexa-*` class is written here any more. The grey text is a little smaller, as the kit draws it, and the first breadcrumb is the admin's own "Admin" (it was "Administration" in French). **It needs the release of the kit that has them** (`masilia/ibexa-admin-kit` after 0.1.6).
+- Admin: the page is built on the components and the page template of `masilia/ibexa-admin-kit` (alerts, the error row, the button of the filter bar, the providers, the grey text, the page skeleton): no `ibexa-*` class is written here any more. The grey text is a little smaller, as the kit draws it, and the first breadcrumb is the admin's own "Admin" (it was "Administration" in French). It needs `masilia/ibexa-admin-kit` `^0.2`.
 
 ## [0.2.10] - 2026-11-22
 
@@ -94,7 +97,8 @@ First release.
 - Commands `masilia:sites:import-static` and `masilia:sites:set-status`.
 - The contracts in `Masilia\Contracts\IbexaSites`.
 
-[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.10...HEAD
+[Unreleased]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.10...0.3.0
 [0.2.10]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.9...0.2.10
 [0.2.9]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.8...0.2.9
 [0.2.8]: https://github.com/MasiliaLabs/ibexa-sites/compare/0.2.7...0.2.8

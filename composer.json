@@ -32,7 +32,7 @@
         "doctrine/orm": "^2.20 || ^3.0",
         "ibexa/admin-ui": "^5.0",
         "ibexa/core": "^5.0",
-        "masilia/ibexa-admin-kit": "^0.1.1",
+        "masilia/ibexa-admin-kit": "^0.2",
         "psr/cache": "^3.0",
         "psr/event-dispatcher": "^1.0",
         "psr/log": "^3.0",
@@ -77,7 +77,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.2.x-dev"
+            "dev-main": "0.3.x-dev"
         }
     },
     "suggest": {

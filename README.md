@@ -210,6 +210,7 @@ New versions are announced as **GitHub releases**, with their notes taken from t
 ## Support, contributing and security
 
 - Questions and bug reports: [GitHub issues](https://github.com/MasiliaLabs/ibexa-sites/issues)
+- Upgrading across a breaking change: [UPGRADE.md](UPGRADE.md)
 - Pull requests are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md)
 - Security problems: please follow [SECURITY.md](SECURITY.md) and do not open a public issue
 
